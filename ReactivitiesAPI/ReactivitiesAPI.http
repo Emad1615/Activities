@@ -1,0 +1,6 @@
+@ReactivitiesAPI_HostAddress = http://localhost:5107
+
+GET {{ReactivitiesAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
