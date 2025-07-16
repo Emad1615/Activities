@@ -15,6 +15,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" Version="6.6.2" />
-
   </ItemGroup>
 </Project>

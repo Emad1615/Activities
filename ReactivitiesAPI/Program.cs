@@ -13,7 +13,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 {
     option.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -24,11 +24,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(option =>
+{
+    option.AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    .WithOrigins(builder.Configuration.GetValue<string>("frontend_url") ?? "http://localhost:3000", builder.Configuration.GetValue<string>("frontend_urls") ?? "https://localhost:3000");
+});
+
 app.UseAuthorization();
 
 app.MapControllers();
 
- // this code for update or create database tables
+// this code for update or create database tables
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
