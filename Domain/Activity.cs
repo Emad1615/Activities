@@ -12,6 +12,5 @@
         public string Venue { get; set; }
         public int longitude { get; set; }
         public int latitude { get; set; }
-
     }
 }

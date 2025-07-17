@@ -15,7 +15,7 @@ namespace Application.Activities.Commands
             public async Task<string> Handle(Command request, CancellationToken cancellationToken)
             {
                 context.Activities.Add(request.activity);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(cancellationToken);
                 return request.activity.Id;
 
             }

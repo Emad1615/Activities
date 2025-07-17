@@ -23,8 +23,22 @@ namespace API.Controllers
             return await Mediator.Send(new GetActivityDetails.Query() { Id = id });
         }
         [HttpPost("CreateActivity")]
-        public async Task<ActionResult<string>> CreateActivity(Activity activity) {
+        public async Task<ActionResult<string>> CreateActivity(Activity activity)
+        {
             return await Mediator.Send(new CreateActivity.Command() { activity = activity });
         }
+        [HttpPut("EditActivity")]
+        public async Task<ActionResult> EditActivity(Activity activity)
+        {
+            await Mediator.Send(new EditAcivity.Command() { Activity = activity });
+            return NoContent();
+        }
+        [HttpDelete("DeleteActivity")]
+        public async Task<ActionResult> DeleteActivity(string id)
+        {
+            await Mediator.Send(new DeleteActivity.Command() { Id = id });
+            return NoContent();
+        }
+
     }
 }
