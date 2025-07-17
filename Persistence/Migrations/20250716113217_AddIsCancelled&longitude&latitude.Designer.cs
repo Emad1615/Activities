@@ -10,7 +10,7 @@ using Persistence;
 
 namespace Persistence.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20250716113217_AddIsCancelled&longitude&latitude")]
     partial class AddIsCancelledlongitudelatitude
     {
