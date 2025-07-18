@@ -20,19 +20,19 @@ namespace Application.Activities.Queries
             {
                 #region CancellationToken Purpose
                 // this section of code for cancellation op process when end user cancel the request  aim of CancellationToken
-                try
-                {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        await Task.Delay(1000);
-                        logger.LogInformation($"Completed Task {i}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logger.LogInformation($"{ex.Message}");
-                }
+                //try
+                //{
+                //    for (int i = 0; i < 10; i++)
+                //    {
+                //        cancellationToken.ThrowIfCancellationRequested();
+                //        await Task.Delay(1000);
+                //        logger.LogInformation($"Completed Task {i}");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    logger.LogInformation($"{ex.Message}");
+                //}
                 #endregion
                 return await context.Activities.ToListAsync(cancellationToken);
             }
