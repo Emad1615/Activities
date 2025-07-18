@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class Seed
+    public class DbInitializer
     {
         public static async Task SeedData(AppDbContext context)
         {

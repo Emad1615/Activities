@@ -51,7 +51,7 @@ try
 {
     var context = services.GetRequiredService<AppDbContext>();
     await context.Database.MigrateAsync();
-    await Seed.SeedData(context);
+    await DbInitializer.SeedData(context);
 }
 catch (Exception ex)
 {
