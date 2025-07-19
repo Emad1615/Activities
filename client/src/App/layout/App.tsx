@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  Container,
-  CssBaseline,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Box, Container, CssBaseline } from "@mui/material";
 import axios from "axios";
 import NavBar from "./NavBar";
+import Activities from "../../features/activity/dashboard/Activities";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -19,32 +14,19 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Box
+      sx={{
+        height: "100vh", // 100% of viewport height
+        backgroundColor: "#f0f0f0",
+        overflow:'auto'
+      }}
+    >
       <CssBaseline />
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: 2 }}>
-        <List>
-          {activities.map((activity) => (
-            <ListItem key={activity.id}>
-              <ListItemText>
-                <ListItemText
-                  slotProps={{
-                    primary: {
-                      color: "#333",
-                    },
-                    secondary: {
-                      color: "#3333",
-                    },
-                  }}
-                  primary={activity.title}
-                  secondary={activity.category}
-                />
-              </ListItemText>
-            </ListItem>
-          ))}
-        </List>
+      <Container maxWidth="xl" sx={{ mt: 13 }} >
+        <Activities activities={activities} />
       </Container>
-    </>
+    </Box>
   );
 }
 

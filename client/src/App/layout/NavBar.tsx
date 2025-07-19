@@ -13,7 +13,7 @@ export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="sticky"
+        position="fixed"
         sx={{
           backgroundImage:
             "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 100%)",
@@ -65,7 +65,7 @@ export default function NavBar() {
               >
                 contacts
               </MenuItem>
-              <Button variant="outlined" color="info" size="small">
+              <Button variant="contained" color="primary" size="small">
                 Create Activity
               </Button>
             </Box>
