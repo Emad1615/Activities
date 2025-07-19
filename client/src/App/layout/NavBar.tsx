@@ -37,7 +37,7 @@ export default function NavBar() {
                 />
               </MenuItem>
             </Box>
-            <Box sx={{display:'flex'}}>
+            <Box sx={{ display: "flex" }}>
               <MenuItem
                 sx={{
                   fontSize: "1rem",
@@ -65,6 +65,9 @@ export default function NavBar() {
               >
                 contacts
               </MenuItem>
+              <Button variant="outlined" color="info" size="small">
+                Create Activity
+              </Button>
             </Box>
           </Toolbar>
         </Container>
