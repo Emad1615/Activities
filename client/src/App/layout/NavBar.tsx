@@ -9,7 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function NavBar() {
+type NavBarProps = {
+  handleEditActivity: () => void;
+};
+export default function NavBar({ handleEditActivity }: NavBarProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -65,7 +68,12 @@ export default function NavBar() {
               >
                 contacts
               </MenuItem>
-              <Button variant="contained" color="primary" size="small">
+              <Button
+                onClick={() => handleEditActivity()}
+                variant="contained"
+                color="primary"
+                size="small"
+              >
                 Create Activity
               </Button>
             </Box>
