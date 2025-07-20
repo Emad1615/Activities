@@ -7,14 +7,18 @@ import {
   Typography,
 } from "@mui/material";
 import Card from "@mui/material/Card";
+import type { Activity } from "../../../lib/types/index";
 
 type Props = {
   activity: Activity;
   handelSelectActivity: (id: string) => void;
+    handleDeleteActivity: (id: string) => void;
+
 };
 export default function ActivityCard({
   activity,
   handelSelectActivity,
+  handleDeleteActivity
 }: Props) {
   const { id, title, description, date, category } = activity;
   return (
@@ -47,7 +51,7 @@ export default function ActivityCard({
           >
             View
           </Button>
-          <Button variant="text" color="error" size="medium">
+          <Button variant="text" color="error" size="medium" onClick={() => handleDeleteActivity(id)}>
             Delete
           </Button>
         </Box>

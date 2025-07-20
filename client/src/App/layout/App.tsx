@@ -3,6 +3,7 @@ import { Box, Container, CssBaseline } from "@mui/material";
 import axios from "axios";
 import NavBar from "./NavBar";
 import Activities from "../../features/activity/dashboard/Activities";
+import type {Activity} from "../../lib/types/index";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -38,13 +39,17 @@ function App() {
       setActivities(
         activities.map((x) => (x.id === activity.id ? activity : x))
       );
+      setActivity(activity);
     } else {
-      setActivities([...activities, activity]);
+      const newActivity = {...activity, id: Math.random().toString(36).substring(2, 9) };
+      setActivities([...activities, newActivity]);
     }
+    setEditMode(false);
   };
   const handleDeleteActivity = (id: string) => {
     setActivities(activities.filter((x) => x.id !== id));
   };
+  console.log("activity:", activity);
   return (
     <Box
       sx={{
@@ -64,6 +69,8 @@ function App() {
           handleCancelEditActivity={handleCancelEditActivity}
           handleCancelSelectActivity={handleCancelSelectActivity}
           editMode={editMode}
+          handleAddActivity={handleAddActivity}
+          handleDeleteActivity={handleDeleteActivity}
         />
       </Container>
     </Box>

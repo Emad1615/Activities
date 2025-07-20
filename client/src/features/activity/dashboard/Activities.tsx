@@ -2,6 +2,8 @@ import Grid from "@mui/material/Grid";
 import ActivityList from "./ActivityList";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
+import type {Activity} from "../../../lib/types/index";
+
 
 type Props = {
   activities: Activity[];
@@ -11,6 +13,8 @@ type Props = {
   handleCancelSelectActivity: () => void;
   handleEditActivity: (id?: string) => void;
   handleCancelEditActivity: () => void;
+  handleAddActivity: (activity: Activity) => void;
+  handleDeleteActivity: (id: string) => void;
 };
 export default function Activities({
   activities,
@@ -19,7 +23,9 @@ export default function Activities({
   handelSelectActivity,
   handleCancelSelectActivity,
   handleEditActivity,
+  handleAddActivity,
   handleCancelEditActivity,
+  handleDeleteActivity
 }: Props) {
   return (
     <Grid container spacing={3}>
@@ -27,6 +33,7 @@ export default function Activities({
         <ActivityList
           activities={activities}
           handelSelectActivity={handelSelectActivity}
+          handleDeleteActivity={handleDeleteActivity}
         />
       </Grid>
       <Grid size={5} mt={1}>
@@ -41,6 +48,7 @@ export default function Activities({
           <ActivityForm
             handleCancelEditActivity={handleCancelEditActivity}
             activity={selectedActivity}
+            handleAddActivity={handleAddActivity}
           />
         )}
       </Grid>

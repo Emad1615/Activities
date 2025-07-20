@@ -1,22 +1,34 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-
+import type { Activity } from "../../../lib/types/index";
+import type { FormEvent } from "react";
 type Props = {
   handleCancelEditActivity: () => void;
   activity: Activity | undefined;
+  handleAddActivity: (activity: Activity) => void;
 };
 export default function ActivityForm({
   handleCancelEditActivity,
   activity,
+  handleAddActivity,
 }: Props) {
-  const { id, title, description, date, city, category, venue } =
-    activity || {};
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formdata = new FormData(e.currentTarget);
+    const data: { [key: string]: FormDataEntryValue } = {};
+    formdata.forEach((value, key) => {
+      data[key] = value;
+    });
+    if (activity) data.id = activity.id;
+    handleAddActivity(data as unknown as Activity);
+  };
   return (
-    <Paper>
+    <Paper sx={{ borderRadius: 3 }}>
       <Box
         component="form"
         sx={{
           p: 2,
         }}
+        onSubmit={handleSubmit}
       >
         <Typography
           variant="h6"
@@ -38,35 +50,35 @@ export default function ActivityForm({
             label="Title"
             variant="outlined"
             name="title"
-            defaultValue={title}
+            defaultValue={activity?.title ?? ""}
           />
           <TextField
             id="outlined-basic"
             label="Category"
             variant="outlined"
             name="category"
-            defaultValue={category}
+            defaultValue={activity?.category}
           />
           <TextField
             id="outlined-basic"
             label="City"
             variant="outlined"
             name="city"
-            defaultValue={city}
+            defaultValue={activity?.city}
           />
           <TextField
             id="outlined-basic"
             label="Venue"
             variant="outlined"
             name="venue"
-            defaultValue={venue}
+            defaultValue={activity?.venue}
           />
           <TextField
             id="outlined-basic"
             variant="outlined"
             name="date"
             type="date"
-            defaultValue={date}
+            defaultValue={activity?.date}
           />
           <TextField
             id="outlined-basic"
@@ -75,7 +87,7 @@ export default function ActivityForm({
             multiline
             rows={4}
             variant="outlined"
-            defaultValue={description}
+            defaultValue={activity?.description}
           />
         </Box>
         <Box
@@ -95,6 +107,7 @@ export default function ActivityForm({
             variant="contained"
             color="success"
             size="medium"
+            type="submit"
           >
             Save
           </Button>
