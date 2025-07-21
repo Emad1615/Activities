@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Box, Container, CssBaseline } from "@mui/material";
 import axios from "axios";
 import NavBar from "./NavBar";
-import Activities from "../../features/activity/dashboard/Activities";
-import type {Activity} from "../../lib/types/index";
+import type { Activity } from "../../lib/types/index";
+import { Outlet } from "react-router";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -41,7 +41,10 @@ function App() {
       );
       setActivity(activity);
     } else {
-      const newActivity = {...activity, id: Math.random().toString(36).substring(2, 9) };
+      const newActivity = {
+        ...activity,
+        id: Math.random().toString(36).substring(2, 9),
+      };
       setActivities([...activities, newActivity]);
     }
     setEditMode(false);
@@ -53,7 +56,7 @@ function App() {
   return (
     <Box
       sx={{
-        height: "100vh", // 100% of viewport height
+        minHeight: "100vh", // 100% of viewport height
         backgroundColor: "#f0f0f0",
         overflow: "auto",
       }}
@@ -61,17 +64,7 @@ function App() {
       <CssBaseline />
       <NavBar handleEditActivity={handleEditActivity} />
       <Container maxWidth="xl" sx={{ mt: 13 }}>
-        <Activities
-          activities={activities}
-          selectedActivity={activity}
-          handelSelectActivity={handelSelectActivity}
-          handleEditActivity={handleEditActivity}
-          handleCancelEditActivity={handleCancelEditActivity}
-          handleCancelSelectActivity={handleCancelSelectActivity}
-          editMode={editMode}
-          handleAddActivity={handleAddActivity}
-          handleDeleteActivity={handleDeleteActivity}
-        />
+        <Outlet />
       </Container>
     </Box>
   );
