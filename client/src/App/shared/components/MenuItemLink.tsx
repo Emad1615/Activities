@@ -11,12 +11,12 @@ export default function MenuItemLink({ children, to }: Props) {
       component={NavLink}
       to={to}
       sx={{
-        fontSize: "1rem",
+        fontSize: ".8rem",
         textTransform: "uppercase",
-        fontWeight: "600",
-        '&.active':{
-            color: 'primary.main',
-        }
+        fontWeight: "500",
+        "&.active": {
+          color: "#b39cd0",
+        },
       }}
     >
       {children}

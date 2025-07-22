@@ -1,16 +1,37 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import type { Activity } from "../../../lib/types/index";
 import type { FormEvent } from "react";
-type Props = {
-  handleCancelEditActivity: () => void;
-  activity: Activity | undefined;
-  handleAddActivity: (activity: Activity) => void;
-};
-export default function ActivityForm({
-  handleCancelEditActivity,
-  activity,
-  handleAddActivity,
-}: Props) {
+import { useNavigate, useParams } from "react-router";
+import { useActivity } from "../../../lib/hooks/activities/useActivity";
+import { useCreateActivity } from "../../../lib/hooks/activities/useCreateActivity";
+import { useEditActivity } from "../../../lib/hooks/activities/useEditActivity";
+
+export default function ActivityForm() {
+  const { id } = useParams<string>();
+  const { activity, activityLoading } = useActivity(id ?? "");
+  const { addActivity, isLoadingAddActivity } = useCreateActivity();
+  const { updateActivity, isLoadingEditActivity } = useEditActivity();
+  const navigate = useNavigate();
+  const isLoading = isLoadingAddActivity || isLoadingEditActivity;
+  if (activityLoading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formdata = new FormData(e.currentTarget);
@@ -18,8 +39,14 @@ export default function ActivityForm({
     formdata.forEach((value, key) => {
       data[key] = value;
     });
-    if (activity) data.id = activity.id;
-    handleAddActivity(data as unknown as Activity);
+    if (activity) {
+      data.id = activity.id;
+      updateActivity(data as unknown as Activity);
+    } else {
+      addActivity(data as unknown as Activity, {
+        onSuccess: (id: string) => navigate(`/activities/${id}`),
+      });
+    }
   };
   return (
     <Paper sx={{ borderRadius: 3 }}>
@@ -42,7 +69,7 @@ export default function ActivityForm({
           fontWeight={"bold"}
           color="textSecondary"
         >
-          Activity Form
+          {activity ? "Edit Activity" : "Create Activity"}
         </Typography>
         <Box display="flex" flexDirection="column" gap={1}>
           <TextField
@@ -78,7 +105,11 @@ export default function ActivityForm({
             variant="outlined"
             name="date"
             type="date"
-            defaultValue={activity?.date}
+            defaultValue={
+              activity?.date
+                ? new Date(activity.date).toISOString().split("T")[0]
+                : new Date().toISOString().split("T")[0]
+            }
           />
           <TextField
             id="outlined-basic"
@@ -98,7 +129,7 @@ export default function ActivityForm({
             sx={{ textTransform: "uppercase" }}
             color="inherit"
             size="medium"
-            onClick={handleCancelEditActivity}
+            onClick={() => navigate("/activities")}
           >
             Cancel
           </Button>
@@ -108,6 +139,7 @@ export default function ActivityForm({
             color="success"
             size="medium"
             type="submit"
+            loading={isLoading}
           >
             Save
           </Button>

@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import App from "../layout/App";
 import HomePage from "../../features/home/HomePage";
+import Activities from "../../features/activity/dashboard/Activities";
+import ActivityDetails from "../../features/activity/details/ActivityDetails";
+import ActivityForm from "../../features/activity/form/ActivityForm";
 
 export const routes = createBrowserRouter([
   {
@@ -14,19 +17,19 @@ export const routes = createBrowserRouter([
       },
       {
         path: "activities",
-        element: <>activities</>,
+        element: <Activities />,
       },
       {
         path: "activities/:id",
-        element: <>activity</>,
+        element: <ActivityDetails />,
       },
       {
         path: "createActivity",
-        element: <>createActivity</>,
+        element: <ActivityForm key={"create"} />,
       },
       {
-        path: "manageActivity/:id",
-        element: <>manageActivity</>,
+        path: "manage/:id",
+        element: <ActivityForm />,
       },
     ],
   },

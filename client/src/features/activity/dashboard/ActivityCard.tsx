@@ -8,19 +8,16 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import type { Activity } from "../../../lib/types/index";
+import { useDeleteActivity } from "../../../lib/hooks/activities/useDeleteActivity";
+import { useNavigate } from "react-router";
 
 type Props = {
   activity: Activity;
-  handelSelectActivity: (id: string) => void;
-    handleDeleteActivity: (id: string) => void;
-
 };
-export default function ActivityCard({
-  activity,
-  handelSelectActivity,
-  handleDeleteActivity
-}: Props) {
-  const { id, title, description, date, category } = activity;
+export default function ActivityCard({ activity }: Props) {
+  const { removeActivity, isLoadingRemoveActivity } = useDeleteActivity();
+  const navigate = useNavigate();
+  const { title, description, date, category } = activity;
   return (
     <Card sx={{ borderRadius: 3, my: 1 }}>
       <CardContent>
@@ -47,11 +44,17 @@ export default function ActivityCard({
             variant="text"
             color="info"
             size="medium"
-            onClick={() => handelSelectActivity(id)}
+            onClick={() => navigate(`/activities/${activity.id}`)}
           >
             View
           </Button>
-          <Button variant="text" color="error" size="medium" onClick={() => handleDeleteActivity(id)}>
+          <Button
+            variant="text"
+            color="error"
+            size="medium"
+            onClick={async () => removeActivity(activity.id)}
+            loading={isLoadingRemoveActivity}
+          >
             Delete
           </Button>
         </Box>

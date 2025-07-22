@@ -1,29 +1,19 @@
-import { Group } from "@mui/icons-material";
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  Button,
-  Container,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, AppBar, Toolbar, Container } from "@mui/material";
+import MenuItemLink from "../shared/components/MenuItemLink";
+import Logo from "../shared/components/Logo";
 
-type NavBarProps = {
-  handleEditActivity: () => void;
-};
-export default function NavBar({ handleEditActivity }: NavBarProps) {
+export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
         sx={{
-          backgroundImage:
-            "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 100%)",
+          backgroundColor: "#845ec2",
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" disableGutters>
           <Toolbar
+            disableGutters
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -31,51 +21,12 @@ export default function NavBar({ handleEditActivity }: NavBarProps) {
             }}
           >
             <Box>
-              <MenuItem sx={{ display: "flex", gap: 2 }}>
-                <Group fontSize="large" />
-                <Typography
-                  variant="h5"
-                  fontWeight="bold"
-                  children={"Reactivities"}
-                />
-              </MenuItem>
+              <Logo />
             </Box>
             <Box sx={{ display: "flex" }}>
-              <MenuItem
-                sx={{
-                  fontSize: "1rem",
-                  textTransform: "uppercase",
-                  fontWeight: "600",
-                }}
-              >
-                Activities
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontSize: "1rem",
-                  textTransform: "uppercase",
-                  fontWeight: "600",
-                }}
-              >
-                about
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontSize: "1rem",
-                  textTransform: "uppercase",
-                  fontWeight: "600",
-                }}
-              >
-                contacts
-              </MenuItem>
-              <Button
-                onClick={() => handleEditActivity()}
-                variant="contained"
-                color="primary"
-                size="small"
-              >
-                Create Activity
-              </Button>
+              <MenuItemLink to="/activities">Activities</MenuItemLink>
+              <MenuItemLink to="/createActivity">create activity</MenuItemLink>
+              <MenuItemLink to="/">user menu</MenuItemLink>
             </Box>
           </Toolbar>
         </Container>

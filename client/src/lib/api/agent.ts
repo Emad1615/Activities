@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const agent = axios.create({
-  baseURL: "http://localhost:5107/api",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
