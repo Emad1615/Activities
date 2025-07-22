@@ -9,7 +9,7 @@ function App() {
       <Box
         sx={{
           minHeight: "100vh",
-          backgroundColor: "#f0f0f0",
+          backgroundColor: "#eeeeee",
           overflow: "auto",
         }}
       >
@@ -29,3 +29,15 @@ export default App;
 // #b39cd0
 // #fbeaff
 // #00c9a7
+//#4b4453
+//#b0a8b9
+//#c34a36
+//#ff8066
+//#fcf8ff
+//#d5cabd
+//#296073
+//#3596b5
+//#adc5cf
+//#b25b00
+//#008c81
+//#bea6a0
