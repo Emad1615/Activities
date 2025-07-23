@@ -104,7 +104,7 @@ export default function ActivityHeader({ activity }: Props) {
               <>
                 <Button
                   variant="contained"
-                  color={`${isCancelled ? "success" : "error"}`}
+                  color={`${isCancelled ? "secondary" : "error"}`}
                   size="small"
                   sx={{ textTransform: "uppercase", fontSize: "12px" }}
                 >
