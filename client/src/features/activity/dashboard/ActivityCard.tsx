@@ -1,64 +1,132 @@
 import {
+  Avatar,
   Box,
   Button,
-  CardActions,
+  Card,
   CardContent,
+  CardHeader,
+  CardMedia,
   Chip,
   Typography,
 } from "@mui/material";
-import Card from "@mui/material/Card";
+import { Place, AccessTime } from "@mui/icons-material";
 import type { Activity } from "../../../lib/types/index";
-import { useDeleteActivity } from "../../../lib/hooks/activities/useDeleteActivity";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { DateFormat } from "../../../lib/utils/helper";
 
 type Props = {
   activity: Activity;
 };
 export default function ActivityCard({ activity }: Props) {
-  const { removeActivity, isLoadingRemoveActivity } = useDeleteActivity();
   const navigate = useNavigate();
   const { title, description, date, category } = activity;
+  const isHost = true;
+  const isGoing = false;
+  const label = isHost
+    ? "You are hosting this activity"
+    : "You are going to this activity";
+  const color = isHost ? "secondary" : isGoing ? "warning" : "default";
+  const isCancelled = false;
   return (
-    <Card sx={{ borderRadius: 3, my: 1 }}>
+    <Card elevation={3} sx={{ borderRadius: 3, my: 1 }}>
+      <Box display="flex" justifyContent={"space-between"}>
+        <CardHeader
+          avatar={<Avatar sx={{ width: 50, height: 50 }} />}
+          title={title}
+          subheader={
+            <>
+              Hosted by <Link to={`/profiles/bob`}>Bob</Link>
+            </>
+          }
+          slotProps={{
+            title: {
+              fontWeight: "bold",
+              fontSize: ".9rem",
+            },
+            subheader: {
+              fontSize: ".7rem",
+              color: "text.secondary",
+            },
+          }}
+        />
+      </Box>
+      <CardMedia
+        component={"img"}
+        width={"100%"}
+        height={"100"}
+        src={`/images/categoryImages/${category}.jpg`}
+        sx={{
+          width: "100%",
+          height: "200px",
+          objectFit: "cover",
+        }}
+      />
+      <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        px={1}
+        pt={0.5}
+      >
+        <Box display={"flex"} alignItems={"center"} gap={0.5}>
+          <Place sx={{ color: "text.secondary" }} fontSize={"small"} />
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontSize={".8rem"}
+          >
+            {activity.city}
+          </Typography>
+        </Box>
+        <Box display={"flex"} alignItems={"center"} gap={0.5}>
+          <AccessTime sx={{ color: "text.secondary" }} fontSize={"small"} />
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontSize={".8rem"}
+          >
+            {DateFormat(date)}
+          </Typography>
+        </Box>
+      </Box>
+      <Box sx={{ bgcolor: "grey.100", py: 2, px: 2, my: 1 }}>
+        Attendees go here
+      </Box>
       <CardContent>
-        <Typography variant="h5" fontWeight={"bold"}>
-          {title}
-        </Typography>
-        <Typography sx={{ color: "text.secondary" }} variant="caption">
-          {date}
-        </Typography>
-        <Typography variant="body1" pt={1}>
+        <Typography variant="body2" color="text.secondary" fontSize={".8rem"}>
           {description}
         </Typography>
-      </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Chip label={category} variant="outlined" color="info" size="medium" />
-        <Box display="flex" gap={2} justifyContent={"space-between"}>
+        <Box display={"flex"} justifyContent={"space-between"} mt={3}>
+          <Box display={"flex"} alignItems={"center"} mr={2} gap={1}>
+            {(isHost || isGoing) && (
+              <Chip
+                label={label}
+                variant={"outlined"}
+                color={color}
+                size="small"
+                sx={{ fontSize: ".7rem", fontWeight: "bold" }}
+              />
+            )}
+            {isCancelled && (
+              <Chip
+                label={"Cancelled"}
+                variant={"outlined"}
+                color={"error"}
+                size="small"
+                sx={{ fontSize: ".7rem", fontWeight: "bold" }}
+              />
+            )}
+          </Box>
           <Button
             variant="text"
-            color="info"
-            size="medium"
+            color="secondary"
+            size="small"
             onClick={() => navigate(`/activities/${activity.id}`)}
           >
             View
           </Button>
-          <Button
-            variant="text"
-            color="error"
-            size="medium"
-            onClick={async () => removeActivity(activity.id)}
-            loading={isLoadingRemoveActivity}
-          >
-            Delete
-          </Button>
         </Box>
-      </CardActions>
+      </CardContent>
     </Card>
   );
 }

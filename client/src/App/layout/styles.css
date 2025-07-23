@@ -1,0 +1,9 @@
+.react-calendar{
+    width: 100% !important;
+    border: none !important;
+    color: #845EC2!important;
+}
+.react-calendar__tile--now{
+    background:#8e55bd87 !important;
+    border-radius: 15px;
+}
