@@ -9,7 +9,7 @@ using Persistence;
 
 namespace API.Controllers
 {
-    public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseApiController
+    public class ActivitiesController() : BaseApiController
     {
 
         [HttpGet("GetActivities")]

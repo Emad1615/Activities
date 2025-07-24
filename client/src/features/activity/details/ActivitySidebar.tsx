@@ -1,47 +1,91 @@
-import { Avatar, Box, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Paper,
+  Typography,
+} from "@mui/material";
+import Map from "../../../App/shared/components/Map";
 
 export default function ActivitySidebar() {
   const isHost = true;
   const following = true;
   return (
-    <Paper>
-      <Typography
-        sx={{
-          p: 1,
-          bgcolor: "primary.main",
-          textAlign: "center",
-          color: "white",
-          fontWeight: "400",
-        }}
-        variant="body1"
-        color="inherit"
-        children={"2 people is going"}
-      />
-      <Box display="flex" justifyContent={"space-between"} py={2} px={1}>
-        <Box display="flex" gap={0.5} alignItems={"center"}>
-          <Avatar
-            alt="bob"
-            sx={{
-              width: 45,
-              height: 45,
-            }}
-          />
-          <Typography
-            sx={{
-              fontWeight: "500",
-            }}
-            variant="subtitle2"
-            color="inherit"
-            children={"Emad Ismail Mohammed"}
-          />
+    <Box display={"flex"} flexDirection={"column"} gap={3}>
+      <Paper>
+        <Typography
+          sx={{
+            p: 1,
+            bgcolor: "primary.main",
+            textAlign: "center",
+            color: "white",
+            fontWeight: "400",
+          }}
+          variant="body1"
+          color="inherit"
+          children={"3 people is going"}
+        />
+        <Box sx={{ maxHeight: 280, overflowY: "auto" }}>
+          {Array.from({ length: 3 }, (_, idx) => idx + 1).map(() => (
+            <Grid
+              container
+              spacing={1}
+              alignItems={"center"}
+            >
+              <Grid size={9}>
+                <List>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="bob"
+                        sx={{
+                          width: 40,
+                          height: 40,
+                        }}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      sx={{
+                        fontWeight: "500",
+                      }}
+                      color="inherit"
+                      primary={"Emad Ismail Mohammed"}
+                      secondary={isHost ? "Hosting" : "Going"}
+                      slotProps={{
+                        primary: {
+                          fontSize: ".8rem",
+                          fontWeight: "bold",
+                        },
+                        secondary: {
+                          color: "text.secondary",
+                          fontSize: ".7rem",
+                        },
+                      }}
+                    />
+                  </ListItem>
+                </List>
+              </Grid>
+              <Grid size={3}>
+                {following && (
+                  <Chip
+                    label="Following"
+                    variant="outlined"
+                    size="small"
+                    sx={{ fontSize: ".8rem" }}
+                    color="warning"
+                  />
+                )}
+              </Grid>
+            </Grid>
+          ))}
         </Box>
-        <Box
-          display="flex"
-          gap={0.5}
-          alignItems={"center"}
-          justifyContent={"center"}
-        ></Box>
-      </Box>
-    </Paper>
+      </Paper>
+      <Paper elevation={3} sx={{position:'relative'}}><Map /></Paper>
+    </Box>
   );
 }

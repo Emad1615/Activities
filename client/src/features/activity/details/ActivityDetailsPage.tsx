@@ -28,7 +28,7 @@ export default function ActivityDetailsPage() {
       <Grid size={8}>
         <Box display={"flex"} flexDirection={"column"} gap={3}>
           <ActivityHeader activity={activity} />
-          <ActivityInfo />
+          <ActivityInfo activity={activity}/>
           <ActivityChat />
         </Box>
       </Grid>

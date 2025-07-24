@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider } from "react-router";
 import { routes } from "./App/routes/Routes.tsx";
+import { StoreContext } from "./lib/stores/store.ts";
+import { store } from "./lib/stores/store.ts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,9 +21,11 @@ const queryClient = new QueryClient({
 });
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={routes} />
-    </QueryClientProvider>
+    <StoreContext.Provider value={store}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={routes} />
+      </QueryClientProvider>
+    </StoreContext.Provider>
   </StrictMode>
 );
