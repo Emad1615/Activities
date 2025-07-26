@@ -21,6 +21,7 @@ namespace API.Controllers
         [HttpGet("GetActivity")]
         public async Task<ActionResult<Activity>> GetActivity(string id)
         {
+            throw new Exception("An Error Occured by emad");
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query() { Id = id }));
         }
         [HttpPost("CreateActivity")]
