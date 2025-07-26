@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Activities.DTOs;
+using AutoMapper;
 using Domain;
 
 namespace Application.Core
@@ -8,6 +9,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Activity, Activity>().ReverseMap();
+            CreateMap<CreateActivityDTO, Activity>().ReverseMap();
         }
     }
 }
