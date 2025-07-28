@@ -21,7 +21,6 @@ namespace API.Controllers
         [HttpGet("GetActivity")]
         public async Task<ActionResult<Activity>> GetActivity(string id)
         {
-            throw new Exception("An Error Occured by emad");
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query() { Id = id }));
         }
         [HttpPost("CreateActivity")]
@@ -30,9 +29,9 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new CreateActivity.Command() { ActivityDTO = activityDTO }));
         }
         [HttpPut("EditActivity")]
-        public async Task<ActionResult> EditActivity(Activity activity)
+        public async Task<ActionResult> EditActivity(EditActivityDTO activityDTO)
         {
-            return HandleResult(await Mediator.Send(new EditAcivity.Command() { Activity = activity }));
+            return HandleResult(await Mediator.Send(new EditAcivity.Command() { ActivityDTO = activityDTO }));
         }
         [HttpDelete("DeleteActivity")]
         public async Task<ActionResult> DeleteActivity(string id)

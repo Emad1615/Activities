@@ -42,6 +42,10 @@ export default function ActivityCard({ activity }: Props) {
             title: {
               fontWeight: "bold",
               fontSize: ".9rem",
+              overflow:'hidden',
+              textOverflow:'ellipsis',
+              whiteSpace:'nowrap',
+              maxWidth:'18rem',
             },
             subheader: {
               fontSize: ".7rem",

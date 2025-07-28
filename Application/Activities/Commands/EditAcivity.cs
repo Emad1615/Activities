@@ -1,4 +1,5 @@
-﻿using Application.Core;
+﻿using Application.Activities.DTOs;
+using Application.Core;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -10,15 +11,15 @@ namespace Application.Activities.Commands
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public required Activity Activity { get; set; }
+            public required EditActivityDTO ActivityDTO { get; set; }
         }
         public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
         {
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var acivity = await context.Activities.FindAsync([request.Activity.Id], cancellationToken);
+                var acivity = await context.Activities.FindAsync([request.ActivityDTO.Id], cancellationToken);
                 if (acivity is null) return Result<Unit>.Failure("Activity not found", 404);
-                mapper.Map(request.Activity, acivity);
+                mapper.Map(request.ActivityDTO, acivity);
                 var result = await context.SaveChangesAsync() > 0;
                 if (!result) return Result<Unit>.Failure("Failed to update activity", 400);
                 return Result<Unit>.Success(Unit.Value);
