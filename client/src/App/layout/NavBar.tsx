@@ -31,6 +31,7 @@ export default function NavBar() {
               <MenuItemLink to="/activities">Activities</MenuItemLink>
               <MenuItemLink to="/createActivity">create activity</MenuItemLink>
               <MenuItemLink to="/counter">Counter by Mobx</MenuItemLink>
+              <MenuItemLink to="/errors">Errors</MenuItemLink>
               <MenuItemLink to="/">user menu</MenuItemLink>
             </Box>
           </Toolbar>

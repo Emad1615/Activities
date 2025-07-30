@@ -1,5 +1,7 @@
 import axios from "axios";
 import { store } from "../stores/store";
+import { toast } from "react-toastify";
+import { routes } from "../../App/routes/Routes";
 
 export const agent = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -16,28 +18,44 @@ agent.interceptors.request.use((config) => {
 });
 agent.interceptors.response.use(
   async (response) => {
-    try {
-      await sleep(1000); // Simulate a delay for all responses
-      return response;
-    } catch (error) {
-      console.error("Error in response interceptor:", error);
-      return Promise.reject(error);
-    } finally {
-      store.uiStore.isIdle();
-    }
+    await sleep(1000); // Simulate a delay for all responses
+    store.uiStore.isIdle();
+    return response;
   },
-  (error) => {
-    const { data, status } = error.response;
-    if (status === 404) {
-      throw new Error(data.title);
+  async (error) => {
+    await sleep(1000); // Simulate a delay for all responses
+
+    store.uiStore.isIdle();
+    const { data, status, statusText } = error.response;
+    switch (status) {
+      case 400: // Bad Request
+        if (data.errors) {
+          const modalStateErrors = [];
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modalStateErrors.push(data.errors[key]);
+            }
+          }
+          throw modalStateErrors.flat();
+        } else toast.error(data.title ?? statusText);
+        break;
+      case 401: // Unauthorized
+        toast.error(data.title ?? statusText);
+        break;
+      case 404: // Not Found
+      routes.navigate('/not-found') 
+      // toast.error(data.title ?? statusText);
+        break;
+      case 405: // Method Not Allowed
+        toast.error(data.title ?? statusText);
+        break;
+      case 500: // server error
+        routes.navigate('/server-error',{state:{error:data}})  
+      //toast.error(data.title ?? statusText);
+        break;
+      default:
+        toast.error(data.title ?? statusText);
     }
-    if (status === 400 && data.errors) {
-      throw data.errors;
-    }
-    if (status === 500) {
-      console.error(data);
-      throw new Error("Server error - check the terminal for more details");
-    }
-    throw error;
+    return Promise.reject(error);
   }
 );
