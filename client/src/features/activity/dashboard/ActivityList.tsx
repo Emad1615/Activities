@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import ActivityCard from "./ActivityCard";
 import { useActivities } from "../../../lib/hooks/activities/useActivities";
 
@@ -16,7 +16,13 @@ export default function ActivityList() {
         <CircularProgress />
       </Box>
     );
-  console.log(activites);
+  if (activites?.length===0) {
+    return (
+        <Typography color="text.secondary" variant="body2" textAlign={"center"}>
+          There are no activities to display at the moment...
+        </Typography>
+    );
+  }
   return (
     <Box>
       {activites?.map((activity, idx: number) => (

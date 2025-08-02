@@ -10,7 +10,7 @@ namespace Application.Activities.DTOs
         //Location Props
         public string City { get; set; } = string.Empty;
         public string Venue { get; set; } = string.Empty;
-        public int longitude { get; set; }
-        public int latitude { get; set; }
+        public double longitude { get; set; }
+        public double latitude { get; set; }
     }
 }

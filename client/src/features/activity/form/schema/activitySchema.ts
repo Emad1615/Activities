@@ -14,5 +14,6 @@ export const activitySchema = z.object({
     longitude: z.coerce.number(),
   }),
 });
-// export type ActivitySchema = z.output<typeof activitySchema>;
 export type ActivitySchema = z.infer<typeof activitySchema>;
+// export type ActivitySchema = z.output<typeof activitySchema>;
+

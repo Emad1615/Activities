@@ -34,7 +34,7 @@ namespace Application.Activities.Queries
                 //    logger.LogInformation($"{ex.Message}");
                 //}
                 #endregion
-                return await context.Activities.ToListAsync(cancellationToken);
+                return await context.Activities.AsNoTracking().OrderByDescending(z=>z.Date).ToListAsync(cancellationToken);
             }
         }
     }

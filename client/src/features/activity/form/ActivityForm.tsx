@@ -16,6 +16,9 @@ import SelectInput from "../../../App/shared/components/inputs/SelectInput";
 import { categories } from "./mock/categories";
 import DateTimeInput from "../../../App/shared/components/inputs/DateTimeInput";
 import LocationInput from "../../../App/shared/components/inputs/LocationInput";
+import { useEditActivity } from "../../../lib/hooks/activities/useEditActivity";
+import { useCreateActivity } from "../../../lib/hooks/activities/useCreateActivity";
+import type { Activity } from "../../../lib/types";
 
 export default function ActivityForm() {
   const { handleSubmit, reset, control } = useForm({
@@ -24,6 +27,9 @@ export default function ActivityForm() {
   });
   const { id } = useParams<string>();
   const { activity, activityLoading } = useActivity(id ?? "");
+  const { updateActivity, isLoadingEditActivity } = useEditActivity();
+  const { addActivity, isLoadingAddActivity } = useCreateActivity();
+  const isSubmitting = isLoadingAddActivity || isLoadingEditActivity;
   const navigate = useNavigate();
   useEffect(() => {
     if (activity)
@@ -38,7 +44,24 @@ export default function ActivityForm() {
       });
   }, [activity, reset]);
   const onSubmit = (data: ActivitySchema) => {
-    console.log(data);
+    const { location, ...rest } = data;
+    const object = { ...rest, ...location };
+    try {
+      if (activity) {
+        updateActivity(
+          { ...activity, ...object },
+          {
+            onSuccess: () => {
+              navigate(`/activities/${activity.id}`);
+            },
+          }
+        );
+      } else {
+        addActivity(object as Activity);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (activityLoading)
@@ -125,6 +148,7 @@ export default function ActivityForm() {
             color="success"
             size="medium"
             type="submit"
+            disabled={isSubmitting}
           >
             Save
           </Button>

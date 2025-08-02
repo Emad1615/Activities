@@ -5,7 +5,11 @@ import { lazy, Suspense } from "react";
 const LazyMapContainer = lazy(() =>
   import("react-leaflet").then((module) => ({ default: module.MapContainer }))
 );
-export default function Map() {
+type Props={
+  position:[number,number],
+  venue:string
+}
+export default function Map({position,venue}:Props) {
   const renderFallback = () => (
     <Skeleton
       variant="rectangular"
@@ -22,18 +26,17 @@ export default function Map() {
     <Box>
       <Suspense fallback={renderFallback()}>
         <LazyMapContainer
-          center={[51.505, -0.09]}
+          center={position}
           zoom={13}
           scrollWheelZoom={false}
           style={{ height: 330 }}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[51.505, -0.09]}>
+          <Marker position={position}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              {venue}
             </Popup>
           </Marker>
         </LazyMapContainer>

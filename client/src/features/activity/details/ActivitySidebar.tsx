@@ -11,8 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import Map from "../../../App/shared/components/Map";
-
-export default function ActivitySidebar() {
+import type { Activity } from "../../../lib/types";
+type Props = {
+  activity: Activity;
+};
+export default function ActivitySidebar({ activity }: Props) {
   const isHost = true;
   const following = true;
   return (
@@ -31,12 +34,8 @@ export default function ActivitySidebar() {
           children={"3 people is going"}
         />
         <Box sx={{ maxHeight: 280, overflowY: "auto" }}>
-          {Array.from({ length: 3 }, (_, idx) => idx + 1).map(() => (
-            <Grid
-              container
-              spacing={1}
-              alignItems={"center"}
-            >
+          {Array.from({ length: 3 }, (_, idx) => idx + 1).map((_,index) => (
+            <Grid key={index} container spacing={1} alignItems={"center"}>
               <Grid size={9}>
                 <List>
                   <ListItem>
@@ -85,7 +84,9 @@ export default function ActivitySidebar() {
           ))}
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{position:'relative'}}><Map /></Paper>
+      <Paper elevation={3} sx={{ position: "relative" }}>
+        <Map position={[activity.latitude!, activity.longitude!]}  venue={activity.venue}/>
+      </Paper>
     </Box>
   );
 }

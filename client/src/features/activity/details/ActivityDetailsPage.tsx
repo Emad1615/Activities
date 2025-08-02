@@ -33,7 +33,7 @@ export default function ActivityDetailsPage() {
         </Box>
       </Grid>
       <Grid size={4}>
-        <ActivitySidebar />
+        <ActivitySidebar activity={activity} />
       </Grid>
     </Grid>
   );
