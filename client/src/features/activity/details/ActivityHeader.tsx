@@ -111,6 +111,8 @@ export default function ActivityHeader({ activity }: Props) {
                   {isCancelled ? "reactivate event" : "Cancel event"}
                 </Button>
                 <Button
+                component={Link}
+                to={`/manage/${activity.id}`}
                   variant="contained"
                   color="primary"
                   size="small"

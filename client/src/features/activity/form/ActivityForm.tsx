@@ -3,23 +3,44 @@ import {
   Button,
   CircularProgress,
   Paper,
-  TextField,
   Typography,
 } from "@mui/material";
-import type { Activity } from "../../../lib/types/index";
-import type { FormEvent } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useActivity } from "../../../lib/hooks/activities/useActivity";
-import { useCreateActivity } from "../../../lib/hooks/activities/useCreateActivity";
-import { useEditActivity } from "../../../lib/hooks/activities/useEditActivity";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { activitySchema, type ActivitySchema } from "./schema/activitySchema";
+import InputText from "../../../App/shared/components/inputs/InputText";
+import SelectInput from "../../../App/shared/components/inputs/SelectInput";
+import { categories } from "./mock/categories";
+import DateTimeInput from "../../../App/shared/components/inputs/DateTimeInput";
+import LocationInput from "../../../App/shared/components/inputs/LocationInput";
 
 export default function ActivityForm() {
+  const { handleSubmit, reset, control } = useForm({
+    mode: "onTouched",
+    resolver: zodResolver(activitySchema),
+  });
   const { id } = useParams<string>();
   const { activity, activityLoading } = useActivity(id ?? "");
-  const { addActivity, isLoadingAddActivity } = useCreateActivity();
-  const { updateActivity, isLoadingEditActivity } = useEditActivity();
   const navigate = useNavigate();
-  const isLoading = isLoadingAddActivity || isLoadingEditActivity;
+  useEffect(() => {
+    if (activity)
+      reset({
+        ...activity,
+        location: {
+          city: activity.city,
+          venue: activity.venue,
+          latitude: activity.latitude,
+          longitude: activity.longitude,
+        },
+      });
+  }, [activity, reset]);
+  const onSubmit = (data: ActivitySchema) => {
+    console.log(data);
+  };
+
   if (activityLoading)
     return (
       <Box
@@ -32,22 +53,7 @@ export default function ActivityForm() {
         <CircularProgress />
       </Box>
     );
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formdata = new FormData(e.currentTarget);
-    const data: { [key: string]: FormDataEntryValue } = {};
-    formdata.forEach((value, key) => {
-      data[key] = value;
-    });
-    if (activity) {
-      data.id = activity.id;
-      updateActivity(data as unknown as Activity);
-    } else {
-      addActivity(data as unknown as Activity, {
-        onSuccess: (id: string) => navigate(`/activities/${id}`),
-      });
-    }
-  };
+
   return (
     <Paper sx={{ borderRadius: 3 }}>
       <Box
@@ -55,8 +61,9 @@ export default function ActivityForm() {
         sx={{
           p: 2,
         }}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       >
+        {/**************Form Header********************* */}
         <Typography
           variant="h6"
           gutterBottom
@@ -71,55 +78,34 @@ export default function ActivityForm() {
         >
           {activity ? "Edit Activity" : "Create Activity"}
         </Typography>
+        {/**************Form Header********************* */}
+
         <Box display="flex" flexDirection="column" gap={1}>
-          <TextField
-            id="outlined-basic"
+          <InputText
+            id="title-id"
             label="Title"
-            variant="outlined"
+            control={control}
             name="title"
-            defaultValue={activity?.title ?? ""}
           />
-          <TextField
-            id="outlined-basic"
-            label="Category"
-            variant="outlined"
-            name="category"
-            defaultValue={activity?.category}
-          />
-          <TextField
-            id="outlined-basic"
-            label="City"
-            variant="outlined"
-            name="city"
-            defaultValue={activity?.city}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Venue"
-            variant="outlined"
-            name="venue"
-            defaultValue={activity?.venue}
-          />
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            name="date"
-            type="date"
-            defaultValue={
-              activity?.date
-                ? new Date(activity.date).toISOString().split("T")[0]
-                : new Date().toISOString().split("T")[0]
-            }
-          />
-          <TextField
-            id="outlined-basic"
+          <Box display={"flex"} gap={3} alignItems={"center"}>
+            <SelectInput
+              id="category-id"
+              items={categories}
+              name="category"
+              control={control}
+              label={"Category"}
+            />
+            <DateTimeInput label="Date" control={control} name="date" />
+          </Box>
+          <InputText
+            id="description-id"
             label="Description"
+            control={control}
             name="description"
             multiline
-            rows={4}
-            variant="outlined"
-            defaultValue={activity?.description}
+            rows={3}
           />
+          <LocationInput label="Location" name="location" control={control} />
         </Box>
         <Box
           sx={{ mt: 2, display: "flex", gap: 1, justifyContent: "flex-end" }}
@@ -139,7 +125,6 @@ export default function ActivityForm() {
             color="success"
             size="medium"
             type="submit"
-            loading={isLoading}
           >
             Save
           </Button>
