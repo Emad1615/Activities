@@ -44,6 +44,12 @@ builder.Services.AddTransient<ExceptionMiddleware>();
 //for asp.netCore.identity
 builder.Services.AddIdentityApiEndpoints<UserApplication>(opt => { 
     opt.User.RequireUniqueEmail = true;
+    opt.Password.RequiredUniqueChars = 0;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequiredLength = 4;
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
@@ -61,6 +67,7 @@ app.UseCors(option =>
     option.AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyOrigin()
+    .AllowCredentials()
     .WithOrigins(builder.Configuration.GetValue<string>("frontend_url") ?? "http://localhost:3000", builder.Configuration.GetValue<string>("frontend_urls") ?? "https://localhost:3000");
 });
 
