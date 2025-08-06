@@ -8,6 +8,7 @@ import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestErrors";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
+import RequireAuth from "./RequireAuth";
 
 export const routes = createBrowserRouter([
   {
@@ -16,25 +17,31 @@ export const routes = createBrowserRouter([
     errorElement: <div>Page Not Found : 404</div>,
     children: [
       {
+        element:<RequireAuth/>,
+        children:[
+            {
+                    path: "activities",
+                    element: <ActivitiesPage />,
+                  },
+                  {
+                    path: "activities/:id",
+                    element: <ActivityDetailsPage />,
+                  },
+                  {
+                    path: "createActivity",
+                    element: <ActivityForm key={"create"} />,
+                  },
+                  {
+                    path: "manage/:id",
+                    element: <ActivityForm />,
+                  },
+        ]
+      },
+      {
         element: <HomePage />,
         index: true,
       },
-      {
-        path: "activities",
-        element: <ActivitiesPage />,
-      },
-      {
-        path: "activities/:id",
-        element: <ActivityDetailsPage />,
-      },
-      {
-        path: "createActivity",
-        element: <ActivityForm key={"create"} />,
-      },
-      {
-        path: "manage/:id",
-        element: <ActivityForm />,
-      },
+     
         {
         path: "counter",
         element: <Counter />,

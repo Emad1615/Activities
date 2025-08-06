@@ -1,4 +1,4 @@
-import type { LoginSchema } from "../../../features/account/login/loginSchema";
+import type { LoginSchema } from "../../../features/account/login/form/loginSchema";
 import { agent } from "../agent";
 
 export const login = async (cred: LoginSchema) => {
