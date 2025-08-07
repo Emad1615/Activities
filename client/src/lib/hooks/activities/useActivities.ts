@@ -1,17 +1,19 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getActivities } from "../../api/activity";
+import { useQuery } from '@tanstack/react-query';
+import { getActivities } from '../../api/activity';
+import { useUser } from '../account/useUser';
+import { useLocation } from 'react-router';
 
 export const useActivities = () => {
-    const queryClient = useQueryClient();
-
+  const { currentUser } = useUser();
+  const { pathname } = useLocation();
   const {
     data: activities,
     error: activitiesError,
     isLoading: activitiesLoading,
   } = useQuery({
-    queryKey: ["activities"],
+    queryKey: ['activities'],
     queryFn: async () => await getActivities(),
-    enabled:!!queryClient.getQueryData(['user'])
+    enabled: !!currentUser && pathname == '/activities',
   });
   return { activities, activitiesError, activitiesLoading };
 };

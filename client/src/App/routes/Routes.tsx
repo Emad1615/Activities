@@ -1,66 +1,71 @@
-import { createBrowserRouter, Navigate } from "react-router";
-import App from "../layout/App";
-import HomePage from "../../features/home/HomePage";
-import ActivitiesPage from "../../features/activity/dashboard/ActivitiesPage";
-import ActivityDetailsPage from "../../features/activity/details/ActivityDetailsPage";
-import ActivityForm from "../../features/activity/form/ActivityForm";
-import Counter from "../../features/counter/Counter";
-import TestErrors from "../../features/errors/TestErrors";
-import NotFound from "../../features/errors/NotFound";
-import ServerError from "../../features/errors/ServerError";
-import RequireAuth from "./RequireAuth";
+import { createBrowserRouter, Navigate } from 'react-router';
+import App from '../layout/App';
+import HomePage from '../../features/home/HomePage';
+import ActivitiesPage from '../../features/activity/dashboard/ActivitiesPage';
+import ActivityDetailsPage from '../../features/activity/details/ActivityDetailsPage';
+import ActivityForm from '../../features/activity/form/ActivityForm';
+// import Counter from '../../features/counter/Counter';
+// import TestErrors from '../../features/errors/TestErrors';
+import NotFound from '../../features/errors/NotFound';
+import ServerError from '../../features/errors/ServerError';
+import RequireAuth from './RequireAuth';
+import Login from '../../features/account/login/Login';
 
 export const routes = createBrowserRouter([
   {
     element: <App />,
-    path: "/",
+    path: '/',
     errorElement: <div>Page Not Found : 404</div>,
     children: [
       {
-        element:<RequireAuth/>,
-        children:[
-            {
-                    path: "activities",
-                    element: <ActivitiesPage />,
-                  },
-                  {
-                    path: "activities/:id",
-                    element: <ActivityDetailsPage />,
-                  },
-                  {
-                    path: "createActivity",
-                    element: <ActivityForm key={"create"} />,
-                  },
-                  {
-                    path: "manage/:id",
-                    element: <ActivityForm />,
-                  },
-        ]
+        element: <RequireAuth />,
+        children: [
+          {
+            path: 'activities',
+            element: <ActivitiesPage />,
+          },
+          {
+            path: 'activities/:id',
+            element: <ActivityDetailsPage />,
+          },
+          {
+            path: 'createActivity',
+            element: <ActivityForm key={'create'} />,
+          },
+          {
+            path: 'manage/:id',
+            element: <ActivityForm />,
+          },
+        ],
       },
       {
+        path: '/',
         element: <HomePage />,
         index: true,
       },
-     
-        {
-        path: "counter",
-        element: <Counter />,
-      },
-       {
-        path: "errors",
-        element: <TestErrors />,
-      },
       {
-        path: "not-found",
+        path: 'login',
+        element: <Login />,
+      },
+      // {
+      //   path: 'counter',
+      //   element: <Counter />,
+      // },
+      // {
+      //   path: 'errors',
+      //   element: <TestErrors />,
+      // },
+      {
+        path: 'not-found',
         element: <NotFound />,
       },
-       {
-        path: "server-error",
+      {
+        path: 'server-error',
         element: <ServerError />,
       },
       {
-        path: "*",
-        element: <Navigate  replace to={'/not-found'}/>,
+        path: '*',
+        element: <Navigate replace to={'/not-found'} />,
       },
     ],
   },

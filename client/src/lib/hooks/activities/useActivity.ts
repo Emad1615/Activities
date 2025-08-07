@@ -1,16 +1,18 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getActivity } from "../../api/activity";
+import { useQuery } from '@tanstack/react-query';
+import { getActivity } from '../../api/activity';
+import { useUser } from '../account/useUser';
 
 export const useActivity = (id: string) => {
-      const queryClient = useQueryClient();
+  const { currentUser } = useUser();
+
   const {
     data: activity,
     isLoading: activityLoading,
     error: activityError,
   } = useQuery({
-    queryKey: ["activities", id],
+    queryKey: ['activities', id],
     queryFn: async () => await getActivity(id),
-    enabled: !!id || !!queryClient.getQueryData(['user']) ,
+    enabled: !!id && !!currentUser,
   });
   return { activity, activityLoading, activityError };
 };
