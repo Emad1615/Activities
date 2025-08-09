@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginSchema } from './loginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputText from '../../../../App/shared/components/inputs/InputText';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useLogin } from '../../../../lib/hooks/account/useLogin';
 
-export default function Form() {
+export default function LoginForm() {
   const { Login, isPending } = useLogin();
+  const {state}=useLocation();
+  const navigate=useNavigate();
   const {
     control,
     setError,
@@ -23,13 +25,16 @@ export default function Form() {
   });
   const onSubmit = async (data: LoginSchema) => {
     await Login(data, {
+      onSuccess:()=>{
+        navigate(state?.from || '/activities')
+      },
       onError: (errors) => {
         if (Array.isArray(errors)) {
           errors.forEach((error) => {
             if (error.include('email'))
-              setError('email', { message: error.message });
+              setError('email', { message: error });
             else if (error.include('password'))
-              setError('password', { message: error.message });
+              setError('password', { message: error });
           });
         }
       },

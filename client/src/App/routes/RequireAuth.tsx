@@ -1,14 +1,14 @@
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { Typography } from '@mui/material';
-import { useUser } from '../../lib/hooks/account/useUser';
+import { useIsAuthenticated } from '../../lib/hooks/account/useIsAuthenticated';
 
 export default function RequireAuth() {
-  const { currentUser, isLoading } = useUser();
+  const {isAuthenticated,isLoading}=useIsAuthenticated()
   const location = useLocation();
 
   if (isLoading) return <Typography>Loading...</Typography>;
 
-  if (!currentUser) return <Navigate to="/login" state={{ from: location }} />;
+  if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} />;
 
   return <Outlet />;
 }

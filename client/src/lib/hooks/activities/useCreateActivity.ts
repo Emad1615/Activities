@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Activity } from "../../types";
 import { createActivity } from "../../api/activity";
 import { useSnackbar } from "../shared/useSnackbar";
 import { useNavigate } from "react-router";

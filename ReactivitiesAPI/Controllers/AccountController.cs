@@ -15,7 +15,7 @@ namespace API.Controllers
             var user = new UserApplication()
             {
                 DisplayName = registerDTO.DisplayName,
-                UserName=registerDTO.Email,
+                UserName = registerDTO.Email,
                 Email = registerDTO.Email,
             };
             var result = await signInManager.UserManager.CreateAsync(user, registerDTO.Password);
@@ -27,7 +27,6 @@ namespace API.Controllers
             }
             return ValidationProblem();
         }
-        [AllowAnonymous]
         [HttpGet("user-info")]
         public async Task<ActionResult> UserInfo()
         {
@@ -50,6 +49,12 @@ namespace API.Controllers
         {
             await signInManager.SignOutAsync();
             return NoContent();
+        }
+        [AllowAnonymous]
+        [HttpGet("is-authenticated")]
+        public ActionResult<bool> isAuthenticated()
+        {
+            return Ok(User.Identity?.IsAuthenticated);
         }
     }
 }

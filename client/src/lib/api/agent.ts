@@ -5,6 +5,7 @@ import { routes } from '../../App/routes/Routes';
 
 export const agent = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials:true,
 });
 // const sleep = (delay: number) => {
 //   return new Promise((resolve) => {
@@ -37,7 +38,11 @@ agent.interceptors.response.use(
         } else toast.error(data.title ?? statusText);
         break;
       case 401: // Unauthorized
-        toast.error(data.title ?? statusText);
+         if (data.detail === 'NotAllowed') {
+                throw new Error(data.detail)
+            } else {
+                 toast.error('Unauthorized');
+            }
         break;
       case 404: // Not Found
         routes.navigate('/not-found');

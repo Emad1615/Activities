@@ -2,9 +2,12 @@ import { Box, Container, CssBaseline } from "@mui/material";
 import NavBar from "./NavBar";
 import { Outlet } from "react-router";
 import { SnackbarProvider } from "../../lib/context/snackbar";
+import { Suspense } from "react";
+import Loader from "../shared/components/Loader";
 
 function App() {
   return (
+  <Suspense fallback={<Loader/>}>
     <SnackbarProvider>
       <Box
         sx={{
@@ -20,6 +23,8 @@ function App() {
         </Container>
       </Box>
     </SnackbarProvider>
+   </Suspense>
+    
   );
 }
 

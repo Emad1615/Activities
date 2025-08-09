@@ -47,7 +47,7 @@
 };
 
 type User={
-  DisplayName:string
+  displayName:string
   Email:string
   ImageUrl?:string
   Bio?:string,

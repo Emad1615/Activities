@@ -1,4 +1,4 @@
-using API.Middleware;
+﻿using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -16,7 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(options => {
+builder.Services.AddControllers(options =>
+{
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
@@ -42,7 +43,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
 
 //for asp.netCore.identity
-builder.Services.AddIdentityApiEndpoints<UserApplication>(opt => { 
+builder.Services.AddIdentityApiEndpoints<UserApplication>(opt =>
+{
     opt.User.RequireUniqueEmail = true;
     opt.Password.RequiredUniqueChars = 0;
     opt.Password.RequireNonAlphanumeric = false;
@@ -51,7 +53,13 @@ builder.Services.AddIdentityApiEndpoints<UserApplication>(opt => {
     opt.Password.RequireUppercase = false;
     opt.Password.RequiredLength = 4;
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.Cookie.SameSite = SameSiteMode.None;
+    option.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    option.ExpireTimeSpan = TimeSpan.FromDays(7); //يحدد مدة صلاحية الكوكي
+    option.SlidingExpiration=true; //  يجدد مدة الكوكي لو المستخدم نشط
+});
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -64,11 +72,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(option =>
 {
-    option.AllowAnyHeader()
+    option
+    .WithOrigins(builder.Configuration.GetValue<string>("frontend_url") ?? "http://localhost:3000", builder.Configuration.GetValue<string>("frontend_urls") ?? "https://localhost:3000")
+    .AllowAnyHeader()
     .AllowAnyMethod()
-    .AllowAnyOrigin()
-    .AllowCredentials()
-    .WithOrigins(builder.Configuration.GetValue<string>("frontend_url") ?? "http://localhost:3000", builder.Configuration.GetValue<string>("frontend_urls") ?? "https://localhost:3000");
+    .AllowCredentials();
 });
 
 app.UseAuthentication();

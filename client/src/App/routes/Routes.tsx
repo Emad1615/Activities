@@ -1,21 +1,22 @@
+import { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router';
-import App from '../layout/App';
-import HomePage from '../../features/home/HomePage';
-import ActivitiesPage from '../../features/activity/dashboard/ActivitiesPage';
-import ActivityDetailsPage from '../../features/activity/details/ActivityDetailsPage';
-import ActivityForm from '../../features/activity/form/ActivityForm';
-// import Counter from '../../features/counter/Counter';
-// import TestErrors from '../../features/errors/TestErrors';
-import NotFound from '../../features/errors/NotFound';
-import ServerError from '../../features/errors/ServerError';
-import RequireAuth from './RequireAuth';
-import Login from '../../features/account/login/Login';
+const App=lazy(()=> import('../layout/App'))
+const HomePage=lazy(()=> import('../../features/home/HomePage'))
+const ActivitiesPage=lazy(()=> import('../../features/activity/dashboard/ActivitiesPage'))
+const ActivityDetailsPage=lazy(()=> import('../../features/activity/details/ActivityDetailsPage'))
+const ActivityForm=lazy(()=> import('../../features/activity/form/ActivityForm'))
+const NotFound=lazy(()=> import('../../features/errors/NotFound'))
+const ServerError=lazy(()=> import('../../features/errors/ServerError'))
+const RequireAuth=lazy(()=> import('./RequireAuth'))
+
+const Login=lazy(()=> import('../../features/account/login/Login'))
+const Register=lazy(()=> import('../../features/account/register/Register'))
+
 
 export const routes = createBrowserRouter([
   {
     element: <App />,
     path: '/',
-    errorElement: <div>Page Not Found : 404</div>,
     children: [
       {
         element: <RequireAuth />,
@@ -47,14 +48,10 @@ export const routes = createBrowserRouter([
         path: 'login',
         element: <Login />,
       },
-      // {
-      //   path: 'counter',
-      //   element: <Counter />,
-      // },
-      // {
-      //   path: 'errors',
-      //   element: <TestErrors />,
-      // },
+      {
+        path: 'register',
+        element: <Register />,
+      },
       {
         path: 'not-found',
         element: <NotFound />,

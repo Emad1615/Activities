@@ -16,13 +16,13 @@ namespace Persistence
             {
 
                 var users = new List<UserApplication> {
-                    new UserApplication{ DisplayName="Emad",UserName="emad@gamil.com",Email="emad@gamil.com" ,Bio="Software developer ,Programming, fullstack developer, react developer , backend developer", BirthDate=new DateTime(1995,10,18)},
-                    new UserApplication{ DisplayName="Farida",UserName="farida@gamil.com",Email="farida@gamil.com",Bio="baby home ", BirthDate=new DateTime(2023,03,28)},
-                    new UserApplication{ DisplayName="Dalida",UserName="dalida@gamil.com",Email="dalida@gamil.com",Bio="baby home (comming soon in shaAllah) ", BirthDate=new DateTime(2023,03,28)},
+                    new UserApplication{ DisplayName="Emad",UserName="emad@gmail.com",Email="emad@gamil.com" ,Bio="Software developer ,Programming, fullstack developer, react developer , backend developer", BirthDate=new DateTime(1995,10,18)},
+                    new UserApplication{ DisplayName="Farida",UserName="farida@gmail.com",Email="farida@gamil.com",Bio="baby home ", BirthDate=new DateTime(2023,03,28)},
+                    new UserApplication{ DisplayName="Dalida",UserName="dalida@gmail.com",Email="dalida@gamil.com",Bio="baby home (comming soon in shaAllah) ", BirthDate=new DateTime(2023,03,28)},
                 };
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "P@$$w0rd");
+                    await userManager.CreateAsync(user, "123456");
                 }
             }
             if (context.Activities.Any()) return;

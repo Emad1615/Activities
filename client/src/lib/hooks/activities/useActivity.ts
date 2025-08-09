@@ -3,7 +3,7 @@ import { getActivity } from '../../api/activity';
 import { useUser } from '../account/useUser';
 
 export const useActivity = (id: string) => {
-  const { currentUser } = useUser();
+   const { currentUser } = useUser();
 
   const {
     data: activity,
@@ -12,7 +12,7 @@ export const useActivity = (id: string) => {
   } = useQuery({
     queryKey: ['activities', id],
     queryFn: async () => await getActivity(id),
-    enabled: !!id && !!currentUser,
+     enabled: !!id && !!currentUser,
   });
   return { activity, activityLoading, activityError };
 };

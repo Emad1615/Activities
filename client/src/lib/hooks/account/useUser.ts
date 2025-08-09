@@ -1,11 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCurrentUser } from '../../api/account';
-import { useLocation } from 'react-router';
-import { isAllowAnonymousPage, isEnabled } from '../../utils/helper';
+import { useIsAuthenticated } from './useIsAuthenticated';
 
 export const useUser = () => {
   const queryClient = useQueryClient();
-  const { pathname } = useLocation();
+  const {isAuthenticated}=useIsAuthenticated();
   const {
     data: currentUser,
     isLoading,
@@ -13,10 +12,7 @@ export const useUser = () => {
   } = useQuery({
     queryKey: ['user'],
     queryFn: async () => await getCurrentUser(),
-    enabled:
-      !queryClient.getQueryData(['user']) &&
-      isAllowAnonymousPage(pathname) &&
-      isEnabled(pathname, !!queryClient.getQueryData(['user'])),
+    enabled: !queryClient.getQueryData(['user']) && !!isAuthenticated
   });
   return { currentUser, isLoading, error };
 };

@@ -1,4 +1,3 @@
-import type { Activity } from "../../types";
 import { agent } from "../agent";
 
 export async function getActivities() {

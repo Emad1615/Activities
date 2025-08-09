@@ -12,8 +12,14 @@ export const useLogout = () => {
   } = useMutation({
     mutationFn: async () => await logout(),
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey:['isAuthenticated']
+      })
      await queryClient.removeQueries({
-        queryKey: ["user",'activities'],
+        queryKey: ["user"],
+      });
+       await queryClient.removeQueries({
+        queryKey: ["activities"],
       });
       navigate('/')
     },

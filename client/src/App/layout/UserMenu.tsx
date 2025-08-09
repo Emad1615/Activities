@@ -2,10 +2,19 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { Avatar, Divider, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material';
+import { ChangeCircle, Event, List, Logout as LogoutIcon, Person } from '@mui/icons-material';
+import { Link } from 'react-router';
+import { useLogout } from '../../lib/hooks/account/useLogout';
 
-export default function UserMenu() {
+type Props={
+  DisplayName:string
+  ImageUrl:string
+}
+export default function UserMenu({DisplayName,ImageUrl}:Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const {Logout,isPending}=useLogout();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -15,20 +24,43 @@ export default function UserMenu() {
 
   return (
     <div>
-      <Button onClick={handleClick}>Dashboard</Button>
+      <Button onClick={handleClick} color='inherit' >
+        <MenuItem>
+          <ListItemAvatar>
+            <Avatar src={ImageUrl} alt={DisplayName} />
+          </ListItemAvatar>
+          <ListItemText primary={DisplayName} />
+        </MenuItem>
+      </Button>
       <Menu
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        slotProps={{
-          list: {
-            'aria-labelledby': 'basic-button',
-          },
-        }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+       <MenuItem onClick={handleClose}>
+          <ListItemIcon><Person/></ListItemIcon>
+          <ListItemText>Profile</ListItemText>
+        </MenuItem>
+       <MenuItem component={Link}  to="/createActivity" onClick={handleClose}>
+          <ListItemIcon><Event/></ListItemIcon>
+          <ListItemText>Create activity</ListItemText>
+        </MenuItem>
+        <MenuItem  onClick={handleClose}>
+          <ListItemIcon><List/></ListItemIcon>
+          <ListItemText>Activities management</ListItemText>
+        </MenuItem>
+        <Divider/>
+        <MenuItem onClick={handleClose}>
+          <ListItemIcon><ChangeCircle/></ListItemIcon>
+          <ListItemText>Change password</ListItemText>
+        </MenuItem>
+        <MenuItem disabled={isPending} onClick={async()=>{
+            await Logout()
+            handleClose();
+        }}>
+          <ListItemIcon><LogoutIcon/></ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </MenuItem>
       </Menu>
     </div>
   );

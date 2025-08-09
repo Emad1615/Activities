@@ -15,7 +15,7 @@ import UserMenu from './UserMenu';
 
 export default function NavBar() {
   const { uiStore } = useStore();
-  const { currentUser, isLoading } = useUser();
+   const { currentUser, isLoading } = useUser();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -38,9 +38,7 @@ export default function NavBar() {
               <Logo />
             </Box>
             <Box sx={{ display: 'flex' }}>
-              {/* <MenuItemLink to="/createActivity">create activity</MenuItemLink> */}
-              {/* <MenuItemLink to="/counter">Counter by Mobx</MenuItemLink> */}
-              {/* <MenuItemLink to="/errors">Errors</MenuItemLink> */}
+              <MenuItemLink to="/activities">Activities</MenuItemLink>
               {isLoading && (
                 <MenuItem
                   sx={{
@@ -54,8 +52,7 @@ export default function NavBar() {
               )}
               {currentUser ? (
                 <>
-                  <MenuItemLink to="/activities">Activities</MenuItemLink>
-                  <UserMenu />
+                  <UserMenu DisplayName={currentUser.displayName} ImageUrl={currentUser.ImageUrl!}/>
                 </>
               ) : (
                 <>
