@@ -12,5 +12,6 @@
         public string Venue { get; set; } = string.Empty;
         public int longitude { get; set; }
         public int latitude { get; set; }
+        public ICollection<ActivityAttendee> attendees { get; set; } = [];
     }
 }

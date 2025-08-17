@@ -13,5 +13,6 @@ namespace Domain
         public string? Bio { get; set; } = string.Empty;
         public string? ImageUrl { get; set; } = string.Empty;
         public DateTime? BirthDate { get; set; } = null;
+        public ICollection<ActivityAttendee> Activities { get; set; } = [];
     }
 }
