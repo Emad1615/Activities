@@ -9,7 +9,13 @@ type Activity = {
   venue: string;
   longitude?: number;
   latitude?: number;
+  IsGoing?: boolean;
+  IsHost?: boolean;
+  hostDisplayName?: string;
+  hostUserId?: string;
+  attendees?: User[];
 };
+
 type Category = {
   value: string;
   text: string;
@@ -47,12 +53,14 @@ type LocationIQAddress = {
 };
 
 type User = {
+  id: string;
   displayName: string;
-  Email: string;
-  ImageUrl?: string;
-  Bio?: string;
-  BirthDate?: Date;
-  PhoneNumber: string;
+  email: string;
+  imageUrl?: string;
+  bio?: string;
+  birthDate?: Date;
+  phoneNumber: string;
+  gender?: boolean;
 };
 
 type Result<T> = {

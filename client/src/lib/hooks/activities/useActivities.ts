@@ -4,7 +4,7 @@ import { useUser } from '../account/useUser';
 import { useLocation } from 'react-router';
 
 export const useActivities = () => {
-   const { currentUser } = useUser();
+  const { currentUser } = useUser();
   const { pathname } = useLocation();
   const {
     data: activities,
@@ -13,7 +13,16 @@ export const useActivities = () => {
   } = useQuery({
     queryKey: ['activities'],
     queryFn: async () => await getActivities(),
-     enabled: !!currentUser && pathname == '/activities',
+    enabled: !!currentUser && pathname == '/activities',
+    select: (data) => {
+      return data.value.map((activity) => {
+        return {
+          ...activity,
+          IsGoing: activity.attendees?.some((x) => x.ID == currentUser?.ID),
+          IsHost: activity.hostUserId == currentUser?.ID,
+        };
+      });
+    },
   });
   return { activities, activitiesError, activitiesLoading };
 };
