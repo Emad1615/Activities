@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Security
 {
     public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext db) : IUserAccessor
     {

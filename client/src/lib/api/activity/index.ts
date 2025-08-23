@@ -1,8 +1,8 @@
-import { agent } from "../agent";
+import { agent } from '../agent';
 
 export async function getActivities() {
   return agent
-    .get<Activity[]>("/Activities/GetActivities")
+    .get<Result<Activity[]>>('/Activities/GetActivities')
     .then((response) => response.data);
 }
 export async function getActivity(id: string) {
@@ -12,7 +12,7 @@ export async function getActivity(id: string) {
 }
 export async function createActivity(activity: Activity) {
   return agent
-    .post<string>("/Activities/CreateActivity", activity)
+    .post<string>('/Activities/CreateActivity', activity)
     .then((response) => response.data);
 }
 export async function editActivity(activity: Activity) {

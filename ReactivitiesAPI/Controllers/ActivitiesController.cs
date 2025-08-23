@@ -1,6 +1,7 @@
 ﻿using Application.Activities.Commands;
 using Application.Activities.DTOs;
 using Application.Activities.Queries;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,12 @@ namespace API.Controllers
     {
 
         [HttpGet("GetActivities")]
-        public async Task<ActionResult<List<Activity>>> GetActivities(CancellationToken ct)
+        public async Task<ActionResult<Result<List<ActivityDTO>>>> GetActivities(CancellationToken ct)
         {
             return await Mediator.Send(new GetActivitiesList.Query(), ct);
         }
         [HttpGet("GetActivity")]
-        public async Task<ActionResult<Activity>> GetActivity(string id)
+        public async Task<ActionResult<ActivityDTO>> GetActivity(string id)
         {
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query() { Id = id }));
         }
@@ -30,17 +31,24 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new CreateActivity.Command() { ActivityDTO = activityDTO }));
         }
-        [HttpPut("EditActivity")]
-        public async Task<ActionResult> EditActivity(EditActivityDTO activityDTO)
+        [Authorize(policy: "IsHost")]
+        [HttpPut("EditActivity/{id}")]
+        public async Task<ActionResult> EditActivity(string id, EditActivityDTO activityDTO)
         {
             return HandleResult(await Mediator.Send(new EditAcivity.Command() { ActivityDTO = activityDTO }));
         }
-        [HttpDelete("DeleteActivity")]
+        [Authorize(policy: "IsHost")]
+        [HttpDelete("DeleteActivity/{id}")]
         public async Task<ActionResult> DeleteActivity(string id)
         {
             return HandleResult(await Mediator.Send(new DeleteActivity.Command() { Id = id }));
 
         }
+        [HttpPut("{id}/attend")]
+        public async Task<ActionResult> UpdateAttendee(string id, CancellationToken cancellation)
+        {
+            return HandleResult(await Mediator.Send(new UpdateActivityAttendees.Command() { Id = id }, cancellation));
+        }   
 
     }
 }

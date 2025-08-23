@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,23 +28,38 @@ namespace Persistence
             }
             if (context.Activities.Any()) return;
 
+            var _userList = await context.Users.ToListAsync();
             List<Activity> activities = new List<Activity> {
                 new Activity {
-                    Title = "Past Activity 1",
+                    Title = "World wise activity",
                     Date = DateTime.Now.AddMonths(-2),
-                    Description = "Activity 2 months ago",
-                    Category = "drinks",
+                    Description = "let's discover the open world ",
+                    Category = "travel",
                     City = "London",
                     Venue = "Pub",
+                    latitude= 48.8566,
+                    longitude= 2.3522,
+                    attendees=[
+                            new (){ UserId=_userList[0].Id ,IsHost=true},
+                            new (){ UserId=_userList[1].Id ,IsHost=false},
+                            new (){ UserId=_userList[2].Id ,IsHost=false},
+                        ]
                     },
                  new Activity
                 {
-                    Title = "Past Activity 2",
+                    Title = "Holla at me",
                     Date = DateTime.Now.AddMonths(-1),
                     Description = "Activity 1 month ago",
-                    Category = "culture",
+                    Category = "drink",
                     City = "Paris",
                     Venue = "Louvre",
+                    latitude= 51.5074,
+                    longitude= -0.1278,
+                      attendees=[
+                            new (){ UserId=_userList[0].Id ,IsHost=false},
+                            new (){ UserId=_userList[1].Id ,IsHost=true},
+                            new (){ UserId=_userList[2].Id ,IsHost=false},
+                        ]
                 },
                 new Activity
                 {
@@ -53,71 +69,14 @@ namespace Persistence
                     Category = "culture",
                     City = "London",
                     Venue = "Natural History Museum",
+                    latitude= 52.3676,
+                    longitude= 4.9041,
+                      attendees=[
+                            new (){ UserId=_userList[0].Id ,IsHost=false},
+                            new (){ UserId=_userList[1].Id ,IsHost=false},
+                            new (){ UserId=_userList[2].Id ,IsHost=true},
+                        ]
                 },
-                new Activity
-                {
-                    Title = "Future Activity 2",
-                    Date = DateTime.Now.AddMonths(2),
-                    Description = "Activity 2 months in future",
-                    Category = "music",
-                    City = "London",
-                    Venue = "O2 Arena",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 3",
-                    Date = DateTime.Now.AddMonths(3),
-                    Description = "Activity 3 months in future",
-                    Category = "drinks",
-                    City = "London",
-                    Venue = "Another pub",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 4",
-                    Date = DateTime.Now.AddMonths(4),
-                    Description = "Activity 4 months in future",
-                    Category = "drinks",
-                    City = "London",
-                    Venue = "Yet another pub",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 5",
-                    Date = DateTime.Now.AddMonths(5),
-                    Description = "Activity 5 months in future",
-                    Category = "drinks",
-                    City = "London",
-                    Venue = "Just another pub",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 6",
-                    Date = DateTime.Now.AddMonths(6),
-                    Description = "Activity 6 months in future",
-                    Category = "music",
-                    City = "London",
-                    Venue = "Roundhouse Camden",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 7",
-                    Date = DateTime.Now.AddMonths(7),
-                    Description = "Activity 2 months ago",
-                    Category = "travel",
-                    City = "London",
-                    Venue = "Somewhere on the Thames",
-                },
-                new Activity
-                {
-                    Title = "Future Activity 8",
-                    Date = DateTime.Now.AddMonths(8),
-                    Description = "Activity 8 months in future",
-                    Category = "film",
-                    City = "London",
-                    Venue = "Cinema",
-                }
-
             };
             await context.AddRangeAsync(activities);
             await context.SaveChangesAsync();

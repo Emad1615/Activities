@@ -1,4 +1,4 @@
- type Activity = {
+type Activity = {
   id: string;
   title: string;
   category: string;
@@ -10,12 +10,12 @@
   longitude?: number;
   latitude?: number;
 };
- type Category = {
+type Category = {
   value: string;
   text: string;
 };
 
- type LocationIQSuggestions = {
+type LocationIQSuggestions = {
   place_id: string;
   osm_id: string;
   osm_type: string;
@@ -31,7 +31,7 @@
   address: LocationIQAddress;
 };
 
- type LocationIQAddress = {
+type LocationIQAddress = {
   name: string;
   road?: string;
   neighbourhood?: string;
@@ -46,11 +46,18 @@
   country_code: string;
 };
 
-type User={
-  displayName:string
-  Email:string
-  ImageUrl?:string
-  Bio?:string,
-  BirthDate?:Date
-  PhoneNumber:string
-}
+type User = {
+  displayName: string;
+  Email: string;
+  ImageUrl?: string;
+  Bio?: string;
+  BirthDate?: Date;
+  PhoneNumber: string;
+};
+
+type Result<T> = {
+  value: T;
+  error: string | null;
+  isSuccess: boolean;
+  status: number;
+};

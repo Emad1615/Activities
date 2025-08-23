@@ -1,4 +1,8 @@
-﻿using Domain;
+﻿using Application.Activities.DTOs;
+using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,10 +17,10 @@ namespace Application.Activities.Queries
 {
     public class GetActivitiesList
     {
-        public class Query : IRequest<List<Activity>> { }
-        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger) : IRequestHandler<Query, List<Activity>>
+        public class Query : IRequest<Result<List<ActivityDTO>>> { }
+        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper) : IRequestHandler<Query, Result<List<ActivityDTO>>>
         {
-            public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<ActivityDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 #region CancellationToken Purpose
                 // this section of code for cancellation op process when end user cancel the request  aim of CancellationToken
@@ -34,7 +38,16 @@ namespace Application.Activities.Queries
                 //    logger.LogInformation($"{ex.Message}");
                 //}
                 #endregion
-                return await context.Activities.AsNoTracking().OrderByDescending(z=>z.Date).ToListAsync(cancellationToken);
+
+                var activities = await context.Activities
+                    .AsNoTracking()
+                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                if (activities.Count() == 0 || activities is null)
+                {
+                    logger.LogInformation("No Activities in Database");
+                    return Result<List<ActivityDTO>>.Failure("No Activities in Database", 404);
+                }
+                return Result<List<ActivityDTO>>.Success(activities);
             }
         }
     }

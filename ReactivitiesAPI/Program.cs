@@ -5,13 +5,12 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
-using Infrastructure;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,8 +62,17 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.Cookie.SameSite = SameSiteMode.None;
     option.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     option.ExpireTimeSpan = TimeSpan.FromDays(7); //يحدد مدة صلاحية الكوكي
-    option.SlidingExpiration=true; //  يجدد مدة الكوكي لو المستخدم نشط
+    option.SlidingExpiration = true; //  يجدد مدة الكوكي لو المستخدم نشط
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsHost", policy =>
+    {
+        policy.Requirements.Add(new IsHostRequirement());
+    });
+});
+builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();

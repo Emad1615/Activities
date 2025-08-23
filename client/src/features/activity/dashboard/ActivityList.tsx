@@ -16,7 +16,7 @@ export default function ActivityList() {
         <CircularProgress />
       </Box>
     );
-  if (activities?.length===0) {
+  if (activities?.value.length===0) {
     return (
         <Typography color="text.secondary" variant="body2" textAlign={"center"}>
           There are no activities to display at the moment...
@@ -25,7 +25,7 @@ export default function ActivityList() {
   }
   return (
     <Box>
-      {activities?.map((activity, idx: number) => (
+      {activities?.value.map((activity, idx: number) => (
         <ActivityCard key={idx} activity={activity} />
       ))}
     </Box>
