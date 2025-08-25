@@ -9,60 +9,73 @@ import {
   ListItemText,
   Paper,
   Typography,
-} from "@mui/material";
-import Map from "../../../App/shared/components/Map";
-import type { Activity } from "../../../lib/types";
+} from '@mui/material';
+import Map from '../../../App/shared/components/Map';
 type Props = {
   activity: Activity;
 };
 export default function ActivitySidebar({ activity }: Props) {
-  const isHost = true;
   const following = true;
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={3}>
+    <Box display={'flex'} flexDirection={'column'} gap={3}>
       <Paper>
         <Typography
           sx={{
             p: 1,
-            bgcolor: "primary.main",
-            textAlign: "center",
-            color: "white",
-            fontWeight: "400",
+            bgcolor: 'primary.main',
+            textAlign: 'center',
+            color: 'white',
+            fontWeight: '400',
           }}
           variant="body1"
           color="inherit"
-          children={"3 people is going"}
+          children={`${activity.attendees?.length} people is going`}
         />
-        <Box sx={{ maxHeight: 280, overflowY: "auto" }}>
-          {Array.from({ length: 3 }, (_, idx) => idx + 1).map((_,index) => (
-            <Grid key={index} container spacing={1} alignItems={"center"}>
+        <Box sx={{ maxHeight: 280, overflowY: 'auto' }}>
+          {activity.attendees?.map((att, index) => (
+            <Grid
+              key={index}
+              container
+              spacing={1}
+              alignItems={'center'}
+              sx={{
+                borderBottomColor: (theme) => theme.palette.divider,
+                borderBottomStyle: 'solid',
+                borderBottomWidth: '1px',
+              }}
+            >
               <Grid size={9}>
                 <List>
                   <ListItem>
                     <ListItemAvatar>
                       <Avatar
-                        alt="bob"
+                        variant="rounded"
+                        alt={att.displayName + ' Image'}
+                        src={att.imageUrl}
                         sx={{
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
+                          mr: 2,
                         }}
                       />
                     </ListItemAvatar>
                     <ListItemText
                       sx={{
-                        fontWeight: "500",
+                        fontWeight: '500',
                       }}
                       color="inherit"
-                      primary={"Emad Ismail Mohammed"}
-                      secondary={isHost ? "Hosting" : "Going"}
+                      primary={att.displayName}
+                      secondary={
+                        activity.hostUserId == att.id ? ' Hosting' : 'Member'
+                      }
                       slotProps={{
                         primary: {
-                          fontSize: ".8rem",
-                          fontWeight: "bold",
+                          fontSize: '1rem',
+                          fontWeight: '500',
                         },
                         secondary: {
-                          color: "text.secondary",
-                          fontSize: ".7rem",
+                          color: 'text.secondary',
+                          fontSize: '.7rem',
                         },
                       }}
                     />
@@ -75,7 +88,7 @@ export default function ActivitySidebar({ activity }: Props) {
                     label="Following"
                     variant="outlined"
                     size="small"
-                    sx={{ fontSize: ".8rem" }}
+                    sx={{ fontSize: '.8rem' }}
                     color="warning"
                   />
                 )}
@@ -84,8 +97,11 @@ export default function ActivitySidebar({ activity }: Props) {
           ))}
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ position: "relative" }}>
-        <Map position={[activity.latitude!, activity.longitude!]}  venue={activity.venue}/>
+      <Paper elevation={3} sx={{ position: 'relative' }}>
+        <Map
+          position={[activity.latitude!, activity.longitude!]}
+          venue={activity.venue}
+        />
       </Paper>
     </Box>
   );

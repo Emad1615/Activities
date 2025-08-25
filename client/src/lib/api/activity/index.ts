@@ -25,3 +25,8 @@ export async function deleteActivity(id: string) {
     .delete<void>(`/Activities/DeleteActivity?id=${id}`)
     .then((response) => response.data);
 }
+export async function UpdateAttendance(id: string) {
+  return await agent
+    .put<void>(`/Activities/${id}/attend`)
+    .then((response) => response.data);
+}
