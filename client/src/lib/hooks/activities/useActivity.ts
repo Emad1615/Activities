@@ -14,8 +14,6 @@ export const useActivity = (id: string) => {
     queryFn: async () => await getActivity(id),
     enabled: !!id && !!currentUser,
     select: (data) => {
-      console.log('Use Activity Hook data is:' + data.hostUserId);
-      console.log('current User Hook data is:' + currentUser?.id);
       return {
         ...data,
         IsGoing: data.attendees?.some((x) => x.id == currentUser?.id),

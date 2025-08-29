@@ -15,6 +15,7 @@ namespace Application.Profiles.DTOS
         public string? ImageUrl { get; set; } = string.Empty;
         public bool Gender { get; set; }
         public DateTime? BirthDate { get; set; } = null;
+        public bool IsHost { get; set; }
 
     }
 }

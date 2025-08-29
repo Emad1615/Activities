@@ -15,5 +15,6 @@ namespace Domain
         public DateTime? BirthDate { get; set; } = null;
         public bool Gender { get; set; } = true; // 1 for male , 0 for female
         public ICollection<ActivityAttendee> Activities { get; set; } = [];
+        public ICollection<Photo> Photo { get; set; } = [];
     }
 }

@@ -35,6 +35,7 @@ namespace API.Controllers
             if (user == null) return NoContent();
             return Ok(new UserApplication
             {
+                Id=user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email,
                 ImageUrl = user.ImageUrl,

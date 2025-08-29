@@ -21,7 +21,9 @@ namespace Application.Core
                 .ForMember(d => d.Bio, o => o.MapFrom(x => x.User.Bio))
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(x => x.User.ImageUrl))
                 .ForMember(d => d.Gender, o => o.MapFrom(x => x.User.Gender))
-                .ForMember(d => d.BirthDate, o => o.MapFrom(x => x.User.BirthDate));
+                .ForMember(d => d.BirthDate, o => o.MapFrom(x => x.User.BirthDate))
+                .ForMember(d => d.IsHost, o => o.MapFrom(x => x.IsHost));
+            CreateMap<UserApplication, UserProfile>().ReverseMap();
         }
     }
 }

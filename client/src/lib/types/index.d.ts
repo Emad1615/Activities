@@ -61,6 +61,7 @@ type User = {
   birthDate?: Date;
   phoneNumber: string;
   gender?: boolean;
+  isHost: boolean;
 };
 
 type Result<T> = {

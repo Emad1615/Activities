@@ -9,6 +9,7 @@ import {
 import { fnFormat } from '../../../lib/utils/helper';
 import { Link } from 'react-router';
 import useUpdateAttendance from '../../../lib/hooks/activities/useUpdateAttendance';
+import { StyledButton } from '../../../App/shared/components/StyledButton';
 type Props = {
   activity: Activity;
 };
@@ -85,9 +86,7 @@ export default function ActivityHeader({ activity }: Props) {
                     component={Link}
                     to={`/profiles/${activity.hostUserId}`}
                     sx={{ color: 'white' }}
-                  >
-                    Bob
-                  </Box>
+                  ></Box>
                 </>
               }
             />
@@ -100,7 +99,7 @@ export default function ActivityHeader({ activity }: Props) {
           >
             {activity.IsHost ? (
               <>
-                <Button
+                <StyledButton
                   onClick={() => attendanceAction()}
                   variant="contained"
                   color={`${activity.isCancelled ? 'secondary' : 'error'}`}
@@ -109,8 +108,8 @@ export default function ActivityHeader({ activity }: Props) {
                   disabled={isPending}
                 >
                   {activity.isCancelled ? 'reactivate event' : 'Cancel event'}
-                </Button>
-                <Button
+                </StyledButton>
+                <StyledButton
                   component={Link}
                   to={`/manage/${activity.id}`}
                   variant="contained"
@@ -119,11 +118,11 @@ export default function ActivityHeader({ activity }: Props) {
                   sx={{ textTransform: 'uppercase', fontSize: '12px' }}
                 >
                   Manage event
-                </Button>
+                </StyledButton>
               </>
             ) : (
               <>
-                <Button
+                <StyledButton
                   variant="contained"
                   color={`${activity.IsGoing ? 'warning' : 'info'}`}
                   size="small"
@@ -132,7 +131,7 @@ export default function ActivityHeader({ activity }: Props) {
                   disabled={isPending || activity.isCancelled}
                 >
                   {activity.IsGoing ? 'Cancel Attendance' : 'Join Activity'}
-                </Button>
+                </StyledButton>
               </>
             )}
           </Box>
