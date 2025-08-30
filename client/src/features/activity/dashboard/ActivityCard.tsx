@@ -31,13 +31,19 @@ export default function ActivityCard({ activity }: Props) {
     <Card elevation={3} sx={{ borderRadius: 3, my: 1 }}>
       <Box display="flex" justifyContent={'space-between'}>
         <CardHeader
-          avatar={<Avatar sx={{ width: 50, height: 50 }} />}
+          avatar={
+            <Avatar
+              sx={{ width: 50, height: 50 }}
+              src={activity.hostImageUrl}
+              alt={`${activity.hostDisplayName} avatar`}
+            />
+          }
           title={activity.title}
           subheader={
             <>
               Hosted by{' '}
               <Link
-                to={`/profiles/${activity.hostUserId}`}
+                to={`/profile/${activity.hostUserId}`}
                 style={{ textDecoration: 'none' }}
               >
                 {activity.hostDisplayName}

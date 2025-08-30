@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import { Avatar } from '@mui/material';
-import ProfileCard from '../../../features/profile/ProfileCard';
+import ProfileCard from '../../../features/profile/section/ProfileCard';
 
 type Props = {
   profile: User;

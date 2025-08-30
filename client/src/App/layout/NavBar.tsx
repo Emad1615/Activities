@@ -15,7 +15,7 @@ import UserMenu from './UserMenu';
 
 export default function NavBar() {
   const { uiStore } = useStore();
-   const { currentUser, isLoading } = useUser();
+  const { currentUser, isLoading } = useUser();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -52,7 +52,11 @@ export default function NavBar() {
               )}
               {currentUser ? (
                 <>
-                  <UserMenu DisplayName={currentUser.displayName} ImageUrl={currentUser.ImageUrl!}/>
+                  <UserMenu
+                    DisplayName={currentUser.displayName}
+                    ImageUrl={currentUser.imageUrl!}
+                    UserId={currentUser.id}
+                  />
                 </>
               ) : (
                 <>

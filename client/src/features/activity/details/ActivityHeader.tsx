@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import { fnFormat } from '../../../lib/utils/helper';
 import { Link } from 'react-router';
 import useUpdateAttendance from '../../../lib/hooks/activities/useUpdateAttendance';
@@ -81,12 +74,18 @@ export default function ActivityHeader({ activity }: Props) {
               variant="caption"
               children={
                 <>
-                  Hosted by {activity.hostDisplayName}
+                  Hosted by
                   <Box
                     component={Link}
-                    to={`/profiles/${activity.hostUserId}`}
-                    sx={{ color: 'white' }}
-                  ></Box>
+                    to={`/profile/${activity.hostUserId}`}
+                    sx={{
+                      color: 'primary.main',
+                      textDecoration: 'underline',
+                      ml: 0.5,
+                    }}
+                  >
+                    {activity.hostDisplayName}
+                  </Box>
                 </>
               }
             />

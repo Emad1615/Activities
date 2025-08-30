@@ -14,6 +14,7 @@ type Activity = {
   hostDisplayName?: string;
   hostUserId?: string;
   attendees?: User[];
+  hostImageUrl: string;
 };
 
 type Category = {
@@ -69,4 +70,11 @@ type Result<T> = {
   error: string | null;
   isSuccess: boolean;
   status: number;
+};
+
+type Photo = {
+  id: string;
+  publicId: string;
+  url: string;
+  userId: string;
 };

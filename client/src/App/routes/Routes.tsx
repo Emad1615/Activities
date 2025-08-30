@@ -1,17 +1,23 @@
 import { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router';
-const App=lazy(()=> import('../layout/App'))
-const HomePage=lazy(()=> import('../../features/home/HomePage'))
-const ActivitiesPage=lazy(()=> import('../../features/activity/dashboard/ActivitiesPage'))
-const ActivityDetailsPage=lazy(()=> import('../../features/activity/details/ActivityDetailsPage'))
-const ActivityForm=lazy(()=> import('../../features/activity/form/ActivityForm'))
-const NotFound=lazy(()=> import('../../features/errors/NotFound'))
-const ServerError=lazy(()=> import('../../features/errors/ServerError'))
-const RequireAuth=lazy(()=> import('./RequireAuth'))
+import ProfilePage from '../../features/profile/ProfilePage';
+const App = lazy(() => import('../layout/App'));
+const HomePage = lazy(() => import('../../features/home/HomePage'));
+const ActivitiesPage = lazy(
+  () => import('../../features/activity/dashboard/ActivitiesPage')
+);
+const ActivityDetailsPage = lazy(
+  () => import('../../features/activity/details/ActivityDetailsPage')
+);
+const ActivityForm = lazy(
+  () => import('../../features/activity/form/ActivityForm')
+);
+const NotFound = lazy(() => import('../../features/errors/NotFound'));
+const ServerError = lazy(() => import('../../features/errors/ServerError'));
+const RequireAuth = lazy(() => import('./RequireAuth'));
 
-const Login=lazy(()=> import('../../features/account/login/Login'))
-const Register=lazy(()=> import('../../features/account/register/Register'))
-
+const Login = lazy(() => import('../../features/account/login/Login'));
+const Register = lazy(() => import('../../features/account/register/Register'));
 
 export const routes = createBrowserRouter([
   {
@@ -36,6 +42,10 @@ export const routes = createBrowserRouter([
           {
             path: 'manage/:id',
             element: <ActivityForm />,
+          },
+          {
+            path: 'profile/:id',
+            element: <ProfilePage />,
           },
         ],
       },

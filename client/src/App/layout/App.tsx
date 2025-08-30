@@ -1,30 +1,29 @@
-import { Box, Container, CssBaseline } from "@mui/material";
-import NavBar from "./NavBar";
-import { Outlet } from "react-router";
-import { SnackbarProvider } from "../../lib/context/snackbar";
-import { Suspense } from "react";
-import Loader from "../shared/components/Loader";
+import { Box, Container, CssBaseline } from '@mui/material';
+import NavBar from './NavBar';
+import { Outlet } from 'react-router';
+import { SnackbarProvider } from '../../lib/context/snackbar';
+import { Suspense } from 'react';
+import Loader from '../shared/components/Loader';
 
 function App() {
   return (
-  <Suspense fallback={<Loader/>}>
-    <SnackbarProvider>
-      <Box
-        sx={{
-          minHeight: "100vh",
-          backgroundColor: "#eeeeee",
-          overflow: "auto",
-        }}
-      >
-        <CssBaseline />
-        <NavBar />
-        <Container maxWidth="xl" sx={{ mt: 13 }}>
-          <Outlet />
-        </Container>
-      </Box>
-    </SnackbarProvider>
-   </Suspense>
-    
+    <Suspense fallback={<Loader />}>
+      <SnackbarProvider>
+        <Box
+          sx={{
+            minHeight: '100vh',
+            backgroundColor: '#eeeeee',
+            overflow: 'auto',
+          }}
+        >
+          <CssBaseline />
+          <NavBar />
+          <Container maxWidth="xl" sx={{ mt: 5 }}>
+            <Outlet />
+          </Container>
+        </Box>
+      </SnackbarProvider>
+    </Suspense>
   );
 }
 
