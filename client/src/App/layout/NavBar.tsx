@@ -25,7 +25,7 @@ export default function NavBar() {
           position: 'relative',
         }}
       >
-        <Container maxWidth="xl" disableGutters>
+        <Container maxWidth="lg" disableGutters>
           <Toolbar
             disableGutters
             sx={{

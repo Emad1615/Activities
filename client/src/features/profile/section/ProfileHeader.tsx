@@ -12,8 +12,9 @@ import {
 } from '@mui/material';
 type Props = {
   userProfile: User;
+  isCurrentUser: boolean;
 };
-export default function ProfileHeader({ userProfile }: Props) {
+export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
   const isFollowing = true;
   return (
     <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
@@ -45,20 +46,25 @@ export default function ProfileHeader({ userProfile }: Props) {
                     {userProfile.displayName}
                   </Typography>
                 }
-                secondary={userProfile.bio || 'No bio'}
+                secondary={
+                  userProfile.bio?.split(' ').slice(0, 9).join('') + '...' ||
+                  'No bio'
+                }
                 slotProps={{
                   secondary: {
                     color: 'text.secondary',
                     fontSize: '.7rem',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
                   },
                 }}
               />
-
-              {isFollowing && (
+              {!isCurrentUser && (
                 <Chip
                   variant="outlined"
                   color="secondary"
-                  label={'Following'}
+                  label={isFollowing && 'Following'}
                   sx={{ borderRadius: 1 }}
                 />
               )}

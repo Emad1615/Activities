@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
-import { Avatar } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import ProfileCard from '../../../features/profile/section/ProfileCard';
+import { Link } from 'react-router';
 
 type Props = {
   profile: User;
@@ -20,7 +21,11 @@ export default function AvatarPopover({ profile }: Props) {
   const open = Boolean(anchorEl);
 
   return (
-    <>
+    <Box
+      sx={{ cursor: 'pointer' }}
+      component={Link}
+      to={`/profile/${profile.id}`}
+    >
       <Avatar
         alt={profile.displayName + ' Image'}
         src={profile.imageUrl || '/images/user.png'}
@@ -47,6 +52,6 @@ export default function AvatarPopover({ profile }: Props) {
       >
         <ProfileCard profile={profile} />
       </Popover>
-    </>
+    </Box>
   );
 }

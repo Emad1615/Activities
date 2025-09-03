@@ -4,29 +4,28 @@ import {
   CircularProgress,
   Paper,
   Typography,
-} from "@mui/material";
-import { useNavigate, useParams } from "react-router";
-import { useActivity } from "../../../lib/hooks/activities/useActivity";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { activitySchema, type ActivitySchema } from "./schema/activitySchema";
-import InputText from "../../../App/shared/components/inputs/InputText";
-import SelectInput from "../../../App/shared/components/inputs/SelectInput";
-import { categories } from "./mock/categories";
-import DateTimeInput from "../../../App/shared/components/inputs/DateTimeInput";
-import LocationInput from "../../../App/shared/components/inputs/LocationInput";
-import { useEditActivity } from "../../../lib/hooks/activities/useEditActivity";
-import { useCreateActivity } from "../../../lib/hooks/activities/useCreateActivity";
-import type { Activity } from "../../../lib/types";
+} from '@mui/material';
+import { useNavigate, useParams } from 'react-router';
+import { useActivity } from '../../../lib/hooks/activities/useActivity';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { activitySchema, type ActivitySchema } from './schema/activitySchema';
+import InputText from '../../../App/shared/components/inputs/InputText';
+import SelectInput from '../../../App/shared/components/inputs/SelectInput';
+import { categories } from './mock/categories';
+import DateTimeInput from '../../../App/shared/components/inputs/DateTimeInput';
+import LocationInput from '../../../App/shared/components/inputs/LocationInput';
+import { useEditActivity } from '../../../lib/hooks/activities/useEditActivity';
+import { useCreateActivity } from '../../../lib/hooks/activities/useCreateActivity';
 
 export default function ActivityForm() {
   const { handleSubmit, reset, control } = useForm({
-    mode: "onTouched",
+    mode: 'onTouched',
     resolver: zodResolver(activitySchema),
   });
   const { id } = useParams<string>();
-  const { activity, activityLoading } = useActivity(id ?? "");
+  const { activity, activityLoading } = useActivity(id ?? '');
   const { updateActivity, isLoadingEditActivity } = useEditActivity();
   const { addActivity, isLoadingAddActivity } = useCreateActivity();
   const isSubmitting = isLoadingAddActivity || isLoadingEditActivity;
@@ -68,9 +67,9 @@ export default function ActivityForm() {
     return (
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <CircularProgress />
@@ -91,15 +90,15 @@ export default function ActivityForm() {
           variant="h6"
           gutterBottom
           sx={{
-            textTransform: "uppercase",
+            textTransform: 'uppercase',
             borderBottom: 1,
             mb: 2,
-            borderColor: "divider",
+            borderColor: 'divider',
           }}
-          fontWeight={"bold"}
+          fontWeight={'bold'}
           color="textSecondary"
         >
-          {activity ? "Edit Activity" : "Create Activity"}
+          {activity ? 'Edit Activity' : 'Create Activity'}
         </Typography>
         {/**************Form Header********************* */}
 
@@ -110,13 +109,13 @@ export default function ActivityForm() {
             control={control}
             name="title"
           />
-          <Box display={"flex"} gap={3} alignItems={"center"}>
+          <Box display={'flex'} gap={3} alignItems={'center'}>
             <SelectInput
               id="category-id"
               items={categories}
               name="category"
               control={control}
-              label={"Category"}
+              label={'Category'}
             />
             <DateTimeInput label="Date" control={control} name="date" />
           </Box>
@@ -131,19 +130,19 @@ export default function ActivityForm() {
           <LocationInput label="Location" name="location" control={control} />
         </Box>
         <Box
-          sx={{ mt: 2, display: "flex", gap: 1, justifyContent: "flex-end" }}
+          sx={{ mt: 2, display: 'flex', gap: 1, justifyContent: 'flex-end' }}
         >
           <Button
             variant="contained"
-            sx={{ textTransform: "uppercase" }}
+            sx={{ textTransform: 'uppercase' }}
             color="inherit"
             size="medium"
-            onClick={() => navigate("/activities")}
+            onClick={() => navigate('/activities')}
           >
             Cancel
           </Button>
           <Button
-            sx={{ textTransform: "uppercase" }}
+            sx={{ textTransform: 'uppercase' }}
             variant="contained"
             color="success"
             size="medium"

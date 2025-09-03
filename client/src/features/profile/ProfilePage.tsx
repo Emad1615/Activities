@@ -6,7 +6,7 @@ import { useProfile } from '../../lib/hooks/profile/useProfile';
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const { userProfile, loadingProfile } = useProfile(id);
+  const { userProfile, loadingProfile, isCurrentUser } = useProfile(id);
   if (loadingProfile)
     return (
       <Box display={'flex'} flexDirection="column" gap={2}>
@@ -28,7 +28,10 @@ export default function ProfilePage() {
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
-        <ProfileHeader userProfile={userProfile} />
+        <ProfileHeader
+          userProfile={userProfile}
+          isCurrentUser={isCurrentUser}
+        />
       </Grid>
       <Grid size={12}>
         <ProfileContent />

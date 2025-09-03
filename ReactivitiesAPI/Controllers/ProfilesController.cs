@@ -1,4 +1,5 @@
 ﻿using Application.Profiles.Commands;
+using Application.Profiles.DTOS;
 using Application.Profiles.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,11 @@ namespace API.Controllers
         public async Task<ActionResult<List<Photo>>> UserProfile(string userId, CancellationToken cancellation)
         {
             return HandleResult(await Mediator.Send(new GetUserProfile.Query { UserId = userId }, cancellation));
+        }
+        [HttpPut("UpdateProfile")]
+        public async Task<ActionResult> UpdateProfile(UserProfile profile, CancellationToken cancellation)
+        {
+            return HandleResult(await Mediator.Send(new EditProfile.Command { userProfile = profile }, cancellation));
         }
     }
 }

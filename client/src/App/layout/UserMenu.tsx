@@ -42,7 +42,7 @@ export default function UserMenu({ DisplayName, ImageUrl, UserId }: Props) {
           <ListItemAvatar>
             <Avatar src={ImageUrl} alt={DisplayName} />
           </ListItemAvatar>
-          <ListItemText primary={DisplayName} />
+          <ListItemText primary={DisplayName} sx={{ textTransform: 'none' }} />
         </MenuItem>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>

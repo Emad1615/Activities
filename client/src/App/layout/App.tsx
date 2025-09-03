@@ -18,7 +18,7 @@ function App() {
         >
           <CssBaseline />
           <NavBar />
-          <Container maxWidth="xl" sx={{ mt: 5 }}>
+          <Container maxWidth="lg" sx={{ mt: 5 }}>
             <Outlet />
           </Container>
         </Box>

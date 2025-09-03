@@ -5,12 +5,12 @@ import {
   MenuItem,
   Select,
   type SelectProps,
-} from "@mui/material";
+} from '@mui/material';
 import {
   useController,
   type FieldValues,
   type UseControllerProps,
-} from "react-hook-form";
+} from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
   label: string;
@@ -26,7 +26,7 @@ export default function SelectInput<T extends FieldValues>(props: Props<T>) {
       <Select
         id={props.id}
         label={props.label}
-        value={field.value || ""}
+        value={field.value || ''}
         onChange={field.onChange}
         variant="outlined"
       >

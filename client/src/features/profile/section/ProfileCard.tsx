@@ -40,7 +40,13 @@ export default function ProfileCard({ profile }: Props) {
               secondary={profile.bio}
               slotProps={{
                 primary: { fontWeight: 'bold', fontSize: '1.1rem' },
-                secondary: { fontSize: '.8rem', color: 'text.secondary' },
+                secondary: {
+                  fontSize: '.8rem',
+                  color: 'text.secondary',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                },
               }}
             />
           </Box>

@@ -19,7 +19,9 @@ export const DateFormat = (date: string | Date, locale: string = 'en-US') => {
 export const fnFormat = (date: DateArg<Date>) => {
   return format(date, 'dd MMM yyyy h:mm a');
 };
-
+export const fnDateFormat = (date: DateArg<Date>) => {
+  return format(date, 'dd MMMM yyyy');
+};
 export const requiredInput = (fieldName: string) =>
   z
     .string({ message: `${fieldName} is required` })

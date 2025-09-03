@@ -4,7 +4,7 @@ import { useIsAuthenticated } from './useIsAuthenticated';
 
 export const useUser = () => {
   const queryClient = useQueryClient();
-  const {isAuthenticated}=useIsAuthenticated();
+  const { isAuthenticated } = useIsAuthenticated();
   const {
     data: currentUser,
     isLoading,
@@ -12,7 +12,7 @@ export const useUser = () => {
   } = useQuery({
     queryKey: ['user'],
     queryFn: async () => await getCurrentUser(),
-    enabled: !queryClient.getQueryData(['user']) && !!isAuthenticated
+    enabled: !queryClient.getQueryData(['user']) && !!isAuthenticated,
   });
   return { currentUser, isLoading, error };
 };

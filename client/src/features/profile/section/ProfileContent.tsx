@@ -14,7 +14,7 @@ export default function ProfileContent() {
       sx={{
         p: 4,
         borderRadius: 2,
-        height: 500,
+        minHeight: 500,
       }}
       display={'flex'}
       alignItems="flex-start"
