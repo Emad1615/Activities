@@ -26,6 +26,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query() { Id = id }));
         }
+        [HttpGet("GetUserActivities")]
+        public async Task<ActionResult<List<ActivityDTO>>> GetUserActivities( CancellationToken cancellation)
+        {
+            return HandleResult(await Mediator.Send(new GetUserActivities.Query() { }, cancellation));
+        }
         [HttpPost("CreateActivity")]
         public async Task<ActionResult<string>> CreateActivity(CreateActivityDTO activityDTO)
         {
@@ -48,7 +53,7 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateAttendee(string id, CancellationToken cancellation)
         {
             return HandleResult(await Mediator.Send(new UpdateActivityAttendees.Command() { Id = id }, cancellation));
-        }   
+        }
 
     }
 }

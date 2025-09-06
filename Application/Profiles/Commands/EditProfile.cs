@@ -23,7 +23,7 @@ namespace Application.Profiles.Commands
                 if (user is null) return Result<Unit>.Failure("User not found...!", 400);
                 user.DisplayName=request.userProfile.DisplayName;
                 user.BirthDate=request.userProfile.BirthDate;
-                user.Gender=request.userProfile.Gender;
+                user.Gender = request.userProfile.Gender.HasValue ? request.userProfile.Gender.Value : null;
                 user.Bio= request.userProfile.Bio;
                 user.PhoneNumber=string.IsNullOrEmpty(request.userProfile.PhoneNumber)?user.PhoneNumber : request.userProfile.PhoneNumber;
                 var result=await context.SaveChangesAsync()>0;

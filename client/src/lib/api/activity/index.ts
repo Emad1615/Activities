@@ -30,3 +30,9 @@ export async function UpdateAttendance(id: string) {
     .put<void>(`/Activities/${id}/attend`)
     .then((response) => response.data);
 }
+
+export async function GetUserActivities() {
+  return await agent
+    .get<Activity[]>(`/Activities/GetUserActivities`)
+    .then((response) => response.data);
+}

@@ -14,7 +14,7 @@ namespace Application.Profiles.Validators
         {
             RuleFor(x => x.userProfile.DisplayName).NotEmpty().WithMessage("DisplayName is required");
             RuleFor(x => x.userProfile.BirthDate).NotEmpty().WithMessage("BirthDate is required");
-            RuleFor(x => x.userProfile.Gender).NotEmpty().WithMessage("Gender is required");
+            RuleFor(x => x.userProfile.Gender).NotNull().WithMessage("Gender is required");
         }
     }
 }

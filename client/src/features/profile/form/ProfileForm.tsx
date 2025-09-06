@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { profileFormSchema, type ProfileFormSchema } from './ProfileFormSchema';
+import { profileFormSchema, type ProfileFormSchema } from './profileFormSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button } from '@mui/material';
 import { useEffect, type Dispatch, type SetStateAction } from 'react';

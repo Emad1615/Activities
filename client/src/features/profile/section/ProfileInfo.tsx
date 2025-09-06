@@ -142,7 +142,6 @@ export default function ProfileInfo({
         <Typography
           variant="body2"
           textTransform={'lowercase'}
-          fontStyle={'italic'}
           sx={{
             overflowY: 'auto',
             whiteSpace: 'pre-wrap',
