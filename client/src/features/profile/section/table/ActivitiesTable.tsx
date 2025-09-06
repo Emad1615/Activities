@@ -27,7 +27,7 @@ export default function ActivitiesTable() {
           loading={loadingUserActivities}
           getRowHeight={() => 'auto'}
           paginationMode="client"
-          pageSizeOptions={[10, 25, 50]}
+          pageSizeOptions={[5, 10, 25, 50]}
           //paginationModel={paginationModel}
           //onPaginationModelChange={setPaginationModel}
           //columnVisibilityModel={columnVisibilityModel}
@@ -37,7 +37,7 @@ export default function ActivitiesTable() {
           // }
           initialState={{
             pagination: {
-              paginationModel: { pageSize: 25 },
+              paginationModel: { pageSize: 10 },
             },
           }}
         />
