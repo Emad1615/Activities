@@ -16,5 +16,8 @@ namespace Domain
         public bool? Gender { get; set; } = true; // 1 for male , 0 for female
         public ICollection<ActivityAttendee> Activities { get; set; } = [];
         public ICollection<Photo> Photo { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
+        public ICollection<Notification> SentNotifications { get; set; } = [];
+        public ICollection<Notification> ReceivedNotifications { get; set; } = [];
     }
 }

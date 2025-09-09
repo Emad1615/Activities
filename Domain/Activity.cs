@@ -13,5 +13,7 @@
         public double longitude { get; set; }
         public double latitude { get; set; }
         public ICollection<ActivityAttendee> attendees { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
+        public ICollection<Notification> Notifications { get; set; } = [];
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250909085249_Add notification feature")]
+    partial class Addnotificationfeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.7");
@@ -127,7 +130,7 @@ namespace Persistence.Migrations
                     b.Property<bool>("ForAll")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("HiddenDateTime")
+                    b.Property<DateTime>("HiddenDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsHidden")
@@ -143,7 +146,7 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("ReadDateTime")
+                    b.Property<DateTime>("ReadDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReceiverId")

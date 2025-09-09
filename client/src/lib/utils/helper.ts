@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import type { DateArg } from 'date-fns';
 import z from 'zod';
 export const DateFormat = (date: string | Date, locale: string = 'en-US') => {
@@ -15,6 +15,10 @@ export const DateFormat = (date: string | Date, locale: string = 'en-US') => {
     hour12: true,
   }).format(date);
 };
+
+export function timeAgo(date: DateArg<Date>) {
+  return formatDistanceToNow(date, { addSuffix: true });
+}
 
 export const fnFormat = (date: DateArg<Date>) => {
   return format(date, 'dd MMM yyyy h:mm a');

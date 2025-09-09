@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250908094755_Add comment table")]
+    partial class Addcommenttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.7");
@@ -107,74 +110,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Domain.Notification", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ActivityId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("ForAll")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("HiddenDateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsHidden")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("NotificationTypeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NotifierId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ReadDateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("NotificationTypeId");
-
-                    b.HasIndex("NotifierId");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("Domain.NotificationType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("NotificationTypes");
                 });
 
             modelBuilder.Entity("Domain.Photo", b =>
@@ -446,39 +381,6 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Notification", b =>
-                {
-                    b.HasOne("Domain.Activity", "Activity")
-                        .WithMany("Notifications")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.NotificationType", "NotificationType")
-                        .WithMany("Notifications")
-                        .HasForeignKey("NotificationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.UserApplication", "Notifier")
-                        .WithMany("SentNotifications")
-                        .HasForeignKey("NotifierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.UserApplication", "Receiver")
-                        .WithMany("ReceivedNotifications")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Activity");
-
-                    b.Navigation("NotificationType");
-
-                    b.Navigation("Notifier");
-
-                    b.Navigation("Receiver");
-                });
-
             modelBuilder.Entity("Domain.Photo", b =>
                 {
                     b.HasOne("Domain.UserApplication", "User")
@@ -545,14 +447,7 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Notifications");
-
                     b.Navigation("attendees");
-                });
-
-            modelBuilder.Entity("Domain.NotificationType", b =>
-                {
-                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("Domain.UserApplication", b =>
@@ -562,10 +457,6 @@ namespace Persistence.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Photo");
-
-                    b.Navigation("ReceivedNotifications");
-
-                    b.Navigation("SentNotifications");
                 });
 #pragma warning restore 612, 618
         }

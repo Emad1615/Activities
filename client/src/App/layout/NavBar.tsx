@@ -8,14 +8,18 @@ import {
 } from '@mui/material';
 import MenuItemLink from '../shared/components/MenuItemLink';
 import Logo from '../shared/components/Logo';
-import { Observer } from 'mobx-react-lite';
 import { useStore } from '../../lib/hooks/shared/useStore';
 import { useUser } from '../../lib/hooks/account/useUser';
 import UserMenu from './UserMenu';
+import { observer } from 'mobx-react-lite';
+import { useNotification } from '../../lib/hooks/notification/useNotification';
+import NotificationMenu from './NotificationMenu';
 
-export default function NavBar() {
+const NavBar = observer(function NavBar() {
   const { uiStore } = useStore();
   const { currentUser, isLoading } = useUser();
+  const { storeNotification } = useNotification();
+  console.log(storeNotification.notifications);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -52,6 +56,9 @@ export default function NavBar() {
               )}
               {currentUser ? (
                 <>
+                  <NotificationMenu
+                    notifications={storeNotification.notifications}
+                  />
                   <UserMenu
                     DisplayName={currentUser.displayName}
                     ImageUrl={currentUser.imageUrl!}
@@ -67,26 +74,22 @@ export default function NavBar() {
             </Box>
           </Toolbar>
         </Container>
-        <Observer>
-          {() => (
-            <>
-              {uiStore.isLoading && (
-                <LinearProgress
-                  color="secondary"
-                  sx={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    bottom: 0,
-                    right: 0,
-                    height: 4,
-                  }}
-                />
-              )}
-            </>
-          )}
-        </Observer>
+        {uiStore.isLoading && (
+          <LinearProgress
+            color="secondary"
+            sx={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              bottom: 0,
+              right: 0,
+              height: 4,
+            }}
+          />
+        )}
       </AppBar>
     </Box>
   );
-}
+});
+
+export default NavBar;

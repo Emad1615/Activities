@@ -26,6 +26,19 @@ namespace Persistence
                     await userManager.CreateAsync(user, "123456");
                 }
             }
+            if (!context.NotificationTypes.Any())
+            {
+                List<NotificationType> types = new List<NotificationType>()
+                {
+                    new (){Type="Add Activity" },
+                    new (){Type="Add Comment" },
+                    new (){Type="Going To Event" },
+                    new (){Type="Cancel Attendence" },
+                    new (){ Type="Cancelled Activtiy"}
+                };
+                await context.NotificationTypes.AddRangeAsync(types);
+                await context.SaveChangesAsync();
+            }
             if (context.Activities.Any()) return;
 
             var _userList = await context.Users.ToListAsync();

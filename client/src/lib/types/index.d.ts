@@ -16,6 +16,26 @@ type Activity = {
   attendees?: User[];
   hostImageUrl: string;
 };
+type ChatComment = {
+  id: string;
+  body: string;
+  createDateTime: Date;
+  userId: string;
+  displayName: string;
+  imageUrl: string;
+};
+type NotificationT = {
+  id: string;
+  description: string;
+  isRead: boolean;
+  readDateTime: Date;
+  isHidden: boolean;
+  hiddenDateTime: Date;
+  createdAt: Date;
+  forAll: boolean;
+  notifierId: string;
+  notifierName: string;
+};
 
 type Category = {
   value: string;

@@ -20,7 +20,14 @@ export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
     <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
       <Grid container spacing={3}>
         <Grid size={{ lg: 6, md: 6, xs: 12 }}>
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            spacing={2}
+            sx={{
+              overflow: 'hidden',
+            }}
+          >
             <Avatar
               src={userProfile.imageUrl || '/assets/user.png'}
               alt={userProfile.displayName + ' image'}
@@ -47,7 +54,7 @@ export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
                   </Typography>
                 }
                 secondary={
-                  userProfile.bio?.split(' ').slice(0, 9).join('') + '...' ||
+                  userProfile.bio?.split(' ').slice(0, 5).join('') + '...' ||
                   'No bio'
                 }
                 slotProps={{

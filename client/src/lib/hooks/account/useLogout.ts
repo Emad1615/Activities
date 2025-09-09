@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout } from "../../api/account";
-import { useNavigate } from "react-router";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { logout } from '../../api/account';
+import { useNavigate } from 'react-router';
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const {
     mutate: Logout,
     isPending,
@@ -13,15 +13,15 @@ export const useLogout = () => {
     mutationFn: async () => await logout(),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey:['isAuthenticated']
-      })
-     await queryClient.removeQueries({
-        queryKey: ["user"],
+        queryKey: ['isAuthenticated'],
       });
-       await queryClient.removeQueries({
-        queryKey: ["activities"],
+      await queryClient.removeQueries({
+        queryKey: ['user'],
       });
-      navigate('/')
+      await queryClient.removeQueries({
+        queryKey: ['activities'],
+      });
+      navigate('/');
     },
   });
   return { Logout, isPending, error };
