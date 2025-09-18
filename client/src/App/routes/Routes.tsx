@@ -54,14 +54,7 @@ export const routes = createBrowserRouter([
         element: <HomePage />,
         index: true,
       },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'register',
-        element: <Register />,
-      },
+
       {
         path: 'not-found',
         element: <NotFound />,
@@ -75,5 +68,13 @@ export const routes = createBrowserRouter([
         element: <Navigate replace to={'/not-found'} />,
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <Login />,
+  },
+  {
+    path: 'register',
+    element: <Register />,
   },
 ]);

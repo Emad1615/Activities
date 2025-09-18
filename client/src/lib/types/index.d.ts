@@ -35,6 +35,7 @@ type NotificationT = {
   forAll: boolean;
   notifierId: string;
   notifierName: string;
+  notifierImageUrl: string;
 };
 
 type Category = {

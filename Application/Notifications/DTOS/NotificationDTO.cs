@@ -19,5 +19,6 @@ namespace Application.Notifications.DTOS
         public bool ForAll { get; set; }
         public required string NotifierId { get; set; }
         public required string NotifierName { get; set; }
+        public string? NotifierImageUrl { get; set; }
     }
 }

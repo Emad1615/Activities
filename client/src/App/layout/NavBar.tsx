@@ -19,7 +19,7 @@ const NavBar = observer(function NavBar() {
   const { uiStore } = useStore();
   const { currentUser, isLoading } = useUser();
   const { storeNotification } = useNotification();
-  console.log(storeNotification.notifications);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -54,21 +54,18 @@ const NavBar = observer(function NavBar() {
                   Loading...
                 </MenuItem>
               )}
-              {currentUser ? (
+              {currentUser && (
                 <>
                   <NotificationMenu
                     notifications={storeNotification.notifications}
+                    notifyAlert={storeNotification.notifyAlert}
+                    UserId={currentUser.id}
                   />
                   <UserMenu
                     DisplayName={currentUser.displayName}
                     ImageUrl={currentUser.imageUrl!}
                     UserId={currentUser.id}
                   />
-                </>
-              ) : (
-                <>
-                  <MenuItemLink to="/login">Login</MenuItemLink>
-                  <MenuItemLink to="/register">Register</MenuItemLink>
                 </>
               )}
             </Box>

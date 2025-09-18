@@ -2,16 +2,26 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Settings from '@mui/icons-material/Settings';
 import { NotificationsActive } from '@mui/icons-material';
+import { Avatar, ListItemText, Typography } from '@mui/material';
+import { timeAgo } from '../../lib/utils/helper';
 
 type Props = {
   notifications: NotificationT[];
+  UserId: string;
+  notifyAlert: boolean;
 };
-export default function NotificationMenu({ notifications }: Props) {
+export default function NotificationMenu({
+  notifications,
+  UserId,
+  notifyAlert,
+}: Props) {
+  const filteredNotifications = notifications.filter(
+    (x) => x.notifierId !== UserId
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +30,7 @@ export default function NotificationMenu({ notifications }: Props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -32,7 +43,9 @@ export default function NotificationMenu({ notifications }: Props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <NotificationsActive sx={{ color: 'white' }} />
+            <NotificationsActive
+              sx={{ color: !notifyAlert ? 'white' : 'red' }}
+            />
           </IconButton>
         </Tooltip>
       </Box>
@@ -46,9 +59,12 @@ export default function NotificationMenu({ notifications }: Props) {
           paper: {
             elevation: 0,
             sx: {
+              width: 500,
+              minHeight: 370,
+              maxHeight: 400,
               overflow: 'visible',
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
+              // mt: 1.5,
               '& .MuiAvatar-root': {
                 width: 32,
                 height: 32,
@@ -73,12 +89,57 @@ export default function NotificationMenu({ notifications }: Props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {notifications.map((not) => (
-          <MenuItem onClick={handleClose}>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            {not.description}
+        {filteredNotifications.length === 0 && (
+          <Typography
+            variant="body2"
+            sx={{
+              py: 2,
+              display: 'block',
+              color: 'text.disabled',
+              textAlign: 'center',
+            }}
+          >
+            No notifications found...
+          </Typography>
+        )}
+        {filteredNotifications.map((not) => (
+          <MenuItem
+            key={not.id}
+            onClick={handleClose}
+            sx={(theme) => ({
+              bgcolor: theme.palette.grey[100],
+              borderBottomColor: theme.palette.divider,
+              borderBottomWidth: 1,
+              borderBottomStyle: 'solid',
+              whiteSpace: 'pre-wrap',
+              transition: 'all  0.3s',
+              '&:hover': {
+                bgcolor: theme.palette.grey[200],
+              },
+            })}
+          >
+            <ListItemAvatar sx={{ minWidth: 40 }}>
+              <Avatar
+                src={not.notifierImageUrl}
+                alt={`${not.notifierName} - image`}
+              />
+            </ListItemAvatar>
+            <ListItemText
+              primary={not.description}
+              secondary={timeAgo(not.createdAt)}
+              sx={{ pt: 2 }}
+              slotProps={{
+                primary: {
+                  fontSize: 13,
+                  fontWeight: 400,
+                  color: 'textSecondary',
+                },
+                secondary: {
+                  textAlign: 'right',
+                  fontSize: 10,
+                },
+              }}
+            />
           </MenuItem>
         ))}
       </Menu>

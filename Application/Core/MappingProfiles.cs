@@ -31,7 +31,8 @@ namespace Application.Core
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(x => x.User.ImageUrl));
             CreateMap<Notification, NotificationDTO>()
                 .ForMember(d => d.NotifierId, o => o.MapFrom(x => x.Notifier.Id))
-                .ForMember(d => d.NotifierName, o => o.MapFrom(x => x.Notifier.DisplayName));
+                .ForMember(d => d.NotifierName, o => o.MapFrom(x => x.Notifier.DisplayName))
+                .ForMember(d => d.NotifierImageUrl, o => o.MapFrom(x => x.Notifier.ImageUrl));
         }
     }
 }

@@ -12,6 +12,7 @@ export const useNotification = () => {
   const storeNotification = useLocalObservable(() => ({
     hubConnection: null as HubConnection | null,
     notifications: [] as NotificationT[],
+    notifyAlert: false as boolean,
     createHubConnection() {
       this.hubConnection = new HubConnectionBuilder()
         .withUrl(`${import.meta.env.VITE_NOTIFICATIONS_URL}`, {
@@ -25,11 +26,13 @@ export const useNotification = () => {
       this.hubConnection.on('ReceiveNotification', (notification) => {
         runInAction(() => {
           this.notifications.unshift(notification);
+          this.notifyAlert = true;
         });
       });
       this.hubConnection.on('LoadNotifications', (notification) => {
         runInAction(() => {
           this.notifications = notification;
+          this.notifyAlert = false;
         });
       });
     },
@@ -50,6 +53,6 @@ export const useNotification = () => {
     //   storeNotification.stopHubConnection();
     //   storeNotification.notifications = [];
     // };
-  }, []);
+  }, [storeNotification]);
   return { storeNotification };
 };
