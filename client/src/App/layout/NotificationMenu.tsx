@@ -5,19 +5,24 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { NotificationsActive } from '@mui/icons-material';
+import { Circle, NotificationsActive } from '@mui/icons-material';
 import { Avatar, ListItemText, Typography } from '@mui/material';
 import { timeAgo } from '../../lib/utils/helper';
+import { useNavigate } from 'react-router';
+import { NotificationTypes } from '../../lib/types/enums';
 
 type Props = {
   notifications: NotificationT[];
   UserId: string;
   notifyAlert: boolean;
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  storeNotification?: any;
 };
 export default function NotificationMenu({
   notifications,
   UserId,
   notifyAlert,
+  storeNotification,
 }: Props) {
   const filteredNotifications = notifications.filter(
     (x) => x.notifierId !== UserId
@@ -27,24 +32,32 @@ export default function NotificationMenu({
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const navigate = useNavigate();
   const handleClose = () => {
     setAnchorEl(null);
+    storeNotification.notifyAlert = false;
   };
 
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Notifications">
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, position: 'relative' }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <NotificationsActive
-              sx={{ color: !notifyAlert ? 'white' : 'red' }}
+            <NotificationsActive sx={{ color: 'white' }} />
+            <Circle
+              sx={{
+                fontSize: '8px',
+                position: 'absolute',
+                top: 12,
+                color: !notifyAlert ? 'white' : 'tomato',
+              }}
             />
           </IconButton>
         </Tooltip>
@@ -54,7 +67,6 @@ export default function NotificationMenu({
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         slotProps={{
           paper: {
             elevation: 0,
@@ -62,7 +74,7 @@ export default function NotificationMenu({
               width: 500,
               minHeight: 370,
               maxHeight: 400,
-              overflow: 'visible',
+              overflowY: 'scroll',
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               // mt: 1.5,
               '& .MuiAvatar-root': {
@@ -83,12 +95,36 @@ export default function NotificationMenu({
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 0,
               },
+              '&::-webkit-scrollbar': {
+                width: '3px',
+              },
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: '#f0f0f0',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: (theme) => theme.palette.secondary.light,
+              },
+              '&::-webkit-scrollbar-thumb:hover': {
+                backgroundColor: (theme) => theme.palette.secondary.main,
+              },
             },
           },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        <Typography
+          variant="subtitle2"
+          sx={{
+            pb: '5px',
+            display: 'block',
+            textAlign: 'center',
+            color: (theme) => `${theme.palette.secondary.light}`,
+            borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          Notifications
+        </Typography>
         {filteredNotifications.length === 0 && (
           <Typography
             variant="body2"
@@ -105,7 +141,11 @@ export default function NotificationMenu({
         {filteredNotifications.map((not) => (
           <MenuItem
             key={not.id}
-            onClick={handleClose}
+            onClick={() => {
+              if (NotificationTypes.AddActivity === not.notificationTypeId)
+                navigate(`/activities/${not.activityId}`);
+              handleClose();
+            }}
             sx={(theme) => ({
               bgcolor: theme.palette.grey[100],
               borderBottomColor: theme.palette.divider,

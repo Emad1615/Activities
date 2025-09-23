@@ -33,7 +33,7 @@ namespace Application.Activities.Commands
                 var notification = new Notification()
                 {
                     NotificationTypeId = (int)Enums.NotificationType.AddActivity,
-                    Description = $"New activity created by {user.DisplayName} at {activity.Date.ToString("yyyy/MM/dd hh:mm tt")} about {activity.Category}",
+                    Description = $"New activity created by {user.DisplayName} at {activity.Date.ToString("yyyy/MM/dd hh:mm tt")} Category {activity.Category} about {activity.Title}",
                     IsRead = false,
                     IsHidden = false,
                     NotifierId = userAccessor.UserId(),

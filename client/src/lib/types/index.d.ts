@@ -26,6 +26,7 @@ type ChatComment = {
 };
 type NotificationT = {
   id: string;
+  activityId: string;
   description: string;
   isRead: boolean;
   readDateTime: Date;
@@ -36,6 +37,7 @@ type NotificationT = {
   notifierId: string;
   notifierName: string;
   notifierImageUrl: string;
+  notificationTypeId: number;
 };
 
 type Category = {

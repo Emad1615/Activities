@@ -10,6 +10,9 @@ namespace Application.Notifications.DTOS
     public class NotificationDTO
     {
         public required string ID { get; set; }
+        public required string ActivityId { get; set; }
+        public required int NotificationTypeId { get; set; }
+
         public required string Description { get; set; }
         public bool IsRead { get; set; }
         public DateTime ReadDateTime { get; set; }

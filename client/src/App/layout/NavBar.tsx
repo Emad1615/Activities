@@ -60,6 +60,7 @@ const NavBar = observer(function NavBar() {
                     notifications={storeNotification.notifications}
                     notifyAlert={storeNotification.notifyAlert}
                     UserId={currentUser.id}
+                    storeNotification={storeNotification}
                   />
                   <UserMenu
                     DisplayName={currentUser.displayName}
