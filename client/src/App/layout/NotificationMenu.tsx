@@ -5,11 +5,12 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { Circle, NotificationsActive } from '@mui/icons-material';
-import { Avatar, ListItemText, Typography } from '@mui/material';
+import { Circle, HideSource, NotificationsActive } from '@mui/icons-material';
+import { Avatar, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { timeAgo } from '../../lib/utils/helper';
 import { useNavigate } from 'react-router';
 import { NotificationTypes } from '../../lib/types/enums';
+import { useHideNotification } from '../../lib/hooks/notification/useHideNotification';
 
 type Props = {
   notifications: NotificationT[];
@@ -33,6 +34,7 @@ export default function NotificationMenu({
     setAnchorEl(event.currentTarget);
   };
   const navigate = useNavigate();
+  const { hideNotifications } = useHideNotification();
   const handleClose = () => {
     setAnchorEl(null);
     storeNotification.notifyAlert = false;
@@ -147,6 +149,7 @@ export default function NotificationMenu({
               handleClose();
             }}
             sx={(theme) => ({
+              position: 'relative',
               bgcolor: theme.palette.grey[100],
               borderBottomColor: theme.palette.divider,
               borderBottomWidth: 1,
@@ -180,6 +183,22 @@ export default function NotificationMenu({
                 },
               }}
             />
+            <ListItemIcon
+              sx={{
+                position: 'absolute',
+                right: -10,
+                transition: 'all 0.3s',
+                '&:hover': {
+                  transform: 'scale(1.3)',
+                },
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                hideNotifications(not.id);
+              }}
+            >
+              <HideSource sx={{ fontSize: '13px', color: 'text.disabled' }} />
+            </ListItemIcon>
           </MenuItem>
         ))}
       </Menu>

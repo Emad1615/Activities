@@ -6,12 +6,13 @@ import {
 import { runInAction } from 'mobx';
 import { useLocalObservable } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
+import { observable } from 'mobx';
 
 export const useNotification = () => {
   const created = useRef(false);
   const storeNotification = useLocalObservable(() => ({
     hubConnection: null as HubConnection | null,
-    notifications: [] as NotificationT[],
+    notifications: observable.array<NotificationT>([]),
     notifyAlert: false as boolean,
     createHubConnection() {
       this.hubConnection = new HubConnectionBuilder()

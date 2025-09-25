@@ -26,7 +26,7 @@ namespace Application.Notifications.Queries
                 var user = await userAccessor.GetUserAsync();
                 if (user == null) return Result<List<NotificationDTO>>.Failure("User not found or Unauthorized", 400);
                 var notifications = await db.Notifications
-                    .Where(x => x.NotifierId != user.Id && (x.ForAll || x.ReceiverId == user.Id))
+                    .Where(x => x.NotifierId != user.Id && (x.ForAll || x.ReceiverId == user.Id) && !x.IsHidden)
                     .ProjectTo<NotificationDTO>(mapper.ConfigurationProvider)
                     .OrderByDescending(x => x.CreatedAt)
                     .ToListAsync();
