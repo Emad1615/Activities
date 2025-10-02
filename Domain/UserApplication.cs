@@ -19,5 +19,7 @@ namespace Domain
         public ICollection<Comment> Comments { get; set; } = [];
         public ICollection<Notification> SentNotifications { get; set; } = [];
         public ICollection<Notification> ReceivedNotifications { get; set; } = [];
+        public ICollection<UserFollowing> Followings { get; set; } = [];
+        public ICollection<UserFollowing> Followers { get; set; } = [];
     }
 }

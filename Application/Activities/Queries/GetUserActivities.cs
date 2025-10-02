@@ -25,7 +25,7 @@ namespace Application.Activities.Queries
             {
                 var activities = await context.Activities.AsNoTracking()
                     .Where(x => x.attendees.Any(a => a.UserId == userAccessor.UserId()))
-                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider)
+                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() })
                     .ToListAsync(cancellationToken);
                 if (activities is null) return Result<List<ActivityDTO>>.Failure("No activities created by this user till now", 400);
                 return Result<List<ActivityDTO>>.Success(activities);

@@ -17,6 +17,8 @@ namespace Application.Profiles.DTOS
         public bool? Gender { get; set; }
         public DateTime? BirthDate { get; set; } = null;
         public bool IsHost { get; set; }
-
+        public bool Following { get; set; }
+        public bool FollowersCount { get; set; }
+        public bool FollowingCount { get; set; }
     }
 }

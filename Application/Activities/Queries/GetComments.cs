@@ -1,5 +1,6 @@
 ﻿using Application.Activities.DTOs;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -19,12 +20,12 @@ namespace Application.Activities.Queries
         {
             public required string ActivityId { get; set; }
         }
-        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<List<CommentDTO>>>
+        public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<List<CommentDTO>>>
         {
             public async Task<Result<List<CommentDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var comments = await context.Comments.Where(x => x.ActivityId == request.ActivityId)
-                    .ProjectTo<CommentDTO>(mapper.ConfigurationProvider).OrderByDescending(x => x.CreateDateTime).ToListAsync(cancellationToken);
+                    .ProjectTo<CommentDTO>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() }).OrderByDescending(x => x.CreateDateTime).ToListAsync(cancellationToken);
                 return Result<List<CommentDTO>>.Success(comments);
             }
         }

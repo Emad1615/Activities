@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Application.Profiles.DTOS;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -19,11 +20,11 @@ namespace Application.Profiles.Queries
         {
             public required string UserId { get; set; }
         }
-        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<UserProfile>>
+        public class Handler(AppDbContext context, IMapper mapper,IUserAccessor userAccessor) : IRequestHandler<Query, Result<UserProfile>>
         {
             public async Task<Result<UserProfile>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await context.Users.ProjectTo<UserProfile>(mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.ID == request.UserId, cancellationToken);
+                var user = await context.Users.ProjectTo<UserProfile>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() }).FirstOrDefaultAsync(x => x.ID == request.UserId, cancellationToken);
                 return user is null ?
                     Result<UserProfile>.Failure("User not found", 404) :
                     Result<UserProfile>.Success(user);

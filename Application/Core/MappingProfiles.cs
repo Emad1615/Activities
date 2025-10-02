@@ -10,6 +10,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
+            string? currentUser = null;
             CreateMap<Activity, Activity>().ReverseMap();
             CreateMap<CreateActivityDTO, Activity>().ReverseMap();
             CreateMap<EditActivityDTO, Activity>().ReverseMap();
@@ -33,6 +34,10 @@ namespace Application.Core
                 .ForMember(d => d.NotifierId, o => o.MapFrom(x => x.Notifier.Id))
                 .ForMember(d => d.NotifierName, o => o.MapFrom(x => x.Notifier.DisplayName))
                 .ForMember(d => d.NotifierImageUrl, o => o.MapFrom(x => x.Notifier.ImageUrl));
+            CreateMap<UserApplication, UserProfile>()
+                .ForMember(x => x.Following, o => o.MapFrom(x => x.Followers.Any(f => f.Observer.Id == currentUser)))
+                .ForMember(d => d.FollowersCount, o => o.MapFrom(x => x.Followers.Count))
+                .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.Followings.Count));
         }
     }
 }

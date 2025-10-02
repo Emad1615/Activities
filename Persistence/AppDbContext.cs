@@ -17,6 +17,7 @@ namespace Persistence
         public required DbSet<Comment> Comments { get; set; }
         public required DbSet<NotificationType> NotificationTypes { get; set; }
         public required DbSet<Notification> Notifications { get; set; }
+        public required DbSet<UserFollowing> UserFollowings { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,6 +48,19 @@ namespace Persistence
                 .HasForeignKey(x => x.ActivityId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<UserFollowing>(x => x.HasKey(a=> new { a.ObserverId,a.TargetId}));
+            builder.Entity<UserFollowing>()
+                .HasOne(x=>x.Observer)
+                .WithMany(f=>f.Followings)
+                .HasForeignKey(x=>x.ObserverId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserFollowing>()
+                .HasOne(x => x.Target)
+                .WithMany(x => x.Followers)
+                .HasForeignKey(x => x.TargetId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
 
             var DateTimeConveter = new ValueConverter<DateTime, DateTime>(
                     v => v.ToUniversalTime(),
