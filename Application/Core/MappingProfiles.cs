@@ -10,7 +10,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            string? currentUser = null;
+            string? currentUserId = null;
             CreateMap<Activity, Activity>().ReverseMap();
             CreateMap<CreateActivityDTO, Activity>().ReverseMap();
             CreateMap<EditActivityDTO, Activity>().ReverseMap();
@@ -24,9 +24,14 @@ namespace Application.Core
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(x => x.User.ImageUrl))
                 .ForMember(d => d.Gender, o => o.MapFrom(x => x.User.Gender))
                 .ForMember(d => d.BirthDate, o => o.MapFrom(x => x.User.BirthDate))
-                .ForMember(d => d.IsHost, o => o.MapFrom(x => x.IsHost));
-            CreateMap<UserApplication, UserProfile>().ReverseMap();
-            CreateMap<Comment, CommentDTO>()
+                .ForMember(d => d.IsHost, o => o.MapFrom(x => x.IsHost))
+                .ForMember(d => d.Following, o => o.MapFrom(x => x.User.Followers.Any(x => x.ObserverId == currentUserId)))
+                .ForMember(d => d.FollowersCount, o => o.MapFrom(x => x.User.Followers.Count))
+                .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.User.Followings.Count));
+            CreateMap<UserApplication, UserProfile>()
+                           .ForMember(x => x.Following, o => o.MapFrom(x => x.Followers.Any(f => f.Observer.Id == currentUserId)))
+                           .ForMember(d => d.FollowersCount, o => o.MapFrom(x => x.Followers.Count))
+                           .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.Followings.Count)); CreateMap<Comment, CommentDTO>()
                 .ForMember(d => d.UserId, o => o.MapFrom(x => x.User.Id))
                 .ForMember(d => d.DisplayName, o => o.MapFrom(x => x.User.UserName))
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(x => x.User.ImageUrl));
@@ -34,10 +39,7 @@ namespace Application.Core
                 .ForMember(d => d.NotifierId, o => o.MapFrom(x => x.Notifier.Id))
                 .ForMember(d => d.NotifierName, o => o.MapFrom(x => x.Notifier.DisplayName))
                 .ForMember(d => d.NotifierImageUrl, o => o.MapFrom(x => x.Notifier.ImageUrl));
-            CreateMap<UserApplication, UserProfile>()
-                .ForMember(x => x.Following, o => o.MapFrom(x => x.Followers.Any(f => f.Observer.Id == currentUser)))
-                .ForMember(d => d.FollowersCount, o => o.MapFrom(x => x.Followers.Count))
-                .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.Followings.Count));
+
         }
     }
 }

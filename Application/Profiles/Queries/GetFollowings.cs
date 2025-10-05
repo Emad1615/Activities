@@ -26,7 +26,6 @@ namespace Application.Profiles.Queries
             public async Task<Result<List<UserProfile>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var profiles = new List<UserProfile>();
-
                 switch (request.Predicate)
                 {
                     case "followers":
@@ -44,7 +43,6 @@ namespace Application.Profiles.Queries
                             .ToListAsync(cancellationToken);
                         break;
                 }
-
                 return Result<List<UserProfile>>.Success(profiles);
             }
         }
