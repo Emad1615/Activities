@@ -38,3 +38,14 @@ export const EditProfile = async (userProfile: User) => {
     .put('Profiles/UpdateProfile', userProfile)
     .then((response) => response.data);
 };
+
+export const Follow = async (id: string) => {
+  return await agent
+    .post(`Profiles/${id}/follow`)
+    .then((response) => response.data);
+};
+export const GetFollowingList = async (id: string, predicate: string) => {
+  return await agent
+    .get<User[]>(`Profiles/${id}/follow-list?predicate=${predicate}`)
+    .then((response) => response.data);
+};

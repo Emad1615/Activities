@@ -24,7 +24,7 @@ namespace Application.Profiles.Queries
         {
             public async Task<Result<UserProfile>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await context.Users.ProjectTo<UserProfile>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() }).FirstOrDefaultAsync(x => x.ID == request.UserId, cancellationToken);
+                var user = await context.Users.ProjectTo<UserProfile>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.UserId() }).FirstOrDefaultAsync(x => x.ID == request.UserId, cancellationToken);
                 return user is null ?
                     Result<UserProfile>.Failure("User not found", 404) :
                     Result<UserProfile>.Success(user);

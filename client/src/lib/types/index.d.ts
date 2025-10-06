@@ -86,6 +86,9 @@ type User = {
   phoneNumber: string;
   gender?: boolean;
   isHost: boolean;
+  following: boolean;
+  followersCount?: number;
+  followingCount?: number;
 };
 
 type Result<T> = {

@@ -13,9 +13,16 @@ import {
 type Props = {
   userProfile: User;
   isCurrentUser: boolean;
+  FollowToggle: () => void;
+  LoadingFollowToggle: boolean;
 };
-export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
-  const isFollowing = true;
+export default function ProfileHeader({
+  userProfile,
+  isCurrentUser,
+  FollowToggle,
+  LoadingFollowToggle,
+}: Props) {
+  console.log(userProfile);
   return (
     <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
       <Grid container spacing={3}>
@@ -67,11 +74,11 @@ export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
                   },
                 }}
               />
-              {!isCurrentUser && (
+              {!isCurrentUser && userProfile.following && (
                 <Chip
                   variant="outlined"
                   color="secondary"
-                  label={isFollowing && 'Following'}
+                  label={'Following'}
                   sx={{ borderRadius: 1 }}
                 />
               )}
@@ -89,7 +96,7 @@ export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
                 Following
               </Typography>
               <Typography variant="subtitle1" fontWeight={'bold'}>
-                10
+                {userProfile.followingCount || 0}
               </Typography>
             </Stack>
             <Stack direction={'column'} alignItems={'center'}>
@@ -101,18 +108,25 @@ export default function ProfileHeader({ userProfile, isCurrentUser }: Props) {
                 Followers
               </Typography>
               <Typography variant="subtitle1" fontWeight={'bold'}>
-                4
+                {userProfile.followersCount || 0}
               </Typography>
             </Stack>
           </Box>
-          <Divider sx={{ width: '100%', my: 2 }} />
-          <Button
-            variant="outlined"
-            sx={{ width: '100%' }}
-            color={isFollowing ? 'error' : 'primary'}
-          >
-            {isFollowing ? 'Unfollow' : 'Follow'}
-          </Button>
+          {!isCurrentUser && (
+            <>
+              <Divider sx={{ width: '100%', my: 2 }} />
+              <Button
+                onClick={() => FollowToggle()}
+                disabled={LoadingFollowToggle}
+                loading={LoadingFollowToggle}
+                variant="outlined"
+                sx={{ width: '100%' }}
+                color={userProfile.following ? 'error' : 'primary'}
+              >
+                {userProfile.following ? 'Unfollow' : 'Follow'}
+              </Button>
+            </>
+          )}
         </Grid>
       </Grid>
     </Paper>

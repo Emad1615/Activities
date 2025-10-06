@@ -1,5 +1,6 @@
 ﻿using Application.Activities.DTOs;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -18,7 +19,7 @@ namespace Application.Activities.Queries
     public class GetActivitiesList
     {
         public class Query : IRequest<Result<List<ActivityDTO>>> { }
-        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper) : IRequestHandler<Query, Result<List<ActivityDTO>>>
+        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper,IUserAccessor userAccessor) : IRequestHandler<Query, Result<List<ActivityDTO>>>
         {
             public async Task<Result<List<ActivityDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
@@ -41,7 +42,7 @@ namespace Application.Activities.Queries
 
                 var activities = await context.Activities
                     .AsNoTracking()
-                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId =userAccessor.UserId()}).ToListAsync(cancellationToken);
                 if (activities.Count() == 0 || activities is null)
                 {
                     logger.LogInformation("No Activities in Database");

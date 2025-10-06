@@ -63,9 +63,9 @@ export default function ProfileCard({ profile }: Props) {
             ml={1}
             variant="body2"
             color="text.secondary"
-            fontSize={'.9rem'}
+            fontSize={'.8rem'}
           >
-            20 Followers
+            {profile.followersCount || 0} Followers
           </Typography>
         </Box>
       </Card>

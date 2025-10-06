@@ -3,13 +3,15 @@ import {
   AddImage,
   DeleteImage,
   EditProfile,
+  Follow,
+  GetFollowingList,
   GetUserPhotos,
   GetUserProfile,
   SetAsMainImage,
 } from '../../api/profile';
 import { useMemo } from 'react';
 
-export const useProfile = (id?: string) => {
+export const useProfile = (id?: string, predicate?: string) => {
   const queryClient = useQueryClient();
 
   const { data: userProfile, isLoading: loadingProfile } = useQuery<User>({
@@ -86,6 +88,30 @@ export const useProfile = (id?: string) => {
   const isCurrentUser = useMemo(() => {
     return id === queryClient.getQueryData<User>(['user'])?.id;
   }, [id, queryClient]);
+
+  const { mutate: FollowToggle, isPending: LoadingFollowToggle } = useMutation({
+    mutationFn: async () => Follow(id!),
+    onSuccess: async () => {
+      queryClient.setQueryData(['profile', id], (profile: User) => {
+        queryClient.invalidateQueries({
+          queryKey: ['followings', id, 'followers'],
+        });
+        if (!profile || profile.followersCount === undefined) return profile;
+        return {
+          ...profile,
+          following: !profile.following,
+          followersCount: profile.following
+            ? profile.followersCount - 1
+            : profile.followersCount + 1,
+        };
+      });
+    },
+  });
+  const { data: FollowingList, isLoading: LoadingFollowingList } = useQuery({
+    queryKey: ['followings', id, predicate],
+    queryFn: async () => await GetFollowingList(id!, predicate!),
+    enabled: !!id && !!predicate,
+  });
   return {
     userProfile,
     loadingProfile,
@@ -100,5 +126,9 @@ export const useProfile = (id?: string) => {
     loadingDelete,
     UpdateProfile,
     loadingUpdateProfile,
+    FollowToggle,
+    LoadingFollowToggle,
+    FollowingList,
+    LoadingFollowingList,
   };
 };

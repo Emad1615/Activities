@@ -32,6 +32,10 @@ export default function AvatarPopover({ profile }: Props) {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
         sizes="small"
+        sx={{
+          border: profile.following ? 2 : 0,
+          borderColor: 'seconadry.main',
+        }}
       />
       <Popover
         aria-hidden="false"

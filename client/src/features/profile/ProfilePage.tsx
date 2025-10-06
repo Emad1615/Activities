@@ -6,7 +6,13 @@ import { useProfile } from '../../lib/hooks/profile/useProfile';
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const { userProfile, loadingProfile, isCurrentUser } = useProfile(id);
+  const {
+    userProfile,
+    loadingProfile,
+    isCurrentUser,
+    FollowToggle,
+    LoadingFollowToggle,
+  } = useProfile(id);
   if (loadingProfile)
     return (
       <Box display={'flex'} flexDirection="column" gap={2}>
@@ -31,6 +37,8 @@ export default function ProfilePage() {
         <ProfileHeader
           userProfile={userProfile}
           isCurrentUser={isCurrentUser}
+          FollowToggle={FollowToggle}
+          LoadingFollowToggle={LoadingFollowToggle}
         />
       </Grid>
       <Grid size={12}>
