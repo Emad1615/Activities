@@ -1,6 +1,7 @@
 import { Box, Paper, Tab, Tabs } from '@mui/material';
 import React, { useState } from 'react';
 import { tabs } from '../mock/tabs';
+import GenericTabs from './GenericTabs';
 
 export default function ProfileContent() {
   const [value, setValue] = useState<number>(0);
@@ -36,7 +37,10 @@ export default function ProfileContent() {
           <Tab key={idx} label={tab.label} sx={{ alignItems: 'flex-start' }} />
         ))}
       </Tabs>
-      <Box flexGrow={1}>{tabs[value].tab}</Box>
+      {/* <Box flexGrow={1}>{tabs[value].tab}</Box> */}
+      <Box flexGrow={1}>
+        <GenericTabs activeTabe={value} />
+      </Box>
     </Box>
   );
 }

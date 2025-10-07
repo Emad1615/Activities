@@ -17,7 +17,10 @@ export default function ProfileCard({ profile }: Props) {
   //   const isFollowing = false;
   return (
     <Link to={`/profile/${profile.id}`} style={{ textDecoration: 'none' }}>
-      <Card elevation={3} sx={{ borderRadius: 4, p: 2, maxWidth: 300 }}>
+      <Card
+        elevation={3}
+        sx={{ borderRadius: 4, p: 2, maxWidth: 200, maxHeight: 450 }}
+      >
         <CardMedia
           component={'img'}
           alt={`${profile.displayName} + Image`}
