@@ -39,6 +39,7 @@ namespace Application.Activities.Commands
                     NotifierId = userAccessor.UserId(),
                     ActivityId = activity.Id,
                     ForAll = true,
+                    
                 };
                 context.Notifications.Add(notification);
                 var result = await context.SaveChangesAsync(cancellationToken) > 0;

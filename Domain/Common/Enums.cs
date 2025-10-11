@@ -15,6 +15,7 @@ namespace Domain.Common
             GoingToEvent = 3,
             CancelAttendence = 4,
             CancelledActivtiy = 5,
+            Follow=6,
         }
     }
 }
