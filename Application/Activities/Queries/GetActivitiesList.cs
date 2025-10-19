@@ -3,25 +3,32 @@ using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Activities.Queries
 {
     public class GetActivitiesList
     {
-        public class Query : IRequest<Result<List<ActivityDTO>>> { }
-        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper,IUserAccessor userAccessor) : IRequestHandler<Query, Result<List<ActivityDTO>>>
+        private const int MaximumPageSize = 50;
+        public class Query : IRequest<Result<PagedList<ActivityDTO, DateTime?>>>
         {
-            public async Task<Result<List<ActivityDTO>>> Handle(Query request, CancellationToken cancellationToken)
+
+            public DateTime? Cursor { get; set; }
+            private int _pageSize = 3;
+
+            public int PageSize
+            {
+                get => _pageSize;
+                set => _pageSize = value > MaximumPageSize ? MaximumPageSize : value;
+            }
+
+        }
+        public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<PagedList<ActivityDTO, DateTime?>>>
+        {
+            public async Task<Result<PagedList<ActivityDTO, DateTime?>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 #region CancellationToken Purpose
                 // this section of code for cancellation op process when end user cancel the request  aim of CancellationToken
@@ -40,15 +47,33 @@ namespace Application.Activities.Queries
                 //}
                 #endregion
 
-                var activities = await context.Activities
+                var query = context.Activities.OrderBy(x => x.Date).AsQueryable();
+
+                if (request.Cursor.HasValue)
+                {
+                    query = query.Where(x => x.Date > request.Cursor.Value);
+                }
+
+                var activities = await query
+                    .Take(request.PageSize + 1)
                     .AsNoTracking()
-                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId =userAccessor.UserId()}).ToListAsync(cancellationToken);
+                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.UserId() }).ToListAsync(cancellationToken);
+
+                DateTime? nextCursor = null;
+                if (activities.Count > request.PageSize)
+                {
+                    nextCursor = activities.Last().Date;
+                    activities.RemoveAt(activities.Count - 1);
+                }
+
+
+
                 if (activities.Count() == 0 || activities is null)
                 {
                     logger.LogInformation("No Activities in Database");
-                    return Result<List<ActivityDTO>>.Failure("No Activities in Database", 404);
+                    return Result<PagedList<ActivityDTO, DateTime?>>.Failure("No Activities in Database", 404);
                 }
-                return Result<List<ActivityDTO>>.Success(activities);
+                return Result<PagedList<ActivityDTO, DateTime?>>.Success(new PagedList<ActivityDTO, DateTime?>() { Items = activities, NextCursor = nextCursor });
             }
         }
     }

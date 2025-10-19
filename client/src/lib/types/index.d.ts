@@ -1,3 +1,7 @@
+type PagedList<T, TCursor> = {
+  items: T[];
+  nextCursor: TCursor | null;
+};
 type Activity = {
   id: string;
   title: string;

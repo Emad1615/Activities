@@ -1,8 +1,13 @@
 import { agent } from '../agent';
 
-export async function getActivities() {
+export async function getActivities(pageParam: unknown) {
   return agent
-    .get<Result<Activity[]>>('/Activities/GetActivities')
+    .get<PagedList<Activity, string>>('/Activities/GetActivities', {
+      params: {
+        cursor: pageParam,
+        pageSize: 3,
+      },
+    })
     .then((response) => response.data);
 }
 export async function getActivity(id: string) {
