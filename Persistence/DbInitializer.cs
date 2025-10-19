@@ -92,6 +92,21 @@ namespace Persistence
                 },
             };
             await context.AddRangeAsync(activities);
+
+            if (!context.NotificationTypes.Any())
+            {
+                List<NotificationType> types = new List<NotificationType>()
+                {
+                    new (){Type="Add Activity" },
+                    new (){Type="Add Comment" },
+                    new (){Type="Going To Event" },
+                    new (){Type="Cancel Attendence" },
+                    new (){ Type="Cancelled Activtiy"},
+                    new (){ Type="Follow"}
+                };
+
+                await context.NotificationTypes.AddRangeAsync(types);
+            }
             await context.SaveChangesAsync();
         }
     }
