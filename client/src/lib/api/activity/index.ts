@@ -1,11 +1,21 @@
 import { agent } from '../agent';
 
-export async function getActivities(pageParam: unknown) {
+export async function getActivities({
+  pageParam,
+  Filter,
+  StartDate,
+}: {
+  pageParam: unknown;
+  Filter: string;
+  StartDate: string;
+}) {
   return agent
     .get<PagedList<Activity, string>>('/Activities/GetActivities', {
       params: {
         cursor: pageParam,
         pageSize: 3,
+        filter: Filter,
+        startDate: StartDate,
       },
     })
     .then((response) => response.data);

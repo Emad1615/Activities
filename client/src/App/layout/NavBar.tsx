@@ -1,11 +1,4 @@
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  Container,
-  LinearProgress,
-  MenuItem,
-} from '@mui/material';
+import { Box, AppBar, Toolbar, Container, MenuItem } from '@mui/material';
 import MenuItemLink from '../shared/components/MenuItemLink';
 import Logo from '../shared/components/Logo';
 import { useStore } from '../../lib/hooks/shared/useStore';
@@ -14,6 +7,7 @@ import UserMenu from './UserMenu';
 import { observer } from 'mobx-react-lite';
 import { useNotification } from '../../lib/hooks/notification/useNotification';
 import NotificationMenu from './NotificationMenu';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const NavBar = observer(function NavBar() {
   const { uiStore } = useStore();
@@ -26,7 +20,6 @@ const NavBar = observer(function NavBar() {
         position="fixed"
         sx={{
           backgroundColor: '#845ec2',
-          position: 'relative',
         }}
       >
         <Container maxWidth="lg" disableGutters>
@@ -72,20 +65,21 @@ const NavBar = observer(function NavBar() {
             </Box>
           </Toolbar>
         </Container>
-        {uiStore.isLoading && (
-          <LinearProgress
+      </AppBar>
+      {uiStore.isLoading && (
+        <>
+          <CircularProgress
+            size={20}
             color="secondary"
             sx={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              bottom: 0,
-              right: 0,
-              height: 4,
+              position: 'fixed',
+              top: 75,
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
             }}
           />
-        )}
-      </AppBar>
+        </>
+      )}
     </Box>
   );
 });

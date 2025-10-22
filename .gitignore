@@ -14,3 +14,6 @@ obj/
 
 # Ignore Rider files (if applicable)
 .idea/
+ReactivitiesAPI/reactivities.db-shm
+ReactivitiesAPI/reactivities.db-shm
+ReactivitiesAPI/reactivities.db-wal

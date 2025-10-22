@@ -17,9 +17,9 @@ namespace API.Controllers
     {
 
         [HttpGet("GetActivities")]
-        public async Task<ActionResult<Result<PagedList<ActivityDTO, DateTime?>>>> GetActivities(DateTime? cursor, CancellationToken ct)
+        public async Task<ActionResult<Result<PagedList<ActivityDTO, DateTime?>>>> GetActivities([FromQuery] ActivityParams activityParams, CancellationToken cancellation)
         {
-            return HandleResult(await Mediator.Send(new GetActivitiesList.Query { Cursor = cursor }, ct));
+            return HandleResult(await Mediator.Send(new GetActivitiesList.Query { Params = activityParams }, cancellation));
         }
         [HttpGet("GetActivity")]
         public async Task<ActionResult<ActivityDTO>> GetActivity(string id)
@@ -27,7 +27,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetActivityDetails.Query() { Id = id }));
         }
         [HttpGet("GetUserActivities")]
-        public async Task<ActionResult<List<ActivityDTO>>> GetUserActivities( CancellationToken cancellation)
+        public async Task<ActionResult<List<ActivityDTO>>> GetUserActivities(CancellationToken cancellation)
         {
             return HandleResult(await Mediator.Send(new GetUserActivities.Query() { }, cancellation));
         }

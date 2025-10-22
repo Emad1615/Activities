@@ -1,10 +1,21 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ActivityCard from './ActivityCard';
 import { useActivities } from '../../../lib/hooks/activities/useActivities';
-import { Fragment } from 'react/jsx-runtime';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
-export default function ActivityList() {
-  const { activitiesGroup, activitiesLoading } = useActivities();
+const ActivityList = observer(function ActivityList() {
+  const { activitiesGroup, activitiesLoading, hasNextPage, fetchNextPage } =
+    useActivities();
+  const { inView, ref } = useInView({
+    threshold: 0.5,
+  });
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
   if (activitiesLoading)
     return (
       <Box
@@ -27,12 +38,28 @@ export default function ActivityList() {
   return (
     <Box>
       {activitiesGroup.pages.map((page, idx) => (
-        <Fragment key={idx}>
+        <Box
+          key={idx}
+          ref={idx === activitiesGroup.pages.length - 1 ? ref : null}
+          display={'flex'}
+          flexDirection={'column'}
+          gap={1}
+        >
+          {page.items.length === 0 && (
+            <Typography
+              color="text.secondary"
+              variant="body2"
+              textAlign={'center'}
+            >
+              There are no activities to display at the moment...
+            </Typography>
+          )}
           {page.items.map((activity, index) => (
             <ActivityCard key={index} activity={activity} />
           ))}
-        </Fragment>
+        </Box>
       ))}
     </Box>
   );
-}
+});
+export default ActivityList;

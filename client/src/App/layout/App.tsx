@@ -1,6 +1,6 @@
 import { Box, Container, CssBaseline } from '@mui/material';
 import NavBar from './NavBar';
-import { Outlet } from 'react-router';
+import { Outlet, ScrollRestoration } from 'react-router';
 import { SnackbarProvider } from '../../lib/context/snackbar';
 import { Suspense } from 'react';
 import Loader from '../shared/components/Loader';
@@ -13,12 +13,12 @@ function App() {
           sx={{
             minHeight: '100vh',
             backgroundColor: '#eeeeee',
-            overflow: 'auto',
           }}
         >
+          <ScrollRestoration />
           <CssBaseline />
           <NavBar />
-          <Container maxWidth="lg" sx={{ mt: 5 }}>
+          <Container maxWidth="lg" sx={{ pt: 13 }}>
             <Outlet />
           </Container>
         </Box>

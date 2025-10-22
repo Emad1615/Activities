@@ -2,10 +2,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getActivities } from '../../api/activity';
 import { useUser } from '../account/useUser';
 import { useLocation } from 'react-router';
+import { useStore } from '../shared/useStore';
 
 export const useActivities = () => {
   const { currentUser } = useUser();
   const { pathname } = useLocation();
+  const {
+    activityStore: { Filter, StartDate },
+  } = useStore();
   const {
     data: activitiesGroup,
     error: activitiesError,
@@ -14,11 +18,13 @@ export const useActivities = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery<PagedList<Activity, string>>({
-    queryKey: ['activities'],
-    queryFn: async ({ pageParam = null }) => await getActivities(pageParam),
+    queryKey: ['activities', Filter, StartDate],
+    queryFn: async ({ pageParam = null }) =>
+      await getActivities({ pageParam, Filter, StartDate }),
     enabled: !!currentUser && pathname == '/activities',
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    staleTime: 1000 * 60 * 5,
     select: (data) => ({
       ...data,
       pages: data.pages.map((page) => ({

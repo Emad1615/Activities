@@ -16,14 +16,7 @@ namespace Application.Activities.Queries
         public class Query : IRequest<Result<PagedList<ActivityDTO, DateTime?>>>
         {
 
-            public DateTime? Cursor { get; set; }
-            private int _pageSize = 3;
-
-            public int PageSize
-            {
-                get => _pageSize;
-                set => _pageSize = value > MaximumPageSize ? MaximumPageSize : value;
-            }
+            public required ActivityParams Params { get; set; }
 
         }
         public class Handler(AppDbContext context, ILogger<GetActivitiesList> logger, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<PagedList<ActivityDTO, DateTime?>>>
@@ -47,32 +40,34 @@ namespace Application.Activities.Queries
                 //}
                 #endregion
 
-                var query = context.Activities.OrderBy(x => x.Date).AsQueryable();
-
-                if (request.Cursor.HasValue)
+                var query = context.Activities.OrderBy(x => x.Date)
+                    .Where(x => x.Date >= (request.Params.Cursor ?? request.Params.StartDate))
+                    .AsQueryable();
+                if (!string.IsNullOrEmpty(request.Params.Filter))
                 {
-                    query = query.Where(x => x.Date > request.Cursor.Value);
+
+                    query = request.Params.Filter switch
+                    {
+                        "isHost" => query.Where(x => x.attendees.Any(a => a.IsHost && a.UserId == userAccessor.UserId())),
+                        "isGoing" => query.Where(x => x.attendees.Any(a => a.UserId == userAccessor.UserId())),
+                        _ => query
+                    };
                 }
 
-                var activities = await query
-                    .Take(request.PageSize + 1)
+                var projectedActivities = query.ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.UserId() });
+
+                var activities = await projectedActivities
+                    .Take(request.Params.PageSize + 1)
                     .AsNoTracking()
-                    .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.UserId() }).ToListAsync(cancellationToken);
+                    .ToListAsync(cancellationToken);
 
                 DateTime? nextCursor = null;
-                if (activities.Count > request.PageSize)
+                if (activities.Count > request.Params.PageSize)
                 {
                     nextCursor = activities.Last().Date;
                     activities.RemoveAt(activities.Count - 1);
                 }
 
-
-
-                if (activities.Count() == 0 || activities is null)
-                {
-                    logger.LogInformation("No Activities in Database");
-                    return Result<PagedList<ActivityDTO, DateTime?>>.Failure("No Activities in Database", 404);
-                }
                 return Result<PagedList<ActivityDTO, DateTime?>>.Success(new PagedList<ActivityDTO, DateTime?>() { Items = activities, NextCursor = nextCursor });
             }
         }
