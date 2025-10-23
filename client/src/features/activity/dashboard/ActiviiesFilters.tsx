@@ -89,10 +89,7 @@ const ActiviiesFilters = observer(function ActiviiesFilters() {
           Select Date
         </Typography>
         <Divider sx={{ borderColor: 'default.main', my: 1 }} />
-        <Calendar
-          value={StartDate}
-          onChange={(date) => setStartDate(date as Date)}
-        />
+        <Calendar onChange={(date) => setStartDate(date as Date)} />
       </Paper>
     </Box>
   );

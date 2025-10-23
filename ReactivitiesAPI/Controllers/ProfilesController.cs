@@ -1,4 +1,7 @@
-﻿using Application.Profiles.Commands;
+﻿using Application.Activities.DTOs;
+using Application.Activities.Queries;
+using Application.Core;
+using Application.Profiles.Commands;
 using Application.Profiles.DTOS;
 using Application.Profiles.Queries;
 using Domain;
@@ -36,6 +39,7 @@ namespace API.Controllers
         [HttpPut("UpdateProfile")]
         public async Task<ActionResult> UpdateProfile(UserProfile profile, CancellationToken cancellation)
         {
+
             return HandleResult(await Mediator.Send(new EditProfile.Command { userProfile = profile }, cancellation));
         }
         [HttpPost("{id}/follow")]
@@ -47,6 +51,11 @@ namespace API.Controllers
         public async Task<ActionResult> GetFollowList(string id, string predicate, CancellationToken cancellation)
         {
             return HandleResult(await Mediator.Send(new GetFollowings.Query { UserId = id, Predicate = predicate }, cancellation));
+        }
+        [HttpGet("{userId}/profileUserActivities")]
+        public async Task<ActionResult<PagedList<ActivityDTO, DateTime?>>> GetProfileUserActivities(string userId, [FromQuery] ActivityParams activityParams, CancellationToken cancellation)
+        {
+            return HandleResult(await Mediator.Send(new GetProfileUserActivities.Query { Params = activityParams, UserId = userId }, cancellation));
         }
     }
 }
