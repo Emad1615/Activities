@@ -49,3 +49,26 @@ export const GetFollowingList = async (id: string, predicate: string) => {
     .get<User[]>(`Profiles/${id}/follow-list?predicate=${predicate}`)
     .then((response) => response.data);
 };
+
+export const GetProfileUserActivities = async ({
+  pageParam,
+  filter,
+  userId,
+}: {
+  pageParam: unknown;
+  filter: string;
+  userId: string;
+}) => {
+  return await agent
+    .get<PagedList<Activity, string>>(
+      `Profiles/${userId}/profileUserActivities`,
+      {
+        params: {
+          cursor: pageParam,
+          pageSize: 10,
+          filter: filter,
+        },
+      }
+    )
+    .then((response) => response.data);
+};

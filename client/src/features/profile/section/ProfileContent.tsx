@@ -39,7 +39,7 @@ export default function ProfileContent() {
       </Tabs>
       {/* <Box flexGrow={1}>{tabs[value].tab}</Box> */}
       <Box flexGrow={1}>
-        <GenericTabs activeTabe={value} />
+        <GenericTabs activeTab={value} tabs={tabs} />
       </Box>
     </Box>
   );

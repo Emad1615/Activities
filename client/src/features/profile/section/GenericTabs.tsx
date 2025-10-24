@@ -1,9 +1,8 @@
-import { tabs } from '../mock/tabs';
-
 type Props = {
-  activeTabe: number;
+  activeTab: number;
+  tabs: TabType[];
 };
-export default function GenericTabs({ activeTabe }: Props) {
-  const ActiveComponent = tabs[activeTabe].tab;
-  return <ActiveComponent activeTab={activeTabe} />;
+export default function GenericTabs({ activeTab, tabs }: Props) {
+  const ActiveComponent = tabs[activeTab].tab;
+  return <ActiveComponent activeTab={activeTab} />;
 }

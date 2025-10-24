@@ -22,7 +22,6 @@ namespace Application.Activities.Queries
             public async Task<Result<PagedList<ActivityDTO, DateTime?>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query = context.Activities
-                    .Include(x=>x.attendees)
                     .OrderBy(x => x.Date)
                     .Where(x => x.attendees.Any(x=>x.UserId==request.UserId))
                     .AsQueryable();
@@ -33,8 +32,8 @@ namespace Application.Activities.Queries
                     {
                         "future" => query.Where(x => x.Date >= today),
                         "past" => query.Where(x => x.Date <= today),
-                        "host" => query.Where(x => x.attendees.Any(a => a.IsHost==true)),
-                        _ => query.Where(x => x.attendees.Any(a => a.IsHost==false))
+                        "host" => query.Where(x => x.attendees.Any(a => a.IsHost==true && a.UserId==request.UserId)),
+                        _ => query.Where(x => x.attendees.Any(a => a.IsHost==false && a.UserId == request.UserId))
                     };
                 }
                 var ProjectedActivities = query.ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUserId = request.UserId });

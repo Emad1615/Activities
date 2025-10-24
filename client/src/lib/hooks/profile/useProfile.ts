@@ -1,18 +1,28 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import {
   AddImage,
   DeleteImage,
   EditProfile,
   Follow,
   GetFollowingList,
+  GetProfileUserActivities,
   GetUserPhotos,
   GetUserProfile,
   SetAsMainImage,
 } from '../../api/profile';
 import { useMemo } from 'react';
+import { useStore } from '../shared/useStore';
 
 export const useProfile = (id?: string, predicate?: string) => {
   const queryClient = useQueryClient();
+  const {
+    ProfileEventsStore: { Filter },
+  } = useStore();
 
   const { data: userProfile, isLoading: loadingProfile } = useQuery<User>({
     queryKey: ['profile', id],
@@ -112,6 +122,24 @@ export const useProfile = (id?: string, predicate?: string) => {
     queryFn: async () => await GetFollowingList(id!, predicate!),
     enabled: !!id && !!predicate,
   });
+
+  const {
+    data: activitiesGroup,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<PagedList<Activity, string>>({
+    queryKey: ['profile-user-activities', id],
+    queryFn: async ({ pageParam = null }) =>
+      await GetProfileUserActivities({
+        pageParam,
+        filter: Filter,
+        userId: id!,
+      }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
   return {
     userProfile,
     loadingProfile,
@@ -130,5 +158,9 @@ export const useProfile = (id?: string, predicate?: string) => {
     LoadingFollowToggle,
     FollowingList,
     LoadingFollowingList,
+    activitiesGroup,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   };
 };

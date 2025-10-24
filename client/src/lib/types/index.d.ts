@@ -108,3 +108,8 @@ type Photo = {
   url: string;
   userId: string;
 };
+
+type TabType = {
+  label: string;
+  tab: React.ElementType;
+};
