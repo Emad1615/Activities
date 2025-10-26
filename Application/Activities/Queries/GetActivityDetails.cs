@@ -3,15 +3,9 @@ using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Activities.Queries
 {
@@ -21,11 +15,14 @@ namespace Application.Activities.Queries
         {
             public required string Id { get; set; }
         };
-        public class Handler(AppDbContext context, IMapper mapper,IUserAccessor userAccessor) : IRequestHandler<Query, Result<ActivityDTO>>
+        public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<ActivityDTO>>
         {
             public async Task<Result<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var activity = await context.Activities.ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() }).FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+                var activity = await context.Activities
+                                   .ProjectTo<ActivityDTO>(mapper.ConfigurationProvider, new { currentUser = userAccessor.UserId() })
+                                   .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                 if (activity is null)
                     return Result<ActivityDTO>.Failure("Activity not found", 404);
                 return Result<ActivityDTO>.Success(activity);

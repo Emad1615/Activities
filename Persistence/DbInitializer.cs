@@ -34,7 +34,8 @@ namespace Persistence
                     new (){Type="Add Comment" },
                     new (){Type="Going To Event" },
                     new (){Type="Cancel Attendence" },
-                    new (){ Type="Cancelled Activtiy"}
+                    new (){ Type="Cancelled Activtiy"},
+                    new (){ Type="Follow"}
                 };
                 await context.NotificationTypes.AddRangeAsync(types);
                 await context.SaveChangesAsync();

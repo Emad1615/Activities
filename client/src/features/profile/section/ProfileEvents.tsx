@@ -6,11 +6,16 @@ import { eventTabs } from '../mock/tabs';
 import { Divider, Paper, Typography } from '@mui/material';
 import GenericTabs from './GenericTabs';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '../../../lib/hooks/shared/useStore';
 
 const ProfileEvents = observer(function ProfileEvents() {
+  const {
+    ProfileEventsStore: { setFilter },
+  } = useStore();
   const [value, setValue] = useState(0);
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    setFilter(eventTabs[newValue].type!);
   };
   return (
     <Box sx={{ width: '100%' }}>

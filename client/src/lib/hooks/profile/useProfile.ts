@@ -124,12 +124,13 @@ export const useProfile = (id?: string, predicate?: string) => {
   });
 
   const {
-    data: activitiesGroup,
+    data: userActivitiesGroup,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading: loadingUserProfileActivities,
   } = useInfiniteQuery<PagedList<Activity, string>>({
-    queryKey: ['profile-user-activities', id],
+    queryKey: ['profile-user-activities', id, Filter],
     queryFn: async ({ pageParam = null }) =>
       await GetProfileUserActivities({
         pageParam,
@@ -158,7 +159,8 @@ export const useProfile = (id?: string, predicate?: string) => {
     LoadingFollowToggle,
     FollowingList,
     LoadingFollowingList,
-    activitiesGroup,
+    userActivitiesGroup,
+    loadingUserProfileActivities,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,

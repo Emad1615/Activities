@@ -4,5 +4,6 @@ type Props = {
 };
 export default function GenericTabs({ activeTab, tabs }: Props) {
   const ActiveComponent = tabs[activeTab].tab;
-  return <ActiveComponent activeTab={activeTab} />;
+  const tabType = tabs[activeTab]?.type;
+  return <ActiveComponent activeTab={activeTab} type={tabType} />;
 }

@@ -15,7 +15,7 @@ import { useStore } from '../../../lib/hooks/shared/useStore';
 
 const ActiviiesFilters = observer(function ActiviiesFilters() {
   const {
-    activityStore: { setFilter, setStartDate, Filter, StartDate },
+    activityStore: { setFilter, setStartDate, Filter },
   } = useStore();
   return (
     <Box display={'flex'} flexDirection={'column'} gap={3}>

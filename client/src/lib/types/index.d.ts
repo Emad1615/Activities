@@ -112,4 +112,5 @@ type Photo = {
 type TabType = {
   label: string;
   tab: React.ElementType;
+  type?: string;
 };

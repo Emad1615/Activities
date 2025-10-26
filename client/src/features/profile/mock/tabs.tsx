@@ -1,3 +1,7 @@
+import FutureEvents from '../section/FutureEvents';
+import GoingEvents from '../section/GoingEvents';
+import HostingEvents from '../section/HostingEvents';
+import PastEvents from '../section/PastEvents';
 import ProfileAbout from '../section/ProfileAbout';
 import ProfileEvents from '../section/ProfileEvents';
 import ProfileFollow from '../section/ProfileFollow';
@@ -13,9 +17,9 @@ export const tabs: TabType[] = [
 ];
 
 export const eventTabs: TabType[] = [
-  { label: 'Future Events', tab: 'div' },
-  { label: 'Past Events', tab: 'div' },
-  { label: 'Hosting Events', tab: 'div' },
-  { label: 'Going Events', tab: 'div' },
-  { label: 'Events Report', tab: ActivitiesTable },
+  { label: 'Future Events', tab: FutureEvents, type: 'future' },
+  { label: 'Past Events', tab: PastEvents, type: 'past' },
+  { label: 'Hosting Events', tab: HostingEvents, type: 'host' },
+  { label: 'Going Events', tab: GoingEvents, type: 'going' },
+  { label: 'Events Report', tab: ActivitiesTable, type: 'report' },
 ];
