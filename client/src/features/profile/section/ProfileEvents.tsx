@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { eventTabs } from '../mock/tabs';
-import { Divider, Paper, Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import GenericTabs from './GenericTabs';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../../lib/hooks/shared/useStore';
@@ -34,9 +34,9 @@ const ProfileEvents = observer(function ProfileEvents() {
           Events
         </Typography>
       </Divider>
-      <Paper elevation={1} sx={{ p: 2, borderRadius: 2, my: 1 }}>
+      <Box sx={{ p: 2, my: 1 }}>
         <GenericTabs activeTab={value} tabs={eventTabs} />
-      </Paper>
+      </Box>
     </Box>
   );
 });
