@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: '../ReactivitiesAPI/wwwroot',
     emptyOutDir: true,
     chunkSizeWarningLimit: 1500,
+    cssCodeSplit: true,
   },
   server: {
     port: 3000,
