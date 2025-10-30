@@ -1,11 +1,11 @@
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid, Skeleton, Typography } from '@mui/material';
 import { useProfile } from '../../../lib/hooks/profile/useProfile';
 import { useParams } from 'react-router';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import MiniActivityCard from '../../../App/shared/components/MiniActivityCard';
 
-export default function FutureEvents() {
+export default function Events() {
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -38,19 +38,30 @@ export default function FutureEvents() {
   return (
     <Box sx={{ overflowY: 'auto', height: 375, p: 1 }}>
       {userActivitiesGroup?.pages.map((page, idx) => (
-        <Box
-          key={idx}
-          display={'grid'}
-          gridTemplateColumns={'repeat(auto-fit,minmax(210px, 1fr))'}
-          gap={2}
-          justifyContent={'center'}
-          alignItems={'flex-start'}
-          ref={idx === userActivitiesGroup.pages.length - 1 ? ref : null}
-        >
-          {page.items.map((activity, index) => (
-            <MiniActivityCard key={index} activity={activity} />
-          ))}
-        </Box>
+        <>
+          {page.items.length === 0 && (
+            <Typography
+              variant="body2"
+              color="text.disabled"
+              textAlign={'center'}
+            >
+              No activities not found...
+            </Typography>
+          )}
+          <Box
+            key={idx}
+            display={'grid'}
+            gridTemplateColumns={'repeat(auto-fit,minmax(210px, 1fr))'}
+            gap={2}
+            justifyContent={'center'}
+            alignItems={'flex-start'}
+            ref={idx === userActivitiesGroup.pages.length - 1 ? ref : null}
+          >
+            {page.items.map((activity, index) => (
+              <MiniActivityCard key={index} activity={activity} />
+            ))}
+          </Box>
+        </>
       ))}
     </Box>
   );
