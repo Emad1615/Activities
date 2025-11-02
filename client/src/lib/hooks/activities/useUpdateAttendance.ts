@@ -12,7 +12,6 @@ export default function useUpdateAttendance(id: string) {
   } = useMutation({
     mutationFn: async () => await UpdateAttendance(id),
     onMutate: async () => {
-      console.log('(onMutate) Current Activity ID: ', id);
       await queryClient.cancelQueries({
         queryKey: ['activities', id],
       });

@@ -31,7 +31,9 @@ namespace Application.Core
             CreateMap<UserApplication, UserProfile>()
                            .ForMember(x => x.Following, o => o.MapFrom(x => x.Followers.Any(f => f.Observer.Id == currentUserId)))
                            .ForMember(d => d.FollowersCount, o => o.MapFrom(x => x.Followers.Count))
-                           .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.Followings.Count)); CreateMap<Comment, CommentDTO>()
+                           .ForMember(d => d.FollowingCount, o => o.MapFrom(x => x.Followings.Count))
+                           .ForMember(d=>d.IsCurrentUser,o=>o.MapFrom(x=>x.Id==currentUserId)); 
+            CreateMap<Comment, CommentDTO>()
                 .ForMember(d => d.UserId, o => o.MapFrom(x => x.User.Id))
                 .ForMember(d => d.DisplayName, o => o.MapFrom(x => x.User.UserName))
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(x => x.User.ImageUrl));

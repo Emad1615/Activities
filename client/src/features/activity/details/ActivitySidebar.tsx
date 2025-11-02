@@ -68,7 +68,7 @@ export default function ActivitySidebar({ activity }: Props) {
                         color="inherit"
                         primary={att.displayName}
                         secondary={
-                          activity.hostUserId == att.id ? (
+                          att.isHost ? (
                             <Typography
                               variant="caption"
                               fontSize={'.7rem'}
@@ -82,7 +82,7 @@ export default function ActivitySidebar({ activity }: Props) {
                               fontSize={'.7rem'}
                               color="info"
                               fontWeight={500}
-                              children={' Hosting'}
+                              children={' Going'}
                             />
                           )
                         }

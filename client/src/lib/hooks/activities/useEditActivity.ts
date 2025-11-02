@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Activity } from "../../types";
-import { editActivity } from "../../api/activity";
-import { useSnackbar } from "../shared/useSnackbar";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { editActivity } from '../../api/activity';
+import { useSnackbar } from '../shared/useSnackbar';
 
 export const useEditActivity = () => {
   const queryClient = useQueryClient();
@@ -18,12 +17,12 @@ export const useEditActivity = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["activities"],
+        queryKey: ['activities'],
       });
-      showSnackbar("Activity updated successfully!", "success");
+      showSnackbar('Activity updated successfully!', 'success');
     },
     onError: (error: Error) => {
-      showSnackbar(`Error deleting activity: ${error.message}`, "error", 5000);
+      showSnackbar(`Error deleting activity: ${error.message}`, 'error', 5000);
     },
   });
   return { updateActivity, isLoadingEditActivity, errorEditActivity };

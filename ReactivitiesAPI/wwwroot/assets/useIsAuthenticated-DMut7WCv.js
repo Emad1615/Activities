@@ -1,0 +1,1 @@
+import{aM as a}from"./index-8ijlVFhB.js";import{i}from"./index-ByiQdw6l.js";const n=()=>{const{data:t,isLoading:e}=a({queryKey:["isAuthenticated"],queryFn:async()=>await i()});return{isAuthenticated:t,isLoading:e}};export{n as u};

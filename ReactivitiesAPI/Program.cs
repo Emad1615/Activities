@@ -99,10 +99,13 @@ app.UseCors(option =>
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<UserApplication>();
 app.MapHub<CommentHub>("/comments");
 app.MapHub<NotificationHub>("/notifications");
+app.MapFallbackToController("Index", "Fallback");
 // this code for update or create database tables
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

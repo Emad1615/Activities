@@ -99,7 +99,7 @@ export default function ActivityHeader({ activity }: Props) {
             {activity.IsHost ? (
               <>
                 <StyledButton
-                  onClick={() => attendanceAction()}
+                  onClick={() => attendanceAction(undefined)}
                   variant="contained"
                   color={`${activity.isCancelled ? 'secondary' : 'error'}`}
                   size="small"
@@ -126,7 +126,7 @@ export default function ActivityHeader({ activity }: Props) {
                   color={`${activity.IsGoing ? 'warning' : 'info'}`}
                   size="small"
                   sx={{ textTransform: 'uppercase', fontSize: '12px' }}
-                  onClick={() => attendanceAction()}
+                  onClick={() => attendanceAction(undefined)}
                   disabled={isPending || activity.isCancelled}
                 >
                   {activity.IsGoing ? 'Cancel Attendance' : 'Join Activity'}

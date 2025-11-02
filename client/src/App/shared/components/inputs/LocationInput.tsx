@@ -6,17 +6,14 @@ import {
   ListItemButton,
   TextField,
   type TextFieldProps,
-} from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+} from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import {
   useController,
   type FieldValues,
   type UseControllerProps,
-} from "react-hook-form";
-import type {
-  LocationIQSuggestions,
-} from "../../../../lib/types";
-import axios from "axios";
+} from 'react-hook-form';
+import axios from 'axios';
 
 type Props<T extends FieldValues> = {} & UseControllerProps<T> & TextFieldProps;
 export default function LocationInput<T extends FieldValues>(props: Props<T>) {
@@ -28,10 +25,10 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
     import.meta.env.VITE_LOCATION_IQ_ACCESS_TOKEN
   }&limit=5&dedupe=1&`;
   useEffect(() => {
-    if (field.value && typeof field.value === "object") {
-      setInputValue(field.value.venue || "");
+    if (field.value && typeof field.value === 'object') {
+      setInputValue(field.value.venue || '');
     } else {
-      setInputValue(field.value || "");
+      setInputValue(field.value || '');
     }
   }, [field]);
   const fetchSuggestionLocation = useMemo(
@@ -61,7 +58,7 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
   };
   const handleSelect = (data: LocationIQSuggestions) => {
     const city =
-      data.address?.city || data.address?.town  || data.address?.village;
+      data.address?.city || data.address?.town || data.address?.village;
     const venue = data.display_name;
     const latitude = data.lat;
     const longitude = data.lon;
@@ -75,7 +72,7 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
     setSuggestions([]);
   };
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={1}>
+    <Box display={'flex'} flexDirection={'column'} gap={1}>
       <TextField
         {...props}
         {...field}

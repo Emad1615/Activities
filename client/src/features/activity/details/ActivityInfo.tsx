@@ -1,7 +1,6 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
-import { PlaceOutlined, AccessTime, Note } from "@mui/icons-material";
-import type { Activity } from "../../../lib/types";
-import { fnFormat } from "../../../lib/utils/helper";
+import { Box, Grid, Paper, Typography } from '@mui/material';
+import { PlaceOutlined, AccessTime, Note } from '@mui/icons-material';
+import { fnFormat } from '../../../lib/utils/helper';
 
 type Props = {
   activity: Activity;
