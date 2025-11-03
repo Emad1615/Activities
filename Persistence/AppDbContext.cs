@@ -59,7 +59,7 @@ namespace Persistence
                 .HasOne(x => x.Target)
                 .WithMany(x => x.Followers)
                 .HasForeignKey(x => x.TargetId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
                 
 
             var DateTimeConveter = new ValueConverter<DateTime, DateTime>(
