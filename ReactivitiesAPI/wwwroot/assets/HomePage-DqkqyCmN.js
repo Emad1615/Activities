@@ -1,1 +1,0 @@
-import{j as e,W as t}from"./index-8ijlVFhB.js";function r(){return e.jsx(t,{textAlign:"center",children:"home page will complete it the end of course new feature not exist ...."})}export{r as default};

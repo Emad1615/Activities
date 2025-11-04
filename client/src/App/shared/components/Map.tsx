@@ -1,15 +1,17 @@
-import { Box, Skeleton } from "@mui/material";
-import { Marker, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { lazy, Suspense } from "react";
+import { Box, Skeleton } from '@mui/material';
+import { Marker, Popup, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Icon } from 'leaflet';
+import IconMaker from 'leaflet/dist/images/marker-icon.png';
+import { lazy, Suspense } from 'react';
 const LazyMapContainer = lazy(() =>
-  import("react-leaflet").then((module) => ({ default: module.MapContainer }))
+  import('react-leaflet').then((module) => ({ default: module.MapContainer }))
 );
-type Props={
-  position:[number,number],
-  venue:string
-}
-export default function Map({position,venue}:Props) {
+type Props = {
+  position: [number, number];
+  venue: string;
+};
+export default function Map({ position, venue }: Props) {
   const renderFallback = () => (
     <Skeleton
       variant="rectangular"
@@ -18,7 +20,7 @@ export default function Map({position,venue}:Props) {
         left: 0,
         width: 1,
         height: 1,
-        position: "absolute",
+        position: 'absolute',
       }}
     />
   );
@@ -31,13 +33,9 @@ export default function Map({position,venue}:Props) {
           scrollWheelZoom={false}
           style={{ height: 330 }}
         >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={position}>
-            <Popup>
-              {venue}
-            </Popup>
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker position={position} icon={new Icon({ iconUrl: IconMaker })}>
+            <Popup>{venue}</Popup>
           </Marker>
         </LazyMapContainer>
       </Suspense>

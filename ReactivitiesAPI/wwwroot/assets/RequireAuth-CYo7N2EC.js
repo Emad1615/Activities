@@ -1,1 +1,0 @@
-import{aa as i,j as t,W as e,aO as r,a1 as n}from"./index-8ijlVFhB.js";import{u}from"./useIsAuthenticated-DMut7WCv.js";import"./index-ByiQdw6l.js";function p(){const{isAuthenticated:a,isLoading:o}=u(),s=i();return o?t.jsx(e,{children:"Loading..."}):a?t.jsx(n,{}):t.jsx(r,{to:"/login",state:{from:s}})}export{p as default};

@@ -58,7 +58,7 @@ export function RenderCellCategory({ params }: { params: GridCellParams }) {
   };
   const { label, color } =
     categoryOptions[category as keyof typeof categoryOptions] ||
-    categoryOptions['Drinks' as keyof typeof categoryOptions];
+    categoryOptions['drinks' as keyof typeof categoryOptions];
   return (
     <CustomCell>
       <Chip size="small" color={color} variant="outlined" label={label} />

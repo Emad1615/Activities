@@ -64,7 +64,7 @@ namespace Persistence
                     Title = "Holla at me",
                     Date = DateTime.Now.AddMonths(-1),
                     Description = "Activity 1 month ago",
-                    Category = "drink",
+                    Category = "drinks",
                     City = "Paris",
                     Venue = "Louvre",
                     latitude= 51.5074,
