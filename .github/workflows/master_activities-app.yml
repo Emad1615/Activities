@@ -23,8 +23,9 @@ jobs:
         with:
           node-version: "20"
       - name: Install deps and build react app
-        run: cd client
-          npm Install
+        run: |
+          cd client
+          npm install
           npm run build
 
       - name: Set up .NET Core
