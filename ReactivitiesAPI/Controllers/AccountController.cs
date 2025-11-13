@@ -3,10 +3,12 @@ using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace API.Controllers
 {
-    public class AccountController(SignInManager<UserApplication> signInManager) : BaseApiController
+    public class AccountController(SignInManager<UserApplication> signInManager,IEmailSender<UserApplication> emailSender,IConfiguration config) : BaseApiController
     {
         [AllowAnonymous]
         [HttpPost("register")]
@@ -19,7 +21,11 @@ namespace API.Controllers
                 Email = registerDTO.Email,
             };
             var result = await signInManager.UserManager.CreateAsync(user, registerDTO.Password);
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded) 
+            {
+                await SendConfirmationEmailAsync(user, registerDTO.Email);
+                return Ok();
+            }
 
             foreach (var item in result.Errors)
             {
@@ -27,6 +33,23 @@ namespace API.Controllers
             }
             return ValidationProblem();
         }
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult> ResendConfirmationEmail(string email)
+        {
+            var user = await signInManager.UserManager.FindByEmailAsync(email);
+            if (user is null) return BadRequest("User not found");
+            await SendConfirmationEmailAsync(user, email);
+            return Ok();
+        }
+        private async Task SendConfirmationEmailAsync(UserApplication user, string email)
+        {
+            var code = await signInManager.UserManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var confirmationLink = $"{config["frontend_urls"]}/confirm-email?userId={user.Id}&code={code}";
+            await emailSender.SendConfirmationLinkAsync(user, email, confirmationLink);
+        }
+
         [HttpGet("user-info")]
         public async Task<ActionResult> UserInfo()
         {

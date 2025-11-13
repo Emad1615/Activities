@@ -7,6 +7,7 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure.EmailService;
 using Infrastructure.Photo;
 using Infrastructure.Security;
 using MediatR;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,16 @@ builder.Services.AddMediatR(x =>
     x.RegisterServicesFromAssemblyContaining<GetActivitiesList.Handler>();
     x.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 });
+
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(option =>
+{
+    option.ApiToken = builder.Configuration["Resend:ApiToken"]!;
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+builder.Services.AddTransient<IEmailSender<UserApplication>, EmailSender>();
+
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
