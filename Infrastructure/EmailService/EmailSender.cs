@@ -11,9 +11,9 @@ namespace Infrastructure.EmailService
             var subject = "E-mail confirmation 😉";
             var body = $@"
                           <p>Hi {user.UserName} 👋</p>
-                          <p>Please Confirme you email account by click on the below link ⬇️</p>
+                          <p>Please Confirm you email account by click on the below link ⬇️</p>
                           <p><a type='button' href={confirmationLink} style='padding:15px 30px;color:white;border:none;background-color:tomato'>Click Me my bro</a></p>
-                          <p>Thanks my bro 😍</p>
+                          <p>Thanks bro 😍</p>
                         ";
             await SendEmailAsync(email, subject, body);
         }
@@ -38,7 +38,7 @@ namespace Infrastructure.EmailService
                 HtmlBody = body
             };
             message.To.Add(email);
-            //await resend.EmailSendAsync(message); 
+            await resend.EmailSendAsync(message); 
             Console.WriteLine(message.HtmlBody);
         }
     }

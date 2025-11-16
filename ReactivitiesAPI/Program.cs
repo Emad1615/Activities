@@ -66,13 +66,14 @@ builder.Services.AddTransient<ExceptionMiddleware>();
 //for asp.netCore.identity
 builder.Services.AddIdentityApiEndpoints<UserApplication>(opt =>
 {
-    opt.User.RequireUniqueEmail = true;
     opt.Password.RequiredUniqueChars = 0;
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequireDigit = false;
     opt.Password.RequireLowercase = false;
     opt.Password.RequireUppercase = false;
     opt.Password.RequiredLength = 4;
+    opt.User.RequireUniqueEmail = true;
+    opt.SignIn.RequireConfirmedEmail = true;    
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 builder.Services.ConfigureApplicationCookie(option =>
 {

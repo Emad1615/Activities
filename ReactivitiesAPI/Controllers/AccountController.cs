@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace API.Controllers
@@ -34,10 +35,12 @@ namespace API.Controllers
             return ValidationProblem();
         }
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult> ResendConfirmationEmail(string email)
+        [HttpGet("ResendConfirmationEmail")]
+        public async Task<ActionResult> ResendConfirmationEmail(string email, string userId)
         {
-            var user = await signInManager.UserManager.FindByEmailAsync(email);
+            if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(userId))
+                return BadRequest("No email or userId not found");
+            var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(x => x.Id == userId || x.Email == email);
             if (user is null) return BadRequest("User not found");
             await SendConfirmationEmailAsync(user, email);
             return Ok();
