@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { resendEmailConfirmationLink } from '../../api/account';
+import { AxiosError, type AxiosResponse } from 'axios';
 
 export const useResendEmailConfirmation = () => {
   const {
@@ -7,14 +8,13 @@ export const useResendEmailConfirmation = () => {
     isPending,
     error,
     isError,
-  } = useMutation({
-    mutationFn: async ({
-      email,
-      userId,
-    }: {
-      email?: string;
-      userId?: string | null;
-    }) => resendEmailConfirmationLink({ email, userId }),
+  } = useMutation<
+    AxiosResponse<unknown>,
+    AxiosError,
+    { email?: string; userId?: string | null }
+  >({
+    mutationFn: async ({ email, userId }) =>
+      resendEmailConfirmationLink({ email, userId }),
   });
   return { resendEmailConfirmation, isPending, error, isError };
 };

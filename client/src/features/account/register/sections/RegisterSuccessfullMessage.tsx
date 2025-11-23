@@ -1,14 +1,14 @@
 import { Alert, Box, Button, Divider, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useResendEmailConfirmation } from '../../../../lib/hooks/account/useResendEmailConfirmation';
+import { Link } from 'react-router';
 
 type Props = {
   email?: string;
 };
 export default function RegisterSuccessfullMessage({ email }: Props) {
-  const { resendEmailConfirmation, isPending, error, isError } =
+  const { resendEmailConfirmation, isPending, isError, error } =
     useResendEmailConfirmation();
-  console.log(error);
   return (
     <Box
       display={'flex'}
@@ -35,16 +35,42 @@ export default function RegisterSuccessfullMessage({ email }: Props) {
         . Please check your inbox and click on the confirmation link to activate
         your account.
       </Typography>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="medium"
-        onClick={() => resendEmailConfirmation({ email })}
-        disabled={isPending}
+      <Box
+        display={'flex'}
+        justifyContent={'center'}
+        alignItems={'center'}
+        flexDirection={'column'}
+        gap={1}
       >
-        Resend
-      </Button>
-      {isError && <Alert severity="error">{error?.response?.data}</Alert>}
+        <Button
+          variant="outlined"
+          color="primary"
+          size="medium"
+          sx={{ px: 5 }}
+          onClick={() => resendEmailConfirmation({ email })}
+          disabled={isPending}
+        >
+          Resend
+        </Button>
+        <Typography
+          component={Link}
+          children={'Back to login'}
+          to={'/login'}
+          sx={{
+            color: 'text.default',
+            fontSize: '12px',
+            textDecoration: 'none',
+          }}
+        />
+      </Box>
+
+      {isError && error && (
+        <Alert severity="error">
+          {typeof error.response?.data === 'string'
+            ? error.response.data
+            : 'Error occurred while resending email.'}
+        </Alert>
+      )}
     </Box>
   );
 }
