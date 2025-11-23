@@ -12,7 +12,7 @@ namespace Infrastructure.EmailService
             var body = $@"
                           <p>Hi {user.UserName} 👋</p>
                           <p>Please Confirm you email account by click on the below link ⬇️</p>
-                          <p><a type='button' href={confirmationLink} style='padding:15px 30px;color:white;border:none;background-color:tomato'>Click Me my bro</a></p>
+                          <p><a type='button' href={confirmationLink} style='padding:10px 30px;color:white;border:none;background-color:tomato;margin:8px'>Click Me my bro</a></p>
                           <p>Thanks bro 😍</p>
                         ";
             await SendEmailAsync(email, subject, body);

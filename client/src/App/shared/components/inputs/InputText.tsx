@@ -20,9 +20,10 @@ export default function InputText<T extends FieldValues>({
       {...props}
       id={id}
       value={field.value || ''}
-      variant="outlined"
+      variant="filled"
       error={!!fieldState.error}
       helperText={fieldState.error?.message}
+      size="small"
     />
   );
 }

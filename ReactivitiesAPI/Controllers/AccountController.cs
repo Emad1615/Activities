@@ -36,13 +36,13 @@ namespace API.Controllers
         }
         [AllowAnonymous]
         [HttpGet("ResendConfirmationEmail")]
-        public async Task<ActionResult> ResendConfirmationEmail(string email, string userId)
+        public async Task<ActionResult> ResendConfirmationEmail(string? email, string? userId)
         {
             if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(userId))
                 return BadRequest("No email or userId not found");
             var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(x => x.Id == userId || x.Email == email);
-            if (user is null) return BadRequest("User not found");
-            await SendConfirmationEmailAsync(user, email);
+            if (user is null || user.Email is null) return BadRequest("User not found");
+            await SendConfirmationEmailAsync(user, user.Email);
             return Ok();
         }
         private async Task SendConfirmationEmailAsync(UserApplication user, string email)
