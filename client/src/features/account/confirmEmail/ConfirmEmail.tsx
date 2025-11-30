@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 export default function ConfirmEmail() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+  const code = searchParams.get('code');
   const userId = searchParams.get('userId');
   const { confirmEmail, isError, isPending, isSuccess } = useConfirmEmail();
   const { resendEmailConfirmation } = useResendEmailConfirmation();
@@ -28,10 +28,10 @@ export default function ConfirmEmail() {
     );
   };
   useEffect(() => {
-    if (token && userId) {
-      confirmEmail({ token, userId });
+    if (code && userId) {
+      confirmEmail({ code, userId });
     }
-  }, [token, userId, confirmEmail]);
+  }, [code, userId, confirmEmail]);
   return (
     <Box
       sx={{

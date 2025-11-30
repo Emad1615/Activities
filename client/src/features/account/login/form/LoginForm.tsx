@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Typography } from '@mui/material';
+import { Alert, Box, Button, Collapse, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginSchema } from './loginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +13,8 @@ export default function LoginForm() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [notVerified, setNotVerified] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [LoginStatus, setLoginStatus] = useState('');
   const {
     resendEmailConfirmation,
     isPending: isPendingConfirmation,
@@ -40,6 +42,10 @@ export default function LoginForm() {
       },
       onError: (errors) => {
         if (errors.message === 'NotAllowed') setNotVerified(true);
+        if (errors.message === 'Failed') {
+          setLoginStatus('Login failed. Please check your credentials.');
+          setOpen(true);
+        } else setLoginStatus('');
         if (Array.isArray(errors)) {
           errors.forEach((error) => {
             if (error.include('email')) setError('email', { message: error });
@@ -61,6 +67,13 @@ export default function LoginForm() {
       width={'100%'}
       onSubmit={handleSubmit(onSubmit)}
     >
+      {LoginStatus && (
+        <Collapse in={open}>
+          <Alert severity="error" onClose={() => setOpen(false)}>
+            {LoginStatus}
+          </Alert>
+        </Collapse>
+      )}
       <InputText label="Email" name="email" control={control} />
       <InputText
         type="password"

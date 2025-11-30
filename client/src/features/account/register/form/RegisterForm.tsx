@@ -45,7 +45,7 @@ export default function RegisterForm() {
   };
   return (
     <>
-      {!isSuccess ? (
+      {isSuccess ? (
         <RegisterSuccessfullMessage email={email} />
       ) : (
         <>

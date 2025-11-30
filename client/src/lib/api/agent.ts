@@ -40,6 +40,8 @@ agent.interceptors.response.use(
       case 401: // Unauthorized
         if (data.detail === 'NotAllowed') {
           throw new Error(data.detail);
+        } else if (data.detail === 'Failed') {
+          throw new Error(data.detail);
         } else {
           toast.error('Unauthorized');
         }

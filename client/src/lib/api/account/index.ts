@@ -42,14 +42,14 @@ export const resendEmailConfirmationLink = async ({
 };
 export const confirmEmail = async ({
   userId,
-  token,
+  code,
 }: {
   userId: string;
-  token: string;
+  code: string;
 }) => {
   return await agent
     .get('/confirmEmail', {
-      params: { userId, token },
+      params: { userId, code },
     })
     .then((response) => response.data);
 };

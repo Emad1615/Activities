@@ -10,8 +10,8 @@ export const useConfirmEmail = () => {
     isSuccess,
     isError,
     isIdle,
-  } = useMutation<unknown, AxiosError, { userId: string; token: string }>({
-    mutationFn: async ({ userId, token }) => confirmEmailApi({ userId, token }),
+  } = useMutation<unknown, AxiosError, { userId: string; code: string }>({
+    mutationFn: async ({ userId, code }) => confirmEmailApi({ userId, code }),
   });
   return { confirmEmail, isPending, error, isError, isSuccess, isIdle };
 };
