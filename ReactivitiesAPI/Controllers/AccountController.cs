@@ -9,7 +9,7 @@ using System.Text;
 
 namespace API.Controllers
 {
-    public class AccountController(SignInManager<UserApplication> signInManager,IEmailSender<UserApplication> emailSender,IConfiguration config) : BaseApiController
+    public class AccountController(SignInManager<UserApplication> signInManager, IEmailSender<UserApplication> emailSender, IConfiguration config) : BaseApiController
     {
         [AllowAnonymous]
         [HttpPost("register")]
@@ -22,7 +22,7 @@ namespace API.Controllers
                 Email = registerDTO.Email,
             };
             var result = await signInManager.UserManager.CreateAsync(user, registerDTO.Password);
-            if (result.Succeeded) 
+            if (result.Succeeded)
             {
                 await SendConfirmationEmailAsync(user, registerDTO.Email);
                 return Ok();
@@ -61,7 +61,7 @@ namespace API.Controllers
             if (user == null) return NoContent();
             return Ok(new UserApplication
             {
-                Id=user.Id,
+                Id = user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email,
                 ImageUrl = user.ImageUrl,
@@ -83,5 +83,19 @@ namespace API.Controllers
         {
             return Ok(User.Identity?.IsAuthenticated);
         }
+        [HttpPost("change-password")]
+        public async Task<ActionResult> ChangePassord(ChangePasswordDTO changePasswordDTO)
+        {
+            var user = await signInManager.UserManager.GetUserAsync(User);
+            if (user is null) return Unauthorized();
+            var result = await signInManager.UserManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
+            if (result.Succeeded) return Ok();
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Description);
+            }
+            return ValidationProblem();
+        }
+
     }
 }

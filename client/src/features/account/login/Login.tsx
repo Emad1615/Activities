@@ -6,15 +6,14 @@ import { useEffect } from 'react';
 import { useIsAuthenticated } from '../../../lib/hooks/account/useIsAuthenticated';
 
 export default function Login() {
-  const location=useLocation();
-  const navigate=useNavigate();
-  const {isAuthenticated,isLoading}=useIsAuthenticated()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useIsAuthenticated();
 
-
-  useEffect(()=>{
-    if(location.pathname==='/login' && isAuthenticated && !isLoading)
-        navigate(-1)
-  },[location,isAuthenticated,navigate,isLoading])
+  useEffect(() => {
+    if (location.pathname === '/login' && isAuthenticated && !isLoading)
+      navigate(-1);
+  }, [location, isAuthenticated, navigate, isLoading]);
   return (
     <Paper
       elevation={3}

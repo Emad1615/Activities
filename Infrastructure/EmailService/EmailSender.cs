@@ -1,10 +1,11 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Resend;
 
 namespace Infrastructure.EmailService
 {
-    public class EmailSender(IResend resend) : IEmailSender<UserApplication>
+    public class EmailSender(IResend resend, IConfiguration configuration) : IEmailSender<UserApplication>
     {
         public async Task SendConfirmationLinkAsync(UserApplication user, string email, string confirmationLink)
         {
@@ -18,11 +19,24 @@ namespace Infrastructure.EmailService
             await SendEmailAsync(email, subject, body);
         }
 
-       
 
-        public Task SendPasswordResetCodeAsync(UserApplication user, string email, string resetCode)
+
+        public async Task SendPasswordResetCodeAsync(UserApplication user, string email, string resetCode)
         {
-            throw new NotImplementedException();
+            var subject = "Password Reset Code 🔐";
+            var body = $@"
+                          <p>Hi {user.UserName} 👋</p>
+                          <p>Your password reset code is ⬇️</p>
+                          <p><a type='button' href='{configuration["frontend_urls"]}/reset-password?email={email}&resetCode={resetCode}' 
+                                style='padding:8px 28;color:white;border:none;background-color:#10b75b;margin:12px'>
+                             Click me to reset password 🔗
+                            </a>
+                          </p>
+                          <p>If you didn't request a password reset, please ignore this email.</p>
+                          <p>Thanks bro 😍</p>
+                        ";
+            await SendEmailAsync(email, subject, body);
+
         }
 
         public Task SendPasswordResetLinkAsync(UserApplication user, string email, string resetLink)
@@ -38,8 +52,9 @@ namespace Infrastructure.EmailService
                 HtmlBody = body
             };
             message.To.Add(email);
-            await resend.EmailSendAsync(message); 
+            //await resend.EmailSendAsync(message);
             Console.WriteLine(message.HtmlBody);
+            await Task.CompletedTask;
         }
     }
 }
