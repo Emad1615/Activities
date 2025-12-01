@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router';
 import ProfilePage from '../../features/profile/ProfilePage';
 import ConfirmEmail from '../../features/account/confirmEmail/ConfirmEmail';
+import ChangePasswordForm from '../../features/account/changePassword/ChangePasswordForm';
 const App = lazy(() => import('../layout/App'));
 const HomePage = lazy(() => import('../../features/home/HomePage'));
 const ActivitiesPage = lazy(
@@ -47,6 +48,10 @@ export const routes = createBrowserRouter([
           {
             path: 'profile/:id',
             element: <ProfilePage />,
+          },
+          {
+            path: 'change-password',
+            element: <ChangePasswordForm />,
           },
         ],
       },

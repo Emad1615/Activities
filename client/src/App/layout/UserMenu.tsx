@@ -77,7 +77,7 @@ export default function UserMenu({ DisplayName, ImageUrl, UserId }: Props) {
           <ListItemText>Activities management</ListItemText>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem component={Link} to="/change-password" onClick={handleClose}>
           <ListItemIcon>
             <ChangeCircle />
           </ListItemIcon>

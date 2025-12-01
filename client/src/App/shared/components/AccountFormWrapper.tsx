@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Typography } from '@mui/material';
+import { Box, Button, Divider, Paper, Typography } from '@mui/material';
 import {
   FormProvider,
   useForm,
@@ -9,8 +9,10 @@ type Props<TFormData extends FieldValues> = {
   icon?: React.ReactNode;
   title?: string;
   children: React.ReactNode;
-  onSubmit?: (data: TFormData) => void;
-  resolver: Resolver<TFormData>;
+  onSubmit: (data: TFormData) => void;
+  resolver?: Resolver<TFormData>;
+  reset: boolean;
+  SubmitButtonText: string;
 };
 
 export default function AccountFormWrapper<TFormData extends FieldValues>({
@@ -19,8 +21,16 @@ export default function AccountFormWrapper<TFormData extends FieldValues>({
   children,
   resolver,
   onSubmit,
+  reset,
+  SubmitButtonText,
 }: Props<TFormData>) {
   const methods = useForm<TFormData>({ resolver, mode: 'onTouched' });
+  const handleOnSubmit = (data: TFormData) => {
+    onSubmit(data);
+    if (reset) {
+      methods.reset();
+    }
+  };
   return (
     <FormProvider {...methods}>
       <Paper
@@ -44,7 +54,19 @@ export default function AccountFormWrapper<TFormData extends FieldValues>({
             {title}
           </Typography>
           <Divider color="secondary" />
-          <form onSubmit={methods.handleSubmit(() => {})}>{children}</form>
+          <form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+            {children}
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={
+                !methods.formState.isValid || methods.formState.isSubmitting
+              }
+              sx={{ textAlign: 'center', display: 'block', mx: 'auto', mt: 2 }}
+            >
+              {SubmitButtonText}
+            </Button>
+          </form>
         </Box>
       </Paper>
     </FormProvider>
