@@ -1,3 +1,4 @@
+import type { ChangePasswordSchema } from '../../../features/account/changePassword/changePasswordSchema';
 import type { LoginSchema } from '../../../features/account/login/form/loginSchema';
 import type { RegisterSchema } from '../../../features/account/register/form/registerSchema';
 import { agent } from '../agent';
@@ -52,4 +53,19 @@ export const confirmEmail = async ({
       params: { userId, code },
     })
     .then((response) => response.data);
+};
+
+export const changePassword = async (data: ChangePasswordSchema) => {
+  return await agent
+    .post('/Account/change-password', data)
+    .then((response) => response.data);
+};
+
+export const forgotPassword = async ({ email }: { email: string }) => {
+  return await agent
+    .post('/forgotPassword', { email })
+    .then((response) => response.data);
+};
+export const resetPassword = async (data: ResetPassword) => {
+  await agent.post('/resetPassword', data).then((response) => response.data);
 };

@@ -9,7 +9,7 @@ type Props<TFormData extends FieldValues> = {
   icon?: React.ReactNode;
   title?: string;
   children: React.ReactNode;
-  onSubmit: (data: TFormData) => void;
+  onSubmit: (data: TFormData) => Promise<void>;
   resolver?: Resolver<TFormData>;
   reset: boolean;
   SubmitButtonText: string;
@@ -25,8 +25,8 @@ export default function AccountFormWrapper<TFormData extends FieldValues>({
   SubmitButtonText,
 }: Props<TFormData>) {
   const methods = useForm<TFormData>({ resolver, mode: 'onTouched' });
-  const handleOnSubmit = (data: TFormData) => {
-    onSubmit(data);
+  const handleOnSubmit = async (data: TFormData) => {
+    await onSubmit(data);
     if (reset) {
       methods.reset();
     }
@@ -54,7 +54,10 @@ export default function AccountFormWrapper<TFormData extends FieldValues>({
             {title}
           </Typography>
           <Divider color="secondary" />
-          <form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+          <form
+            onSubmit={methods.handleSubmit(handleOnSubmit)}
+            style={{ width: '100%' }}
+          >
             {children}
             <Button
               variant="contained"

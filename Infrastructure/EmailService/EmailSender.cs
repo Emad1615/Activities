@@ -52,9 +52,7 @@ namespace Infrastructure.EmailService
                 HtmlBody = body
             };
             message.To.Add(email);
-            //await resend.EmailSendAsync(message);
-            Console.WriteLine(message.HtmlBody);
-            await Task.CompletedTask;
+            await resend.EmailSendAsync(message);
         }
     }
 }

@@ -81,7 +81,7 @@ export default function LoginForm() {
         name="password"
         control={control}
       />
-      <Box display={'flex'} justifyContent={'space-between'}>
+      <Box display={'flex'} justifyContent={'space-between'} my={1}>
         <Typography fontSize={'13px'} color="text.secondary">
           Don't have an account?{' '}
           <Typography
@@ -93,14 +93,25 @@ export default function LoginForm() {
             Register
           </Typography>
         </Typography>
-        <Button
-          variant="contained"
-          type="submit"
-          disabled={!isValid || isSubmitting || isPending}
-        >
-          Login
-        </Button>
+        <Typography fontSize={'13px'} color="text.secondary">
+          Forgot your password?{' '}
+          <Typography
+            component={Link}
+            to="/forgot-password"
+            color="text.default"
+            fontSize={'inherit'}
+          >
+            click here
+          </Typography>
+        </Typography>
       </Box>
+      <Button
+        variant="contained"
+        type="submit"
+        disabled={!isValid || isSubmitting || isPending}
+      >
+        Login
+      </Button>
       {notVerified && (
         <Box
           display={'flex'}

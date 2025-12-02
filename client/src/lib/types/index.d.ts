@@ -48,6 +48,11 @@ type Category = {
   value: string;
   text: string;
 };
+type ResetPassword = {
+  email: string;
+  newPassword: string;
+  resetCode: string;
+};
 
 type LocationIQSuggestions = {
   place_id: string;

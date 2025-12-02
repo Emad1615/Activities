@@ -6,11 +6,22 @@ import {
 } from './changePasswordSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputText from '../../../App/shared/components/inputs/InputText';
+import { useChangePassword } from '../../../lib/hooks/account/useChangePassword';
+import { toast } from 'react-toastify';
 
 export default function ChangePasswordForm() {
-  const handleOnSubmit = (data: ChangePasswordSchema) => {
-    // Handle password change logic here
-    console.log(data);
+  const { ChangePassword } = useChangePassword();
+  const handleOnSubmit = async (data: ChangePasswordSchema) => {
+    await ChangePassword(data, {
+      onSuccess: () => {
+        toast.success('Password changed successfully');
+      },
+      onError: (errors) => {
+        if (Array.isArray(errors)) {
+          toast.error(errors[0] || 'Failed to change password');
+        }
+      },
+    });
   };
   return (
     <AccountFormWrapper<ChangePasswordSchema>

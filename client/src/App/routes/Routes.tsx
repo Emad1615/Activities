@@ -3,6 +3,8 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import ProfilePage from '../../features/profile/ProfilePage';
 import ConfirmEmail from '../../features/account/confirmEmail/ConfirmEmail';
 import ChangePasswordForm from '../../features/account/changePassword/ChangePasswordForm';
+import ForgotPasswordForm from '../../features/account/forgotPassword/ForgotPasswordForm';
+import ResetPasswordForm from '../../features/account/resetPassword/ResetPasswordForm';
 const App = lazy(() => import('../layout/App'));
 const HomePage = lazy(() => import('../../features/home/HomePage'));
 const ActivitiesPage = lazy(
@@ -86,5 +88,13 @@ export const routes = createBrowserRouter([
   {
     path: 'confirm-email',
     element: <ConfirmEmail />,
+  },
+  {
+    path: 'forgot-password',
+    element: <ForgotPasswordForm />,
+  },
+  {
+    path: 'reset-password',
+    element: <ResetPasswordForm />,
   },
 ]);
