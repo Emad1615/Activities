@@ -69,3 +69,9 @@ export const forgotPassword = async ({ email }: { email: string }) => {
 export const resetPassword = async (data: ResetPassword) => {
   await agent.post('/resetPassword', data).then((response) => response.data);
 };
+
+export const loginWithGitHub = async (code: string) => {
+  return await agent
+    .post(`/Account/github-login?code=${code}`)
+    .then((response) => response.data);
+};

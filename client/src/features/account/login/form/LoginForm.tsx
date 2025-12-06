@@ -81,7 +81,7 @@ export default function LoginForm() {
         name="password"
         control={control}
       />
-      <Box display={'flex'} justifyContent={'space-between'} my={1}>
+      <Box display={'flex'} justifyContent={'space-between'} my={1} gap={5}>
         <Typography fontSize={'13px'} color="text.secondary">
           Don't have an account?{' '}
           <Typography

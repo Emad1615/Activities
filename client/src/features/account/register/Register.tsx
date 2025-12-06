@@ -29,6 +29,9 @@ export default function Register() {
           justifyContent={'flex-start'}
           p={2}
           height={'98%'}
+          sx={{
+            backgroundColor: '#FCF8F8',
+          }}
         >
           <RegisterForm />
         </Box>

@@ -5,6 +5,7 @@ import ConfirmEmail from '../../features/account/confirmEmail/ConfirmEmail';
 import ChangePasswordForm from '../../features/account/changePassword/ChangePasswordForm';
 import ForgotPasswordForm from '../../features/account/forgotPassword/ForgotPasswordForm';
 import ResetPasswordForm from '../../features/account/resetPassword/ResetPasswordForm';
+import AuthCallback from '../../features/account/login/AuthCallback';
 const App = lazy(() => import('../layout/App'));
 const HomePage = lazy(() => import('../../features/home/HomePage'));
 const ActivitiesPage = lazy(
@@ -96,5 +97,9 @@ export const routes = createBrowserRouter([
   {
     path: 'reset-password',
     element: <ResetPasswordForm />,
+  },
+  {
+    path: 'auth-callback',
+    element: <AuthCallback />,
   },
 ]);
