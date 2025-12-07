@@ -9,10 +9,11 @@ using Persistence;
 using System.Net.Http.Headers;
 using System.Text;
 using static API.DTOS.GithubInfo;
+using static API.DTOS.GoogleInfo;
 
 namespace API.Controllers
 {
-    public class AccountController(SignInManager<UserApplication> signInManager, IEmailSender<UserApplication> emailSender, IConfiguration config,AppDbContext dbContext) : BaseApiController
+    public class AccountController(SignInManager<UserApplication> signInManager, IEmailSender<UserApplication> emailSender, IConfiguration config, AppDbContext dbContext) : BaseApiController
     {
         [AllowAnonymous]
         [HttpPost("github-login")]
@@ -82,12 +83,66 @@ namespace API.Controllers
                 if (!createdUser.Succeeded)
                     return BadRequest($"{user.Name} is not created (unsuccessful).");
             }
-            
+
             await signInManager.SignInAsync(existingUser, false);
             existingUser.ImageUrl = user.ImageUrl;
             await dbContext.SaveChangesAsync();
             return Ok();
         }
+        [AllowAnonymous]
+        [HttpPost("google-login")]
+        public async Task<ActionResult> LoginWithGoogle(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                return BadRequest("No code provided");
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            // step 1 exchange code for token access
+            var tokenResponse = await httpClient.PostAsJsonAsync("https://oauth2.googleapis.com/token", new GoogleAuthRequest
+            {
+                Code = code,
+                ClientID = config["authentications:google:client_id"]!,
+                ClientSecret = config["authentications:google:client_secret"]!,
+                RedirectURI = $"{config["frontend_urls"]}/google-auth-callback",
+                GrantType = "authorization_code"
+            });
+            if (!tokenResponse.IsSuccessStatusCode)
+                return BadRequest("Google authentication failed: unable to obtain access token.");
+            var tokenContent = await tokenResponse.Content.ReadFromJsonAsync<GoogleTokenResponse>();
+            if (string.IsNullOrEmpty(tokenContent?.AccessToken))
+                return BadRequest("Unable to complete Google login: missing access token.");
+
+            // step 2 fetch user info from google
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenContent.AccessToken);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Reactivities");
+            var userResponse = await httpClient.GetAsync("https://www.googleapis.com/oauth2/v2/userinfo");
+            if (!userResponse.IsSuccessStatusCode)
+                return BadRequest("Failed to fetch Google user profile.");
+            var user = await userResponse.Content.ReadFromJsonAsync<GoogleUser>();
+            if (user is null)
+                return BadRequest("Failed to get user data.");
+            // step 3 find or create user sign in
+            var existingUser = await signInManager.UserManager.FindByEmailAsync(user.Email);
+            if (existingUser is null)
+            {
+                existingUser = new UserApplication
+                {
+                    Email = user.Email,
+                    DisplayName = user.Name,
+                    UserName = user.Email,
+                    ImageUrl = user.ImageUrl,
+                };
+                var createdUser = await signInManager.UserManager.CreateAsync(existingUser);
+                if (!createdUser.Succeeded)
+                    return BadRequest($"{user.Name} is not created (unsuccessful).");
+            }
+            await signInManager.SignInAsync(existingUser, false);
+            existingUser.ImageUrl = user.ImageUrl;
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDTO registerDTO)

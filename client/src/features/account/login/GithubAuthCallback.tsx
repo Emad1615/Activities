@@ -4,7 +4,7 @@ import { useGithubLogin } from '../../../lib/hooks/account/useGithubLogin';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-export default function AuthCallback() {
+export default function GithubAuthCallback() {
   const {
     LoginWithGithub,
     isPending: isLoading,

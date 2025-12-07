@@ -1,4 +1,4 @@
-import { GitHub } from '@mui/icons-material';
+import { GitHub, Google } from '@mui/icons-material';
 import { Avatar, Box, Button, Divider, Paper, Typography } from '@mui/material';
 import LoginForm from './form/LoginForm';
 import { useLocation, useNavigate } from 'react-router';
@@ -14,6 +14,14 @@ export default function Login() {
     const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
     window.open(
       `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email user:follow`,
+      '_self'
+    );
+  };
+  const loginWithGoogle = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
+    window.open(
+      `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`,
       '_self'
     );
   };
@@ -74,6 +82,17 @@ export default function Login() {
             onClick={loginWithGtihub}
           >
             Sign in with Github
+          </Button>
+          <Button
+            startIcon={<Google />}
+            sx={{
+              width: '100%',
+              mt: 1,
+            }}
+            variant="contained"
+            onClick={loginWithGoogle}
+          >
+            Sign in with Google
           </Button>
         </Box>
       </Paper>

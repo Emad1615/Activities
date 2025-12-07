@@ -75,3 +75,9 @@ export const loginWithGitHub = async (code: string) => {
     .post(`/Account/github-login?code=${code}`)
     .then((response) => response.data);
 };
+
+export const loginWithGoogle = async (code: string) => {
+  return await agent
+    .post(`/Account/google-login?code=${code}`)
+    .then((response) => response.data);
+};

@@ -5,7 +5,8 @@ import ConfirmEmail from '../../features/account/confirmEmail/ConfirmEmail';
 import ChangePasswordForm from '../../features/account/changePassword/ChangePasswordForm';
 import ForgotPasswordForm from '../../features/account/forgotPassword/ForgotPasswordForm';
 import ResetPasswordForm from '../../features/account/resetPassword/ResetPasswordForm';
-import AuthCallback from '../../features/account/login/AuthCallback';
+import GithubAuthCallback from '../../features/account/login/GithubAuthCallback';
+import GoogleAuthCallback from '../../features/account/login/GoogleAuthCallback';
 const App = lazy(() => import('../layout/App'));
 const HomePage = lazy(() => import('../../features/home/HomePage'));
 const ActivitiesPage = lazy(
@@ -100,6 +101,10 @@ export const routes = createBrowserRouter([
   },
   {
     path: 'auth-callback',
-    element: <AuthCallback />,
+    element: <GithubAuthCallback />,
+  },
+  {
+    path: 'google-auth-callback',
+    element: <GoogleAuthCallback />,
   },
 ]);
