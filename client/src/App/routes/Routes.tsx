@@ -7,6 +7,7 @@ import ForgotPasswordForm from '../../features/account/forgotPassword/ForgotPass
 import ResetPasswordForm from '../../features/account/resetPassword/ResetPasswordForm';
 import GithubAuthCallback from '../../features/account/login/GithubAuthCallback';
 import GoogleAuthCallback from '../../features/account/login/GoogleAuthCallback';
+import FacebookAuthCallback from '../../features/account/login/FacebookAuthCallback';
 const App = lazy(() => import('../layout/App'));
 const HomePage = lazy(() => import('../../features/home/HomePage'));
 const ActivitiesPage = lazy(
@@ -106,5 +107,9 @@ export const routes = createBrowserRouter([
   {
     path: 'google-auth-callback',
     element: <GoogleAuthCallback />,
+  },
+  {
+    path: 'facebook-auth-callback',
+    element: <FacebookAuthCallback />,
   },
 ]);

@@ -4,12 +4,13 @@ import LoginForm from './form/LoginForm';
 import { useLocation, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { useIsAuthenticated } from '../../../lib/hooks/account/useIsAuthenticated';
+import FacebookIcon from '@mui/icons-material/Facebook';
 
 export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useIsAuthenticated();
-  const loginWithGtihub = () => {
+  const loginWithGithub = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
     window.open(
@@ -22,6 +23,14 @@ export default function Login() {
     const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
     window.open(
       `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`,
+      '_self'
+    );
+  };
+  const loginWithFacebook = () => {
+    const clientId = import.meta.env.VITE_FACEBOOK_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_FACEBOOK_REDIRECT_URI;
+    window.open(
+      `https://www.facebook.com/v18.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=email,public_profile&state=emadismail5760018109520232025ext123456`,
       '_self'
     );
   };
@@ -79,7 +88,7 @@ export default function Login() {
               mt: 1,
             }}
             variant="contained"
-            onClick={loginWithGtihub}
+            onClick={loginWithGithub}
           >
             Sign in with Github
           </Button>
@@ -90,9 +99,21 @@ export default function Login() {
               mt: 1,
             }}
             variant="contained"
+            color="info"
             onClick={loginWithGoogle}
           >
             Sign in with Google
+          </Button>
+          <Button
+            startIcon={<FacebookIcon />}
+            sx={{
+              width: '100%',
+              mt: 1,
+            }}
+            variant="contained"
+            onClick={loginWithFacebook}
+          >
+            Sign in with Facebook
           </Button>
         </Box>
       </Paper>

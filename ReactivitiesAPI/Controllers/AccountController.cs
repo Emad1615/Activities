@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Net.Http.Headers;
 using System.Text;
+using static API.DTOS.FacebookInfo;
 using static API.DTOS.GithubInfo;
 using static API.DTOS.GoogleInfo;
 
@@ -141,7 +142,50 @@ namespace API.Controllers
             await dbContext.SaveChangesAsync();
             return Ok();
         }
+        [AllowAnonymous]
+        [HttpPost("facebook-login")]
+        public async Task<ActionResult> LoginWithFacebook(string code) {
+            if (string.IsNullOrEmpty(code))
+                return BadRequest("No code provided");
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            // step 1 exchange code for token access
+            var tokenResponse = await httpClient.GetAsync($"https://graph.facebook.com/v16.0/oauth/access_token?client_id={config["authentications:facebook:client_id"]}&redirect_uri={config["frontend_urls"]}/facebook-auth-callback&client_secret={config["authentications:facebook:client_secret"]}&code={code}");
+            if (!tokenResponse.IsSuccessStatusCode)
+                return BadRequest("");
+            var tokenContent=await tokenResponse.Content.ReadFromJsonAsync<FacebookTokenResponse>();
+            if(string.IsNullOrEmpty(tokenContent?.AccessToken))
+                return BadRequest("Unable to complete Facebook login: missing access token.");
+            // step 2 fetch user info from facebook
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenContent.AccessToken);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Reactivities");
 
+            var userResponse=await httpClient.GetAsync("https://graph.facebook.com/me?fields=name,email,picture.width(720).height(720)");
+            if (!userResponse.IsSuccessStatusCode)
+                return BadRequest("Failed to fetch Facebook user profile.");
+            var user=await userResponse.Content.ReadFromJsonAsync<FacebookUser>();
+            if (user is null || string.IsNullOrEmpty(user.Email))
+                return BadRequest("Failed to get user data.");
+            // step 3 find or create user sign in
+            var existingUser=await signInManager.UserManager.FindByEmailAsync(user.Email);
+            if (existingUser is null)
+            {
+                existingUser = new UserApplication
+                {
+                    Email = user.Email!,
+                    DisplayName = user.Name!,
+                    UserName = user.Email!,
+                    ImageUrl = user.Picture?.Data?.Url,
+                };
+                var createdUser = await signInManager.UserManager.CreateAsync(existingUser);
+                if (!createdUser.Succeeded)
+                    return BadRequest($"{user.Name} is not created (unsuccessful).");
+            }
+            await signInManager.SignInAsync(existingUser, false);
+            existingUser.ImageUrl = user.Picture?.Data?.Url;
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
 
         [AllowAnonymous]
         [HttpPost("register")]
