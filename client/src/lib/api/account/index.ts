@@ -81,3 +81,9 @@ export const loginWithGoogle = async (code: string) => {
     .post(`/Account/google-login?code=${code}`)
     .then((response) => response.data);
 };
+
+export const loginWithFacebook = async (code: string) => {
+  return await agent
+    .post(`/Account/facebook-login?code=${code}`)
+    .then((response) => response.data);
+};

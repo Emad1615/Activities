@@ -144,7 +144,8 @@ namespace API.Controllers
         }
         [AllowAnonymous]
         [HttpPost("facebook-login")]
-        public async Task<ActionResult> LoginWithFacebook(string code) {
+        public async Task<ActionResult> LoginWithFacebook(string code) 
+        {
             if (string.IsNullOrEmpty(code))
                 return BadRequest("No code provided");
             using var httpClient = new HttpClient();
