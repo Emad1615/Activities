@@ -165,10 +165,13 @@ namespace API.Controllers
             if (!userResponse.IsSuccessStatusCode)
                 return BadRequest("Failed to fetch Facebook user profile.");
             var user=await userResponse.Content.ReadFromJsonAsync<FacebookUser>();
-            if (user is null || string.IsNullOrEmpty(user.Email))
+            if (user is null )
                 return BadRequest("Failed to get user data.");
+            if (string.IsNullOrEmpty(user.Email))
+                return BadRequest("EmailNotAllowed");
+
             // step 3 find or create user sign in
-            var existingUser=await signInManager.UserManager.FindByEmailAsync(user.Email);
+            var existingUser =await signInManager.UserManager.FindByEmailAsync(user.Email);
             if (existingUser is null)
             {
                 existingUser = new UserApplication

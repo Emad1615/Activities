@@ -35,6 +35,8 @@ agent.interceptors.response.use(
             }
           }
           throw modalStateErrors.flat();
+        } else if (data === 'EmailNotAllowed') {
+          throw new Error(data);
         } else toast.error(data.title ?? statusText);
         break;
       case 401: // Unauthorized
