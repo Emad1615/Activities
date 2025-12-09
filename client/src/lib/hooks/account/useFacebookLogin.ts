@@ -22,7 +22,7 @@ export const useFacebookLogin = () => {
       phoneNumber,
     }: {
       code: string;
-      phoneNumber: string | null;
+      phoneNumber?: string | null;
     }) => loginWithFacebook(code, phoneNumber),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['isAuthenticated', 'user'] });

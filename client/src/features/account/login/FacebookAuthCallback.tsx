@@ -18,7 +18,7 @@ export default function FacebookAuthCallback() {
     if (isFetched.current || !code) return;
     setIsLoading(true);
     isFetched.current = true;
-    LoginWithFacebook(code, null)
+    LoginWithFacebook({ code })
       .then(() => {
         navigate('/activities');
         setIsLoading(false);
