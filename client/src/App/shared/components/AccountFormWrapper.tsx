@@ -50,7 +50,12 @@ export default function AccountFormWrapper<TFormData extends FieldValues>({
           justifyContent={'center'}
         >
           {icon}
-          <Typography variant="h4" color="text.secondary" fontWeight={600}>
+          <Typography
+            variant="overline"
+            color="text.secondary"
+            fontWeight={600}
+            fontSize={'1rem'}
+          >
             {title}
           </Typography>
           <Divider color="secondary" />
