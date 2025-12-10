@@ -192,6 +192,68 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> LoginWithFacebookUsingPhoneNumber(string code, string phoneNumber)
+        {
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(phoneNumber))
+                return BadRequest(string.IsNullOrEmpty(code) ? "No code provided" : "No phone number provided");
+
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // STEP 1 ➜ Exchange code → access token
+            var tokenResponse = await httpClient.GetAsync(
+                $"https://graph.facebook.com/v16.0/oauth/access_token?client_id={config["authentications:facebook:client_id"]}&redirect_uri={config["frontend_urls"]}/facebook-auth-callback&client_secret={config["authentications:facebook:client_secret"]}&code={code}");
+
+            if (!tokenResponse.IsSuccessStatusCode)
+                return BadRequest("Facebook authentication failed: unable to obtain access token.");
+
+            var tokenContent = await tokenResponse.Content.ReadFromJsonAsync<FacebookTokenResponse>();
+
+            if (string.IsNullOrEmpty(tokenContent?.AccessToken))
+                return BadRequest("Unable to complete Facebook login: missing access token.");
+
+            // STEP 2 ➜ Fetch Facebook profile
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenContent.AccessToken);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Reactivities");
+
+            var userResponse = await httpClient.GetAsync("https://graph.facebook.com/me?fields=name,email,picture.width(720).height(720)");
+            if (!userResponse.IsSuccessStatusCode)
+                return BadRequest("Failed to fetch Facebook user profile.");
+
+            var fbUser = await userResponse.Content.ReadFromJsonAsync<FacebookUser>();
+            if (fbUser is null)
+                return BadRequest("Failed to get user data.");
+
+            // STEP 3 ➜ Look for user USING PHONE NUMBER (not email)
+            var existingUser = await signInManager.UserManager.Users
+                .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+
+            // STEP 4 ➜ Create new user if not exists
+            if (existingUser is null)
+            {
+                existingUser = new UserApplication
+                {
+                    PhoneNumber = phoneNumber,
+                    UserName = phoneNumber,     // important
+                    Email = fbUser.Email,       // لو عنده إيميل من فيسبوك خليه.. مش ضروري
+                    DisplayName = fbUser.Name,
+                    ImageUrl = fbUser.Picture?.Data?.Url,
+                };
+
+                var createdUser = await signInManager.UserManager.CreateAsync(existingUser);
+                if (!createdUser.Succeeded)
+                    return BadRequest($"{fbUser.Name} is not created (unsuccessful).");
+            }
+
+            // STEP 5 ➜ Sign in user
+            await signInManager.SignInAsync(existingUser, false);
+
+            return Ok("Facebook login with phone number successful.");
+        }
+
+
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDTO registerDTO)
         {

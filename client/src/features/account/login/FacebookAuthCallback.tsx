@@ -1,5 +1,11 @@
 import { Facebook } from '@mui/icons-material';
-import { Box, CircularProgress, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Paper,
+  Typography,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useFacebookLogin } from '../../../lib/hooks/account/useFacebookLogin';
@@ -77,6 +83,7 @@ export default function FacebookAuthCallback() {
             {error}
           </Typography>
         )}
+        <Divider flexItem={true} sx={{ my: 2 }} />
         {noEamil && <FacebookForm />}
       </Paper>
     </Box>

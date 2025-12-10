@@ -13,17 +13,12 @@ export const useFacebookLogin = () => {
     unknown,
     AxiosError,
     {
-      code: string;
-      phoneNumber: string;
+      code?: string;
+      phoneNumber?: string | null;
     }
   >({
-    mutationFn: async ({
-      code,
-      phoneNumber,
-    }: {
-      code: string;
-      phoneNumber?: string | null;
-    }) => loginWithFacebook(code, phoneNumber),
+    mutationFn: async ({ code, phoneNumber }) =>
+      loginWithFacebook(code, phoneNumber),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['isAuthenticated', 'user'] });
     },
